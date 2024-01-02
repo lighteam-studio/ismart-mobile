@@ -10,6 +10,7 @@ class LtListGroupTitleSliver extends StatelessWidget {
     var colorScheme = Theme.of(context).colorScheme;
 
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
       elevation: 0,
       toolbarHeight: AppSizes.s07,

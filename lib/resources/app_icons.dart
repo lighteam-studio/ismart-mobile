@@ -11,4 +11,6 @@ class AppIcons {
   static const String queue = "lib/assets/icons/queue.png";
   static const String shop = "lib/assets/icons/shop.png";
   static const String times = "lib/assets/icons/times.png";
+  static const String chevronLeft = "lib/assets/icons/chevron_left.png";
+  static const String chevronDown = "lib/assets/icons/chevron_down.png";
 }

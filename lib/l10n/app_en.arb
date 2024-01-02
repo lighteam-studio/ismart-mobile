@@ -1,0 +1,34 @@
+{
+  "@_GENERIC": "",
+  "searchPlaceholder": "Search...",
+  "next": "Next",
+  
+  "@_PRODUCTS": "",
+  "products": "Products",
+  "categories": "Categories",
+  "createProduct": "Create product",
+
+  "@_ENUMS": "",
+  "productUnit": "{unit, select, un{Unit} kg{Kilogram} other{Invalid}}",
+  "@productUnit": {
+    "description": "Product units",
+        "placeholders": {
+        "unit": {}
+    }
+},
+  
+  "@_CREATE_PRODUCTS": "",
+  "category": "Category",
+  "placeholderCategory": "Select a category",
+  "name": "Name",
+  "placeholderName": "Ex: John Carter",
+  "brand": "Brand",
+  "placeholderBrand": "Ex.: Elma Chips",
+  "barCode": "Bar code",
+  "placeholderBarCode": "Ex: 123456789",
+  "addBarCode": "Add another bar code",
+  "unit": "Unit",
+  "placeholderUnit": "Select an unit",
+  "addImage": "Add image",
+  "productHasVariations": "Product has variations"
+}

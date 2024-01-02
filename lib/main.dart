@@ -3,6 +3,7 @@ import 'package:ismart/features/welcome/welcome_feature.dart';
 import 'package:ismart/resources/app_colors.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:ismart/router/app_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +52,18 @@ class MyApp extends StatelessWidget {
         letterSpacing: 0,
         height: 1.25,
       ),
+      bodyLarge: TextStyle(
+        fontFamily: "Ubuntu",
+        fontWeight: FontWeight.w600,
+        color: colorScheme.onSurface,
+        fontSize: AppSizes.s04,
+      ),
+      bodyMedium: TextStyle(
+        fontFamily: "Ubuntu",
+        fontWeight: FontWeight.w400,
+        color: colorScheme.onSurface,
+        fontSize: AppSizes.s04,
+      ),
       bodySmall: TextStyle(
         fontFamily: 'Ubuntu',
         fontWeight: FontWeight.w400,
@@ -72,13 +85,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'isMart',
       theme: ThemeData(
-          fontFamily: 'Ubuntu',
-          colorScheme: colorScheme,
-          textTheme: textTheme,
-          useMaterial3: true,
-          dividerTheme: DividerThemeData(
-            color: colorScheme.surface,
-          )),
+        fontFamily: 'Ubuntu',
+        colorScheme: colorScheme,
+        textTheme: textTheme,
+        useMaterial3: true,
+        dividerTheme: DividerThemeData(
+          color: colorScheme.surface,
+        ),
+      ),
+      supportedLocales: S.supportedLocales,
+      localizationsDelegates: S.localizationsDelegates,
       initialRoute: AppRouter.appShell,
       onGenerateRoute: AppRouter.controller,
       home: const WelcomeFeature(),

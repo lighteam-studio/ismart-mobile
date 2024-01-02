@@ -4,9 +4,16 @@ import 'package:ismart/resources/app_sizes.dart';
 class LtSurfaceButton extends StatelessWidget {
   final String icon;
   final void Function() onTap;
+  final double size;
+  final Color? backgroundColor;
+  final bool hasShadow;
+
   const LtSurfaceButton({
     required this.icon,
     required this.onTap,
+    this.size = AppSizes.s14,
+    this.backgroundColor,
+    this.hasShadow = false,
     super.key,
   });
 
@@ -15,19 +22,21 @@ class LtSurfaceButton extends StatelessWidget {
     var colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      width: AppSizes.s12,
-      height: AppSizes.s12,
+      width: size,
+      height: size,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: colorScheme.onPrimary,
+        color: backgroundColor ?? colorScheme.surface,
         borderRadius: BorderRadius.circular(AppSizes.s04),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset.zero,
-            blurRadius: AppSizes.s03,
-            color: Colors.black.withOpacity(.08),
-          ),
-        ],
+        boxShadow: hasShadow
+            ? [
+                BoxShadow(
+                  offset: Offset.zero,
+                  blurRadius: AppSizes.s03,
+                  color: Colors.black.withOpacity(.08),
+                ),
+              ]
+            : null,
       ),
       child: Material(
         color: Colors.transparent,

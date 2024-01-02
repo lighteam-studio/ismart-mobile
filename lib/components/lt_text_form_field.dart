@@ -4,7 +4,7 @@ import 'package:ismart/resources/app_sizes.dart';
 
 class LtTextFormField extends StatelessWidget {
   final TextEditingController? controller;
-  final String label;
+  final String? label;
   final String placeholder;
   final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
@@ -15,19 +15,20 @@ class LtTextFormField extends StatelessWidget {
   final TextInputFormatter? mask;
   final List<String? Function(String value)>? validators;
 
-  const LtTextFormField(
-      {required this.label,
-      this.mask,
-      this.placeholder = '',
-      this.keyboardType = TextInputType.text,
-      this.focusNode,
-      this.nextFocusNode,
-      this.validators,
-      this.obscureText = false,
-      this.disabled = false,
-      this.controller,
-      this.onSubmit,
-      super.key});
+  const LtTextFormField({
+    this.label,
+    this.mask,
+    this.placeholder = '',
+    this.keyboardType = TextInputType.text,
+    this.focusNode,
+    this.nextFocusNode,
+    this.validators,
+    this.obscureText = false,
+    this.disabled = false,
+    this.controller,
+    this.onSubmit,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +37,14 @@ class LtTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          label,
-          style: textTheme.labelMedium,
-        ),
-        const SizedBox(height: AppSizes.s01),
+        if (label != null)
+          Padding(
+            padding: EdgeInsets.only(bottom: AppSizes.s01),
+            child: Text(
+              label!,
+              style: textTheme.labelMedium,
+            ),
+          ),
         TextFormField(
           inputFormatters: mask != null ? [mask!] : null,
           onFieldSubmitted: (_) {
@@ -52,7 +56,7 @@ class LtTextFormField extends StatelessWidget {
           },
           style: const TextStyle(
             fontSize: AppSizes.s04,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w400,
           ),
           controller: controller,
           obscureText: obscureText,
