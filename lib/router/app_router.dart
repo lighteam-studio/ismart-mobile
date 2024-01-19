@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ismart/features/initialization/initialization_feature.dart';
 import 'package:ismart/features/onboarding/onboarding_feature.dart';
 import 'package:ismart/features/onboarding/pages/onboarding_finish_page.dart';
 import 'package:ismart/features/welcome/welcome_feature.dart';
@@ -8,6 +9,7 @@ class AppRouter {
   static const String welcomePage = "welcome_page";
   static const String onboardingFeature = "onboarding_feature";
   static const String onboardingFinishPage = "onboarding_finish_page";
+  static const String initialization = "initialization_feature";
   static const String appShell = "app_shell";
 
   static Route<dynamic> controller(RouteSettings settings) {
@@ -23,6 +25,9 @@ class AppRouter {
 
       case appShell:
         return MaterialPageRoute(builder: (contect) => const AppShell());
+
+      case initialization:
+        return MaterialPageRoute(builder: (contect) => const InitializationFeature());
 
       default:
         throw "Rota inválida";

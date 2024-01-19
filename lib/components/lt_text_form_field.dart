@@ -39,7 +39,7 @@ class LtTextFormField extends StatelessWidget {
       children: [
         if (label != null)
           Padding(
-            padding: EdgeInsets.only(bottom: AppSizes.s01),
+            padding: const EdgeInsets.only(bottom: AppSizes.s01),
             child: Text(
               label!,
               style: textTheme.labelMedium,

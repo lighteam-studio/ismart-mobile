@@ -13,4 +13,7 @@ class AppIcons {
   static const String times = "lib/assets/icons/times.png";
   static const String chevronLeft = "lib/assets/icons/chevron_left.png";
   static const String chevronDown = "lib/assets/icons/chevron_down.png";
+  static const String gallery = "lib/assets/icons/gallery.png";
+  static const String trash = "lib/assets/icons/trash.png";
+  static const String circleEllipsis = "lib/assets/icons/circle_ellipsis.png";
 }

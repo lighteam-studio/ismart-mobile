@@ -25,7 +25,10 @@ class LtIconButton extends StatelessWidget {
       height: size,
       width: size,
       clipBehavior: Clip.hardEdge,
-      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(999))),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(999)),
+        color: colorScheme.background.withOpacity(.8),
+      ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

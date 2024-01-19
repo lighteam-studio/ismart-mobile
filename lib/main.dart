@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ismart/features/welcome/welcome_feature.dart';
 import 'package:ismart/resources/app_colors.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:ismart/router/app_router.dart';
@@ -95,9 +94,8 @@ class MyApp extends StatelessWidget {
       ),
       supportedLocales: S.supportedLocales,
       localizationsDelegates: S.localizationsDelegates,
-      initialRoute: AppRouter.appShell,
+      initialRoute: AppRouter.initialization,
       onGenerateRoute: AppRouter.controller,
-      home: const WelcomeFeature(),
     );
   }
 }

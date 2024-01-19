@@ -26,7 +26,13 @@ class FirstProductPage extends StatelessWidget {
               const SizedBox(height: AppSizes.s06),
 
               // Imagem do produto
-              const Center(child: LtFilePicker()),
+              Center(
+                child: LtFilePicker(
+                  onChange: (files) {},
+                  pictures: const [],
+                  onRemovePicture: (index) {},
+                ),
+              ),
               const SizedBox(height: AppSizes.s06),
 
               // Categoria
