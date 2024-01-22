@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/features/onboarding/providers/company_name_form.dart';
 import 'package:ismart/features/onboarding/providers/product_category_form.dart';
+import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   ///
@@ -14,6 +15,9 @@ class OnboardingProvider extends ChangeNotifier {
 
   final ProductCategoryForm _productCategoryForm = ProductCategoryForm();
   ProductCategoryForm get productCategoryForm => _productCategoryForm;
+
+  final CreateProductProvider _productForm = CreateProductProvider();
+  CreateProductProvider get productForm => _productForm;
 
   /// Set company name
   void setCompanyName() {

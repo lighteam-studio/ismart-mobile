@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ismart/components/lt_file_picker.dart';
-import 'package:ismart/components/lt_hollow_button.dart';
-import 'package:ismart/components/lt_primary_button.dart';
-import 'package:ismart/components/lt_text_form_field.dart';
+import 'package:ismart/features/onboarding/providers/onboarding_provider.dart';
+import 'package:ismart/features/products/create_product/pages/product_form_page.dart';
 import 'package:ismart/resources/app_sizes.dart';
+import 'package:provider/provider.dart';
 
 class FirstProductPage extends StatelessWidget {
   const FirstProductPage({super.key});
@@ -12,80 +11,20 @@ class FirstProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.s06),
-            children: [
-              Text(
-                "Cadastre seu primeiro produto, é super fácil 😁",
-                style: textTheme.titleSmall,
-              ),
-              const SizedBox(height: AppSizes.s06),
+    OnboardingProvider provider = Provider.of(context);
 
-              // Imagem do produto
-              Center(
-                child: LtFilePicker(
-                  onChange: (files) {},
-                  pictures: const [],
-                  onRemovePicture: (index) {},
-                ),
-              ),
-              const SizedBox(height: AppSizes.s06),
-
-              // Categoria
-              const LtTextFormField(
-                label: "Categoria",
-                placeholder: "Selecione uma categoria",
-              ),
-              const SizedBox(height: AppSizes.s04),
-
-              // Nome do Produto
-              const LtTextFormField(
-                label: "Nome",
-                placeholder: "Nome do produto",
-              ),
-              const SizedBox(height: AppSizes.s04),
-
-              // Marca do produto
-              const LtTextFormField(
-                label: "Marca",
-                placeholder: "Marca do produto",
-              ),
-              const SizedBox(height: AppSizes.s04),
-
-              // Preço de venda
-              const LtTextFormField(
-                label: "Preço de venda",
-                placeholder: "Marca do produto",
-              ),
-            ],
+    return ChangeNotifierProvider.value(
+      value: provider.productForm,
+      child: ProductFormPage(
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.s05),
+        header: Padding(
+          padding: const EdgeInsets.only(bottom: AppSizes.s06),
+          child: Text(
+            "Cadastre seu primeiro produto, é super fácil 😁",
+            style: textTheme.titleSmall,
           ),
         ),
-
-        const SizedBox(height: AppSizes.s04),
-        // Select current interactions
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSizes.s06,
-          ),
-          child: LtPrimaryButton(
-            label: "Continuar",
-            onTap: () {},
-          ),
-        ),
-
-        // Skip this step
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.s06),
-          child: LtHollowButton(
-            label: "Pular",
-            onTap: () {},
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

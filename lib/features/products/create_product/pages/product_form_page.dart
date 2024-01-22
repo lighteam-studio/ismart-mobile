@@ -18,7 +18,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductFormPage extends StatelessWidget {
-  const ProductFormPage({super.key});
+  final Widget? header;
+  final EdgeInsets? padding;
+  const ProductFormPage({
+    this.header,
+    this.padding,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +32,9 @@ class ProductFormPage extends StatelessWidget {
     final s = S.of(context);
 
     return ListView(
-      padding: const EdgeInsets.all(AppSizes.s05),
+      padding: padding ?? const EdgeInsets.all(AppSizes.s05),
       children: [
+        if (header != null) header!,
         LtFilePicker(
           onChange: (pictures) => provider.addPictures(pictures),
           pictures: provider.pictures,
