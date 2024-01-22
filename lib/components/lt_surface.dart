@@ -4,9 +4,11 @@ import 'package:ismart/resources/app_sizes.dart';
 class LtSurface extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
+  final Color? backgroundColor;
 
   const LtSurface({
     required this.child,
+    this.backgroundColor,
     this.padding,
     super.key,
   });
@@ -23,7 +25,7 @@ class LtSurface extends StatelessWidget {
           ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizes.s03),
-        color: colorScheme.surface,
+        color: backgroundColor ?? colorScheme.surface,
       ),
       child: child,
     );

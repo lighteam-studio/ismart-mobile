@@ -5,11 +5,13 @@ import 'package:ismart/resources/app_sizes.dart';
 class LtSurfaceInput extends StatelessWidget {
   final String hintText;
   final TextEditingController? controller;
+  final bool valid;
   final List<Widget>? badges;
 
   const LtSurfaceInput({
     required this.hintText,
     this.controller,
+    this.valid = true,
     this.badges,
     super.key,
   });
@@ -19,6 +21,7 @@ class LtSurfaceInput extends StatelessWidget {
     var colorScheme = Theme.of(context).colorScheme;
 
     return LtSurface(
+      backgroundColor: valid ? colorScheme.surface : colorScheme.errorContainer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

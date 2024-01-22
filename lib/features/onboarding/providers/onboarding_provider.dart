@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:ismart/core/models/product_group_model.dart';
-import 'package:ismart/mock/models/product_group_model_mock.dart';
+import 'package:ismart/features/onboarding/providers/company_name_form.dart';
+import 'package:ismart/features/onboarding/providers/product_category_form.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   ///
@@ -9,55 +9,43 @@ class OnboardingProvider extends ChangeNotifier {
   final PageController _pageController = PageController();
   PageController get pageController => _pageController;
 
-  /// Lista de groups
-  final List<ProductGroupModel> _availableProductGroups = generateProductGroupModelMock();
-  List<ProductGroupModel> get availableProductGroups => _availableProductGroups;
+  final CompanyNameForm _companyNameForm = CompanyNameForm();
+  CompanyNameForm get companyNameForm => _companyNameForm;
 
-  /// Selected groups
-  final List<String> _selectedTemplateGroups = [];
-  List<String> get selectedTemplateGroups => _selectedTemplateGroups;
+  final ProductCategoryForm _productCategoryForm = ProductCategoryForm();
+  ProductCategoryForm get productCategoryForm => _productCategoryForm;
 
-  /// Final list of products that will be persisted in the database
-  List<ProductGroupModel> _selectedGroups = [];
-  List<ProductGroupModel> get selectedGroups => _selectedGroups;
+  /// Set company name
+  void setCompanyName() {
+    _companyNameForm.validateOnInput = true;
 
-  /// Toogle selected group
-  void toogleSelectedGroup(String groupId) {
-    _selectedTemplateGroups.contains(groupId)
-        ? _selectedTemplateGroups.remove(groupId) //
-        : _selectedTemplateGroups.add(groupId);
-    notifyListeners();
-  }
+    var isValid = _companyNameForm.shopNameForm.currentState?.validate() ?? false;
+    if (!isValid) return;
 
-  /// Confirm Selected group
-  void confirmSelectedGroups() {
-    // Clear unselected groups
-    _selectedGroups = _selectedGroups
-        .where((element) => _selectedTemplateGroups.contains(element.id)) //
-        .toList();
-
-    // Add groups to selected groups if it does not exist
-    for (var id in _selectedTemplateGroups) {
-      var groupAlreadyInSelectedGroups = _selectedGroups.firstWhereOrNull((element) => element.id == id);
-      if (groupAlreadyInSelectedGroups != null) break;
-
-      var group = _availableProductGroups.firstWhere((element) => element.id == id);
-      _selectedGroups.add(group.clone());
-    }
-    notifyListeners();
-
-    // Navigate to next page
-    _pageController.animateToPage(
-      ((_pageController.page ?? 0) + 1).round(),
-      duration: const Duration(milliseconds: 150),
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
   }
 
-  /// Remove selected group
-  void removeSeletedGroup(String id) {
-    _selectedTemplateGroups.remove(id);
-    _selectedGroups.removeWhere((element) => element.id == id);
-    notifyListeners();
+  /// Set selected groups
+  void setSelectedGroups() {
+    _productCategoryForm.confirmSelectedGroups();
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+  }
+
+  void setSelectedCategories(BuildContext context) {
+    var invalidGroup = _productCategoryForm.productGroups.firstWhereOrNull((element) => element.title.isEmpty);
+    if (invalidGroup != null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Existem grupos de produtos com o título não preenchido"),
+      ));
+      return;
+    }
+
+    _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 }

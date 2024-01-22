@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ismart/components/lt_icon_button.dart';
 import 'package:ismart/components/lt_progress_bar.dart';
-import 'package:ismart/features/onboarding/pages/balance_page.dart';
 import 'package:ismart/features/onboarding/pages/categories_page.dart';
 import 'package:ismart/features/onboarding/pages/first_product_page.dart';
 import 'package:ismart/features/onboarding/pages/groups_page.dart';
 import 'package:ismart/features/onboarding/pages/company_name_page.dart';
 import 'package:ismart/features/onboarding/providers/onboarding_provider.dart';
+import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
+import 'package:ismart/router/app_router.dart';
 import 'package:provider/provider.dart';
 
 class OnboardingFeature extends StatelessWidget {
@@ -41,26 +43,48 @@ class OnboardingFeature extends StatelessWidget {
                     listenable: provider.pageController,
                     builder: (context, child) {
                       double position = provider.pageController.hasClients
-                          ? (provider.pageController.page ?? 0) / 4 //
+                          ? (provider.pageController.page ?? 0) / 3 //
                           : 0;
 
                       return Padding(
-                        padding: const EdgeInsets.all(AppSizes.s06),
-                        child: LtProgressBar(
-                          progress: position,
+                        padding: const EdgeInsets.only(
+                          left: AppSizes.s03_5,
+                          right: AppSizes.s06,
+                          bottom: AppSizes.s06,
+                        ),
+                        child: Row(
+                          children: [
+                            LtIconButton(
+                              onPressed: () => (provider.pageController.page ?? 0) <= 0
+                                  ? Navigator.of(context).pushReplacementNamed(AppRouter.welcomePage)
+                                  : provider.pageController.previousPage(
+                                      duration: const Duration(milliseconds: 300),
+                                      curve: Curves.ease,
+                                    ),
+                              icon: AppIcons.arrowLeftCircle,
+                              color: colorScheme.onSurface,
+                              size: AppSizes.s10,
+                            ),
+                            const SizedBox(width: AppSizes.s02),
+                            Expanded(
+                              child: LtProgressBar(
+                                progress: position,
+                              ),
+                            )
+                          ],
                         ),
                       );
                     },
                   ),
                   Expanded(
                     child: PageView(
+                      physics: const NeverScrollableScrollPhysics(),
                       controller: provider.pageController,
                       children: const [
                         CompanyNamePage(),
                         GroupsPage(),
                         CategoriesPage(),
                         FirstProductPage(),
-                        BalancePage(),
                       ],
                     ),
                   ),

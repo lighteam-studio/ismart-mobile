@@ -29,9 +29,13 @@ class _CategoryGroupState extends State<CategoryGroup> {
           Row(
             children: [
               Expanded(
-                child: LtSurfaceInput(
-                  controller: model.titleController,
-                  hintText: "Grupo de produtos",
+                child: ListenableBuilder(
+                  listenable: model.titleController,
+                  builder: (context, child) => LtSurfaceInput(
+                    valid: model.title.isNotEmpty,
+                    controller: model.titleController,
+                    hintText: "Grupo de produtos",
+                  ),
                 ),
               ),
               const SizedBox(width: AppSizes.s02),
@@ -83,12 +87,13 @@ class _CategoryGroupState extends State<CategoryGroup> {
               );
             },
           ),
-          Divider(
-            height: 1,
-            color: colorScheme.surface,
-            endIndent: AppSizes.s02,
-            indent: AppSizes.s02,
-          ),
+          if (model.categories.isNotEmpty)
+            Divider(
+              height: 1,
+              color: colorScheme.surface,
+              endIndent: AppSizes.s02,
+              indent: AppSizes.s02,
+            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.s02),
             child: TextField(

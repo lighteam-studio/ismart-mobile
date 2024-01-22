@@ -14,6 +14,9 @@ class AppRouter {
 
   static Route<dynamic> controller(RouteSettings settings) {
     switch (settings.name) {
+      case initialization:
+        return MaterialPageRoute(builder: (contect) => const InitializationFeature());
+
       case welcomePage:
         return MaterialPageRoute(builder: (contect) => const WelcomeFeature());
 
@@ -25,9 +28,6 @@ class AppRouter {
 
       case appShell:
         return MaterialPageRoute(builder: (contect) => const AppShell());
-
-      case initialization:
-        return MaterialPageRoute(builder: (contect) => const InitializationFeature());
 
       default:
         throw "Rota inválida";

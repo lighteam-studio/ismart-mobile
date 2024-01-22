@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_select_form_field.dart';
 import 'package:ismart/components/lt_surface_button.dart';
@@ -25,7 +24,7 @@ class ProductVariationContainer extends StatelessWidget {
       child: ExpansionTile(
         initiallyExpanded: true,
         iconColor: colorScheme.onSurface,
-        title: Text("G - Azul"),
+        title: const Text("G - Azul"),
         shape: Border.all(color: Colors.transparent),
         childrenPadding: const EdgeInsets.only(
           left: AppSizes.s04,
