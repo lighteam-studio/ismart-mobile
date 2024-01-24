@@ -111,7 +111,7 @@ class CategoriesPage extends StatelessWidget {
                 horizontal: AppSizes.s06,
               ),
               child: LtPrimaryButton(
-                label: "Continuar",
+                label: "Finalizar",
                 onTap: () => provider.setSelectedCategories(context),
               ),
             ),

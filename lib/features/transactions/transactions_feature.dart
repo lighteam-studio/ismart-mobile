@@ -6,7 +6,6 @@ class TransactionsFeature extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.red,
       body: Center(child: Text("Transactions")),
     );
   }

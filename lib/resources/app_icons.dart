@@ -17,5 +17,6 @@ class AppIcons {
   static const String trash = "lib/assets/icons/trash.png";
   static const String circleEllipsis = "lib/assets/icons/circle_ellipsis.png";
   static const String circleCheck = "lib/assets/icons/circle_check.png";
+  static const String paintBrush = "lib/assets/icons/paint_brush.png";
   static const String arrowLeftCircle = "lib/assets/icons/arrow_left_circle.png";
 }

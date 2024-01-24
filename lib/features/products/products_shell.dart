@@ -89,7 +89,12 @@ class _ProductsShellState extends State<ProductsShell> {
           providers: [
             ChangeNotifierProvider(create: (context) => CreateProductProvider()),
           ],
-          child: renderPage(),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 600),
+            switchInCurve: const Interval(.6, 1, curve: Curves.ease),
+            switchOutCurve: const Interval(.6, 1, curve: Curves.ease),
+            child: renderPage(),
+          ),
         ),
       ),
     );

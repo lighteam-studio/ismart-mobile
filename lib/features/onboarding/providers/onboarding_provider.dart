@@ -1,8 +1,13 @@
+import 'dart:ui';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/features/onboarding/providers/company_name_form.dart';
 import 'package:ismart/features/onboarding/providers/product_category_form.dart';
 import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
+import 'package:ismart/router/app_router.dart';
+import 'package:ismart/utils/helper_functions.dart';
+import 'package:lottie/lottie.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   ///
@@ -18,6 +23,11 @@ class OnboardingProvider extends ChangeNotifier {
 
   final CreateProductProvider _productForm = CreateProductProvider();
   CreateProductProvider get productForm => _productForm;
+
+  Future _createDatabase() async {
+    await Future.delayed(Duration(milliseconds: 2000));
+    return Future.error("123");
+  }
 
   /// Set company name
   void setCompanyName() {
@@ -41,8 +51,9 @@ class OnboardingProvider extends ChangeNotifier {
     );
   }
 
-  void setSelectedCategories(BuildContext context) {
+  void setSelectedCategories(BuildContext context) async {
     var invalidGroup = _productCategoryForm.productGroups.firstWhereOrNull((element) => element.title.isEmpty);
+
     if (invalidGroup != null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Existem grupos de produtos com o título não preenchido"),
@@ -50,6 +61,7 @@ class OnboardingProvider extends ChangeNotifier {
       return;
     }
 
-    _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    var response = await showLoadingDialog(context, _createDatabase);
+    print(response);
   }
 }

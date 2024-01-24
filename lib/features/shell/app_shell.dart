@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ismart/features/delivery/delivery_feature.dart';
+import 'package:ismart/features/marketing/marketing_feature.dart';
 import 'package:ismart/features/products/products_shell.dart';
 import 'package:ismart/features/shell/components/app_navigation_bar.dart';
 import 'package:ismart/features/shell/components/app_shell_animated_switcher.dart';
@@ -28,7 +28,7 @@ class _AppShellState extends State<AppShell> {
     }
 
     if (selectedPage == 3) {
-      return const DeliveryFeature();
+      return const MarketingFeature();
     }
 
     if (selectedPage == 4) {

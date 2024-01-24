@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_icon_button.dart';
 import 'package:ismart/components/lt_progress_bar.dart';
 import 'package:ismart/features/onboarding/pages/categories_page.dart';
-import 'package:ismart/features/onboarding/pages/first_product_page.dart';
 import 'package:ismart/features/onboarding/pages/groups_page.dart';
 import 'package:ismart/features/onboarding/pages/company_name_page.dart';
 import 'package:ismart/features/onboarding/providers/onboarding_provider.dart';
@@ -84,7 +83,6 @@ class OnboardingFeature extends StatelessWidget {
                         CompanyNamePage(),
                         GroupsPage(),
                         CategoriesPage(),
-                        FirstProductPage(),
                       ],
                     ),
                   ),

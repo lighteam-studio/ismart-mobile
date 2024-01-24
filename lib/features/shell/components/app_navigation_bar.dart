@@ -48,7 +48,7 @@ class AppNavigationBar extends StatelessWidget {
                 AppNavigationBarItem(
                   selected: selectedIndex == 3,
                   onTap: () => onNavigate(3),
-                  icon: AppIcons.deliver,
+                  icon: AppIcons.paintBrush,
                 ),
                 AppNavigationBarItem(
                   selected: selectedIndex == 4,
