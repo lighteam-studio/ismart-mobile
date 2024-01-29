@@ -1,6 +1,9 @@
 create table preferences
 (
-    shop_name TEXT not null
+    key   TEXT not null,
+    value TEXT,
+    constraint preferences_pk
+        primary key (key)
 );
 
 create table product

@@ -1,13 +1,9 @@
-import 'dart:ui';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/features/onboarding/providers/company_name_form.dart';
 import 'package:ismart/features/onboarding/providers/product_category_form.dart';
 import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
-import 'package:ismart/router/app_router.dart';
 import 'package:ismart/utils/helper_functions.dart';
-import 'package:lottie/lottie.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   ///
@@ -25,15 +21,13 @@ class OnboardingProvider extends ChangeNotifier {
   CreateProductProvider get productForm => _productForm;
 
   Future _createDatabase() async {
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     return Future.error("123");
   }
 
   /// Set company name
-  void setCompanyName() {
-    _companyNameForm.validateOnInput = true;
-
-    var isValid = _companyNameForm.shopNameForm.currentState?.validate() ?? false;
+  void setCompanyName() async {
+    var isValid = await _companyNameForm.updateCompanyName();
     if (!isValid) return;
 
     _pageController.nextPage(

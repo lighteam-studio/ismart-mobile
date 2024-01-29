@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ismart/repository/abstractions/preferences_repository.dart';
+import 'package:ismart/repository/local/preferences_repository.dart';
 import 'package:ismart/resources/app_colors.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:ismart/router/app_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
+  GetIt.instance.registerLazySingleton<IPreferencesRepository>(() => PreferencesRepository());
   runApp(const MyApp());
 }
 

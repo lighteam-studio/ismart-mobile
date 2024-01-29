@@ -41,8 +41,8 @@ class _LtFutureDialogState extends State<LtFutureDialog> {
             future: _loadingRequest,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(
-                  child: const Text("ERROR"),
+                return const Center(
+                  child: Text("ERROR"),
                 );
               }
               // Content
