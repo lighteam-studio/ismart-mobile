@@ -27,6 +27,8 @@ class IsMartDatabaseContext {
 
   Future<Database> getDatabase() async {
     var path = await _getDatabasePath();
+    // ignore: avoid_print
+    print(path);
 
     // open the database
     Database database = await openDatabase(

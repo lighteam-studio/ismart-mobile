@@ -17,7 +17,7 @@ class AddGroupInput extends StatelessWidget {
         Expanded(
           child: LtSurfaceInput(
             controller: controller,
-            hintText: "Nova categoria",
+            hintText: "Novo grupo",
           ),
         ),
         const SizedBox(width: AppSizes.s02),

@@ -1,3 +1,4 @@
 enum Preference {
   shopName,
+  onboardingFinished,
 }

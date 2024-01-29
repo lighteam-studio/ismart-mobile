@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_pulse_animation.dart';
+import 'package:ismart/features/initialization/provider/initialization_provider.dart';
 import 'package:ismart/resources/app_images.dart';
-import 'package:ismart/router/app_router.dart';
+import 'package:provider/provider.dart';
 
 class InitializationFeature extends StatefulWidget {
   const InitializationFeature({super.key});
@@ -12,11 +13,7 @@ class InitializationFeature extends StatefulWidget {
 
 class _InitializationFeatureState extends State<InitializationFeature> {
   void initialize() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    Navigator.of(context).pushReplacementNamed(AppRouter.welcomePage);
-    // var databaseExists = await IsMartDatabaseContext().hasDatabase();
-    // if (!databaseExists) {
-    // }
+    await Future.microtask(() => context.read<InitializationProvider>().initialize(context));
   }
 
   @override

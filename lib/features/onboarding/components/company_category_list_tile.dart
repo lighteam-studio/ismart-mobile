@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ismart/core/models/product_group_model.dart';
+import 'package:ismart/core/entities/product_group_entity.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
 class CompanyCategoryListTile extends StatelessWidget {
-  final ProductGroupModel group;
+  final ProductGroupEntity group;
   final bool selected;
   final void Function() onTap;
 
@@ -48,7 +48,7 @@ class CompanyCategoryListTile extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Image.asset(
-                      group.icon,
+                      "lib/assets/product_groups/${group.id}.png",
                       width: AppSizes.s22_5,
                       height: AppSizes.s22_5,
                     ),

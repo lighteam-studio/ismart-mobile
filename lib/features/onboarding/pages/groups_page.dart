@@ -4,7 +4,6 @@ import 'package:ismart/components/lt_surface_input.dart';
 import 'package:ismart/features/onboarding/components/company_category_list_tile.dart';
 import 'package:ismart/features/onboarding/providers/onboarding_provider.dart';
 import 'package:ismart/features/onboarding/providers/product_category_form.dart';
-import 'package:ismart/mock/models/product_group_model_mock.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +14,6 @@ class GroupsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var colorScheme = Theme.of(context).colorScheme;
-    var groups = generateProductGroupModelMock();
     OnboardingProvider provider = Provider.of(context);
 
     return ChangeNotifierProvider.value(
@@ -76,16 +74,16 @@ class GroupsPage extends StatelessWidget {
                               crossAxisSpacing: AppSizes.s03,
                             ),
                             itemBuilder: (context, index) {
-                              var group = groups[index];
+                              var group = form.availableProductGroups[index];
                               //
                               // Group List tile
                               return CompanyCategoryListTile(
                                 selected: form.selectedTemplateGroups.contains(group.id),
-                                group: groups[index],
+                                group: form.availableProductGroups[index],
                                 onTap: () => form.toogleSelectedGroup(group.id),
                               );
                             },
-                            itemCount: groups.length,
+                            itemCount: form.availableProductGroups.length,
                           ),
                         ),
                       ],
