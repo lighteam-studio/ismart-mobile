@@ -11,6 +11,7 @@ class LtTextFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final Function? onSubmit;
   final bool obscureText;
+  final void Function(String value)? onChanged;
   final bool disabled;
   final TextInputFormatter? mask;
   final List<String? Function(String value)>? validators;
@@ -26,6 +27,7 @@ class LtTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.disabled = false,
     this.controller,
+    this.onChanged,
     this.onSubmit,
     super.key,
   });
@@ -46,6 +48,7 @@ class LtTextFormField extends StatelessWidget {
             ),
           ),
         TextFormField(
+          onChanged: onChanged,
           inputFormatters: mask != null ? [mask!] : null,
           onFieldSubmitted: (_) {
             if (nextFocusNode != null) {

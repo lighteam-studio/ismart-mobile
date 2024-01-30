@@ -5,6 +5,7 @@ import 'package:ismart/features/products/create_product/create_product_feature.d
 import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
 import 'package:ismart/features/products/products_dashboard/products_dashboard_feature.dart';
 import 'package:ismart/features/products/products_list/products_list_feature.dart';
+import 'package:ismart/features/products/products_list/providers/product_list_provider.dart';
 import 'package:ismart/features/shell/components/shell_scaffold.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:provider/provider.dart';
@@ -86,8 +87,11 @@ class _ProductsShellState extends State<ProductsShell> {
         switchInCurve: const Interval(.6, 1, curve: Curves.ease),
         switchOutCurve: const Interval(.6, 1, curve: Curves.ease),
         child: MultiProvider(
+          //
+          // Providers
           providers: [
-            ChangeNotifierProvider(create: (context) => CreateProductProvider()),
+            ChangeNotifierProvider(create: (context) => CreateProductProvider(context)),
+            ChangeNotifierProvider(create: (context) => ProductListProvider()),
           ],
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 600),

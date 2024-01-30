@@ -12,3 +12,11 @@ Future<T?> showLoadingDialog<T>(BuildContext context, Future<T> Function() callb
     },
   );
 }
+
+void showSnackBar(BuildContext context, String content) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(content),
+    ),
+  );
+}

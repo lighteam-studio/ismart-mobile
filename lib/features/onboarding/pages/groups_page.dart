@@ -78,9 +78,9 @@ class GroupsPage extends StatelessWidget {
                               //
                               // Group List tile
                               return CompanyCategoryListTile(
-                                selected: form.selectedTemplateGroups.contains(group.id),
+                                selected: form.selectedTemplateGroups.contains(group.productGroupId),
                                 group: form.availableProductGroups[index],
-                                onTap: () => form.toogleSelectedGroup(group.id),
+                                onTap: () => form.toogleSelectedGroup(group.productGroupId),
                               );
                             },
                             itemCount: form.availableProductGroups.length,
@@ -118,7 +118,7 @@ class GroupsPage extends StatelessWidget {
               ),
               child: LtPrimaryButton(
                 label: "Continuar",
-                onTap: () => provider.setSelectedGroups(),
+                onTap: () => provider.setSelectedGroups(context),
               ),
             ),
 

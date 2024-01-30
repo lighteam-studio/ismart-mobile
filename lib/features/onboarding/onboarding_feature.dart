@@ -42,7 +42,7 @@ class OnboardingFeature extends StatelessWidget {
                     listenable: provider.pageController,
                     builder: (context, child) {
                       double position = provider.pageController.hasClients
-                          ? (provider.pageController.page ?? 0) / 3 //
+                          ? (provider.pageController.page ?? 0) / 1 //
                           : 0;
 
                       return Padding(

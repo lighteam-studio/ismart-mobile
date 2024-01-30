@@ -2,28 +2,37 @@ import 'package:ismart/core/entities/product_category_entity.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductGroupEntity {
-  final String id;
+  final String productGroupId;
   final String title;
 
   // Relationship fields
-  List<ProductCategoryEntity>? categories;
+  List<ProductCategoryEntity> categories;
 
   ProductGroupEntity({
-    required this.id,
+    required this.productGroupId,
     required this.title,
-    this.categories,
+    required this.categories,
   });
 
   factory ProductGroupEntity.create({required String title}) {
     return ProductGroupEntity(
-      id: const Uuid().v4(),
+      productGroupId: const Uuid().v4(),
       title: title,
+      categories: [],
+    );
+  }
+
+  factory ProductGroupEntity.fromMap(Map<String, Object?> map) {
+    return ProductGroupEntity(
+      productGroupId: map["product_group_id"]?.toString() ?? '',
+      title: map["title"]?.toString() ?? '',
+      categories: [],
     );
   }
 
   Map<String, String> toMap() {
     return {
-      "id": id,
+      "product_group_id": productGroupId,
       "title": title,
     };
   }

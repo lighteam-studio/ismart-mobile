@@ -7,14 +7,14 @@ class PreferencesRepository implements IPreferencesRepository {
   final IsMartDatabaseContext _context = IsMartDatabaseContext();
 
   @override
-  Future<void> upsertPreference({required Preference preference, required String value}) async {
+  Future<void> insert({required Preference preference, required String value}) async {
     var database = await _context.getDatabase();
 
     // Set preferences
     await database.insert(
       _context.preferences,
       {
-        "key": Preference.shopName.name,
+        "key": preference.name,
         "value": value,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,

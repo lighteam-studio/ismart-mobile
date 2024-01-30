@@ -61,7 +61,7 @@ class OnboardingFinishPage extends StatelessWidget {
                 const Spacer(),
                 LtPrimaryButton(
                   label: "Ver minha loja",
-                  onTap: () => Navigator.of(context).pushReplacementNamed(AppRouter.onboardingFeature),
+                  onTap: () => Navigator.of(context).pushReplacementNamed(AppRouter.appShell),
                 ),
               ],
             ),

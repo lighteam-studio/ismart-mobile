@@ -8,53 +8,53 @@ create table preferences
 
 create table product
 (
-    id          VARCHAR(36) not null,
     category_id VARCHAR(36) not null,
     brand       VARCHAR     not null,
     unit        TEXT        not null,
     name        TEXT        not null,
+    product_id  VARCHAR(36) not null,
     constraint products_pk
-        primary key (id),
+        primary key (product_id),
     constraint category_id
         check (length(category_id) == 36),
-    constraint id
-        check (length(id) == 36),
+    constraint product_id
+        check (length(product_id) == 36),
     constraint unit
         check (unit in ('un', 'kg'))
 );
 
 create table product_barcode
 (
-    id         VARCHAR(36) not null,
-    product_id VARCHAR(36) not null,
-    value      TEXT        not null,
+    product_barcode_id VARCHAR(36) not null,
+    product_id         VARCHAR(36) not null,
+    value              TEXT        not null,
     constraint product_barcode_pk
-        primary key (id),
+        primary key (product_barcode_id),
     constraint product_id_fk
         foreign key (product_id) references product
 );
 
 create table product_group
 (
-    id    VARCHAR(36) not null,
-    title TEXT        not null,
+    product_group_id VARCHAR(36) not null,
+    title            TEXT        not null,
     constraint product_group_pk
-        primary key (id),
+        primary key (product_group_id),
     constraint valid_id
-        check (length(id) == 36)
+        check (length(product_group_id) == 36)
 );
 
 create table product_category
 (
-    id       varchar(36) not null,
-    name     TEXT        not null,
-    group_id TEXT        not null,
+    product_category_id varchar(36) not null,
+    name                TEXT        not null,
+    product_group_id    TEXT        not null,
     constraint id
-        primary key (id),
-    constraint group_id
-        foreign key (group_id) references product_group,
+        primary key (product_category_id),
+    constraint product_group_id
+        foreign key (product_group_id) references product_group,
     constraint valid_id
-        check (length(id) == 36)
+        check (length(product_category_id) == 36)
 );
 
 create table product_image

@@ -25,16 +25,19 @@ class ProductCategoryForm extends ChangeNotifier {
   }
 
   /// persist selected groups
-  void persistSelectedGroups() async {
-    if (_loading) return;
+  Future<bool> persistSelectedGroups() async {
+    if (_loading) return false;
 
     try {
       _loading = true;
       await _productGroupRepository.batchInsert(
-        _availableProductGroups.where((group) => _selectedTemplateGroups.contains(group.id)).toList(),
+        _availableProductGroups.where((group) => _selectedTemplateGroups.contains(group.productGroupId)).toList(),
       );
+
+      return true;
     } catch (e) {
       print(e);
+      return false;
     } finally {
       _loading = false;
     }

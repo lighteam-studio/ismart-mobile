@@ -1,29 +1,37 @@
 import 'package:uuid/uuid.dart';
 
 class ProductCategoryEntity {
-  final String id;
+  final String productCategoryId;
   final String name;
   final String groupId;
 
   ProductCategoryEntity({
-    required this.id,
+    required this.productCategoryId,
     required this.name,
     required this.groupId,
   });
 
   Map<String, String> toMap() {
     return {
-      "id": id,
+      "product_category_id": productCategoryId,
       "name": name,
-      "group_id": groupId,
+      "product_group_id": groupId,
     };
   }
 
   factory ProductCategoryEntity.create({required String name, required String groupId}) {
     return ProductCategoryEntity(
-      id: const Uuid().v4(),
+      productCategoryId: const Uuid().v4(),
       name: name,
       groupId: groupId,
+    );
+  }
+
+  factory ProductCategoryEntity.fromMap(Map<String, Object?> map) {
+    return ProductCategoryEntity(
+      productCategoryId: map["product_category_id"]?.toString() ?? '',
+      name: map["name"]?.toString() ?? '',
+      groupId: map["group_id"]?.toString() ?? '',
     );
   }
 }

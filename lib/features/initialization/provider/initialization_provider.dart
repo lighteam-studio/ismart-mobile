@@ -7,9 +7,11 @@ class InitializationProvider extends ChangeNotifier {
   final IPreferencesRepository _repository = IPreferencesRepository.getInstance();
 
   void initialize(BuildContext context) async {
-    var onboardingFinished = await _repository.getPreference(Preference.onboardingFinished);
-    if (onboardingFinished.isEmpty) {
-      Navigator.of(context).pushReplacementNamed(AppRouter.onboardingFeature);
-    }
+    var onboardingFinishedPreference = await _repository.getPreference(Preference.onboardingFinished);
+    var onboardingFinished = (bool.tryParse(onboardingFinishedPreference) ?? false);
+
+    onboardingFinished
+        ? Navigator.of(context).pushReplacementNamed(AppRouter.appShell)
+        : Navigator.of(context).pushReplacementNamed(AppRouter.onboardingFeature);
   }
 }

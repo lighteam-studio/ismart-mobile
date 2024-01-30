@@ -48,7 +48,7 @@ class CompanyCategoryListTile extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Image.asset(
-                      "lib/assets/product_groups/${group.id}.png",
+                      "lib/assets/product_groups/${group.productGroupId}.png",
                       width: AppSizes.s22_5,
                       height: AppSizes.s22_5,
                     ),
