@@ -4,6 +4,7 @@ import 'package:ismart/features/onboarding/providers/company_name_form.dart';
 import 'package:ismart/features/onboarding/providers/product_category_form.dart';
 import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
 import 'package:ismart/router/app_router.dart';
+import 'package:ismart/utils/helper_functions.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   final IPreferencesRepository _preferencesRepository = IPreferencesRepository.getInstance();
@@ -32,7 +33,7 @@ class OnboardingProvider extends ChangeNotifier {
 
   /// Set selected groups
   void setSelectedGroups(BuildContext context) async {
-    var persisted = await _productCategoryForm.persistSelectedGroups();
+    var persisted = await _productCategoryForm.persistSelectedGroups(context);
     if (!persisted) return;
 
     try {
@@ -42,7 +43,7 @@ class OnboardingProvider extends ChangeNotifier {
       );
       Navigator.of(context).pushNamedAndRemoveUntil(AppRouter.onboardingFinishPage, (route) => false);
     } catch (e) {
-      print(e);
+      showSnackBar(context, "We have a problem, please, try again later");
     }
   }
 

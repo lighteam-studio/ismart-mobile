@@ -2,28 +2,28 @@ import 'package:uuid/uuid.dart';
 
 class ProductCategoryEntity {
   final String productCategoryId;
-  final String name;
-  final String groupId;
+  String name;
+  String productGroupId;
 
   ProductCategoryEntity({
     required this.productCategoryId,
     required this.name,
-    required this.groupId,
+    required this.productGroupId,
   });
 
   Map<String, String> toMap() {
     return {
       "product_category_id": productCategoryId,
       "name": name,
-      "product_group_id": groupId,
+      "product_group_id": productGroupId,
     };
   }
 
-  factory ProductCategoryEntity.create({required String name, required String groupId}) {
+  factory ProductCategoryEntity.create({required String name, required String productGroupId}) {
     return ProductCategoryEntity(
       productCategoryId: const Uuid().v4(),
       name: name,
-      groupId: groupId,
+      productGroupId: productGroupId,
     );
   }
 
@@ -31,7 +31,7 @@ class ProductCategoryEntity {
     return ProductCategoryEntity(
       productCategoryId: map["product_category_id"]?.toString() ?? '',
       name: map["name"]?.toString() ?? '',
-      groupId: map["group_id"]?.toString() ?? '',
+      productGroupId: map["product_group_id"]?.toString() ?? '',
     );
   }
 }

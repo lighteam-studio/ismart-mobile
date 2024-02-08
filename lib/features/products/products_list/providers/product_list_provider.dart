@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ismart/core/dtos/product_list_model.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';

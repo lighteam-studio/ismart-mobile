@@ -26,7 +26,11 @@ class ProductGroupEntity {
     return ProductGroupEntity(
       productGroupId: map["product_group_id"]?.toString() ?? '',
       title: map["title"]?.toString() ?? '',
-      categories: [],
+      categories: List.from(map['categories'] as List)
+          .map(
+            (category) => ProductCategoryEntity.fromMap(category),
+          )
+          .toList(),
     );
   }
 

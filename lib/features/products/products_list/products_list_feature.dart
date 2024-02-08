@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_list_group_title_sliver.dart';
 import 'package:ismart/components/lt_search_sliver.dart';
 import 'package:ismart/features/products/products_list/components/product_list_tile.dart';
-import 'package:ismart/features/products/products_list/providers/product_list_provider.dart';
 import 'package:ismart/resources/app_sizes.dart';
-import 'package:provider/provider.dart';
 
 class ProductsListFeature extends StatelessWidget {
   const ProductsListFeature({super.key});
@@ -12,13 +10,13 @@ class ProductsListFeature extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
-    ProductListProvider provider = context.read();
+    // ProductListProvider provider = context.read();
 
     return CustomScrollView(
       slivers: [
         // Search sliver
         LtSearchSliver(
-          onFilter: () {},
+          onFilterClick: () {},
         ),
 
         // Group title

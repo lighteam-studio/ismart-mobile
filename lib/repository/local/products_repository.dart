@@ -1,7 +1,5 @@
 import 'package:ismart/core/entities/product_entity.dart';
-import 'package:ismart/core/entities/product_group_entity.dart';
 import 'package:ismart/core/query/product_query.dart';
-import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
 
 class ProductsRepository implements IProductsRepository {

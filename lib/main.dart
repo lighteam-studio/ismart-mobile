@@ -27,14 +27,16 @@ class MyApp extends StatelessWidget {
     //
     // App Color Scheme
     var colorScheme = ColorScheme.light(
-        background: AppColors.neutral.shade100,
-        primary: AppColors.primary.shade500,
-        onPrimary: Colors.white,
-        primaryContainer: AppColors.primary.shade600,
-        onBackground: AppColors.neutral.shade400,
-        surface: AppColors.neutral.shade200,
-        onSurface: AppColors.neutral.shade500,
-        errorContainer: Colors.red.shade100);
+      background: AppColors.neutral.shade100,
+      primary: AppColors.primary.shade500,
+      onPrimary: Colors.white,
+      primaryContainer: AppColors.primary.shade600,
+      onBackground: AppColors.neutral.shade400,
+      surface: AppColors.neutral.shade200,
+      onSurface: AppColors.neutral.shade500,
+      errorContainer: Colors.red.shade100,
+      error: Colors.red.shade400,
+    );
 
     var textTheme = TextTheme(
       displaySmall: TextStyle(

@@ -20,15 +20,18 @@
   "@_CREATE_PRODUCTS": "",
   "category": "Category",
   "placeholderCategory": "Select a category",
-  "name": "Name",
-  "placeholderName": "Ex: John Carter",
+  "name": "Product name",
+  "placeholderName": "Ex: IsMart Cookies",
   "brand": "Brand",
-  "placeholderBrand": "Ex.: Elma Chips",
+  "placeholderBrand": "Ex.: Lighteam",
   "barCode": "Bar code",
   "placeholderBarCode": "Ex: 123456789",
   "addBarCode": "Add another bar code",
-  "unit": "Unit",
+  "unit": "Product unit",
   "placeholderUnit": "Select an unit",
   "addImage": "Add image",
-  "productHasVariations": "Product has variations"
+  "productHasVariations": "Product has variations",
+
+  "@_VALIDATORS": "",
+  "requiredValidation": "This field is required"
 }

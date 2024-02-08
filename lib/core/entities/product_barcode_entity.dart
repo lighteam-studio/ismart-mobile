@@ -1,7 +1,7 @@
 class ProductBarcodeEntity {
   final String productBarcodeId;
   final String productId;
-  final String value;
+  String value;
 
   ProductBarcodeEntity({
     required this.productBarcodeId,

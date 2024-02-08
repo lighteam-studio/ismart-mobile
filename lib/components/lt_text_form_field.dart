@@ -14,6 +14,7 @@ class LtTextFormField extends StatelessWidget {
   final void Function(String value)? onChanged;
   final bool disabled;
   final TextInputFormatter? mask;
+  final String? initialValue;
   final List<String? Function(String value)>? validators;
 
   const LtTextFormField({
@@ -26,6 +27,7 @@ class LtTextFormField extends StatelessWidget {
     this.validators,
     this.obscureText = false,
     this.disabled = false,
+    this.initialValue,
     this.controller,
     this.onChanged,
     this.onSubmit,
@@ -50,6 +52,18 @@ class LtTextFormField extends StatelessWidget {
         TextFormField(
           onChanged: onChanged,
           inputFormatters: mask != null ? [mask!] : null,
+          initialValue: initialValue,
+          validator: (value) {
+            var inputValue = controller?.text ?? value ?? '';
+
+            if (validators != null) {
+              for (var validator in validators!) {
+                var error = validator(inputValue);
+                if (error != null) return error;
+              }
+            }
+            return null;
+          },
           onFieldSubmitted: (_) {
             if (nextFocusNode != null) {
               FocusScope.of(context).requestFocus(nextFocusNode);
@@ -83,6 +97,14 @@ class LtTextFormField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: colorScheme.primary, width: 2),
+              borderRadius: BorderRadius.circular(AppSizes.s03),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: colorScheme.error, width: 2),
+              borderRadius: BorderRadius.circular(AppSizes.s03),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: colorScheme.error, width: 2),
               borderRadius: BorderRadius.circular(AppSizes.s03),
             ),
           ),

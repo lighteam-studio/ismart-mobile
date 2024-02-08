@@ -8,11 +8,18 @@ import 'package:ismart/core/interfaces/option.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
-class LtSelectDialog extends StatelessWidget {
+class LtSelectDialog extends StatefulWidget {
   final String title;
   final List<Group<Option>> elements;
 
   const LtSelectDialog({required this.title, required this.elements, super.key});
+
+  @override
+  State<LtSelectDialog> createState() => _LtSelectDialogState();
+}
+
+class _LtSelectDialogState extends State<LtSelectDialog> {
+  String _search = "";
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +28,22 @@ class LtSelectDialog extends StatelessWidget {
 
     var mediaQuery = MediaQuery.of(context);
     var height = mediaQuery.size.height * 0.85;
+
+    var filteredOptions = _search.isEmpty
+        ? widget.elements
+        : widget.elements
+            .map((group) {
+              return Group<Option>(
+                title: group.title,
+                items: group.items
+                    .where(
+                      (option) => option.label.toLowerCase().contains(_search.toLowerCase()),
+                    )
+                    .toList(),
+              );
+            })
+            .where((element) => element.items.isNotEmpty)
+            .toList();
 
     return Container(
       width: double.infinity,
@@ -58,7 +81,7 @@ class LtSelectDialog extends StatelessWidget {
                   // Title
                   Center(
                     child: Text(
-                      title,
+                      widget.title,
                       style: textTheme.displaySmall,
                     ),
                   )
@@ -69,11 +92,13 @@ class LtSelectDialog extends StatelessWidget {
               child: CustomScrollView(
                 slivers: [
                   // Search bar
-                  const SliverPadding(
-                    padding: EdgeInsets.symmetric(vertical: AppSizes.s02),
-                    sliver: LtSearchSliver(),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(vertical: AppSizes.s02),
+                    sliver: LtSearchSliver(
+                      onSearchChange: (value) => setState(() => _search = value),
+                    ),
                   ),
-                  ...elements
+                  ...filteredOptions
                       .map(
                         (group) => [
                           LtListGroupTitleSliver(

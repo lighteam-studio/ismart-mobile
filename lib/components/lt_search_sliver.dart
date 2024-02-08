@@ -5,9 +5,10 @@ import 'package:ismart/resources/app_sizes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LtSearchSliver extends StatelessWidget {
-  final void Function()? onFilter;
+  final void Function()? onFilterClick;
+  final void Function(String value)? onSearchChange;
   final String? placeholder;
-  const LtSearchSliver({this.onFilter, this.placeholder, super.key});
+  const LtSearchSliver({this.onFilterClick, this.placeholder, this.onSearchChange, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,7 @@ class LtSearchSliver extends StatelessWidget {
                   ],
                 ),
                 child: TextField(
+                  onChanged: onSearchChange,
                   style: TextStyle(
                     color: colorScheme.onSurface,
                     fontSize: AppSizes.s04,
@@ -59,7 +61,7 @@ class LtSearchSliver extends StatelessWidget {
                 ),
               ),
             ),
-            if (onFilter != null)
+            if (onFilterClick != null)
               Padding(
                 padding: const EdgeInsets.only(left: AppSizes.s02_5),
                 child: LtSurfaceButton(

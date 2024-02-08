@@ -1,5 +1,4 @@
-import 'package:collection/collection.dart';
-import 'package:ismart/core/entities/product_category_entity.dart';
+import 'dart:convert';
 import 'package:ismart/core/entities/product_group_entity.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/is_mart_db_context.dart';
@@ -38,38 +37,32 @@ class ProductGroupRepository implements IProductGroupRepository {
     var database = await _context.getDatabase();
 
     var response = await database.rawQuery('''
-      SELECT * FROM ${_context.productGroup}
-      LEFT JOIN ${_context.productCategory} 
-        on ${_context.productCategory}.product_group_id = ${_context.productGroup}.product_group_id
+      SELECT
+          json_object(
+              'product_group_id', product_group.product_group_id,
+              'title',product_group.title,
+              'categories', json_group_array(
+                  json_object(
+                      'product_group_id', product_group.product_group_id,
+                      'name', product_category.name,
+                      'product_category_id', product_category.product_category_id
+                  )
+              )
+          ) result
+      FROM product_group
+      LEFT JOIN product_category
+          on product_group.product_group_id = product_category.product_group_id
+      GROUP BY
+          product_group.product_group_id
     ''');
 
-    List<ProductGroupEntity> groups = [];
-
-    for (var row in response) {
-      var group = groups.firstWhereOrNull((element) => element.productGroupId == row['group_id']);
-
-      // If group
-      if (group != null) {
-        group.categories.add(ProductCategoryEntity(
-          groupId: row['product_group_id']?.toString() ?? '',
-          productCategoryId: row['product_category_id']?.toString() ?? '',
-          name: row['name']?.toString() ?? '',
-        ));
-      } else {
-        var group = ProductGroupEntity(
-          productGroupId: row["product_group_id"]?.toString() ?? '',
-          title: row["title"]?.toString() ?? '',
-          categories: [],
-        );
-        group.categories.add(ProductCategoryEntity.fromMap(row));
-        groups.add(group);
-      }
-    }
-
-    print(groups);
+    var results = response
+        .map((e) => jsonDecode(e[e.keys.first] as String)) //
+        .map((t) => ProductGroupEntity.fromMap(t))
+        .toList();
 
     await database.close();
 
-    return [];
+    return results;
   }
 }
