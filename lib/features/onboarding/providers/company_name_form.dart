@@ -43,7 +43,7 @@ class CompanyNameForm extends ChangeNotifier {
     try {
       _loading = true;
 
-      await _preferencesRepository.insert(
+      await _preferencesRepository.updatePreference(
         preference: Preference.shopName,
         value: _shopNameController.text,
       );

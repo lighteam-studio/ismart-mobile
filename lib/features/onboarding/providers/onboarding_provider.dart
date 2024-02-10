@@ -37,7 +37,7 @@ class OnboardingProvider extends ChangeNotifier {
     if (!persisted) return;
 
     try {
-      await _preferencesRepository.insert(
+      await _preferencesRepository.updatePreference(
         preference: Preference.onboardingFinished,
         value: "true",
       );

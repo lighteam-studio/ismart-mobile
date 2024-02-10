@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
@@ -5,10 +7,13 @@ import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/interfaces/option.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
+import 'package:ismart/repository/abstractions/i_products_repository.dart';
 import 'package:ismart/utils/helper_functions.dart';
-import 'package:uuid/v4.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateProductProvider extends ChangeNotifier {
+  late final IProductsRepository _productsRepository = IProductsRepository.getInstance();
+
   final GlobalKey<FormState> _productInfoForm = GlobalKey();
   GlobalKey<FormState> get productInfoForm => _productInfoForm;
 
@@ -21,48 +26,28 @@ class CreateProductProvider extends ChangeNotifier {
   List<Group<Option<String>>> _availableProductGroups = [];
   List<Group<Option<String>>> get availableProductGroups => _availableProductGroups;
 
-  final String _productId = const UuidV4().generate();
+  final TextEditingController _nameController = TextEditingController();
+  TextEditingController get nameController => _nameController;
 
-  late final ProductEntity _entity = ProductEntity(
-    productId: _productId,
-    categoryId: '',
-    brand: '',
-    unit: ProductUnit.un,
-    name: '',
-    barcodes: [
-      ProductBarcodeEntity(
-        productBarcodeId: const UuidV4().generate(),
-        productId: _productId,
-        value: "",
-      )
-    ],
-  );
+  final TextEditingController _brandController = TextEditingController();
+  TextEditingController get brandController => _brandController;
 
-  String get name => _entity.name;
-  set name(String value) {
-    _entity.name = value;
-    notifyListeners();
-  }
-
-  String get brand => _entity.brand;
-  set brand(String value) {
-    _entity.brand = value;
-    notifyListeners();
-  }
-
-  ProductUnit get unit => _entity.unit;
+  ProductUnit _unit = ProductUnit.un;
+  ProductUnit get unit => _unit;
   set unit(ProductUnit value) {
-    _entity.unit = value;
+    _unit = value;
     notifyListeners();
   }
 
-  String get category => _entity.categoryId;
-  set category(String value) {
-    _entity.categoryId = value;
+  String _selectedCategory = "";
+  String get selectedCategory => _selectedCategory;
+  set selectedCategory(String value) {
+    _selectedCategory = value;
     notifyListeners();
   }
 
-  List<ProductBarcodeEntity> get barcodes => _entity.barcodes!;
+  final List<TextEditingController> _barcodes = [TextEditingController()];
+  List<TextEditingController> get barcodes => _barcodes;
 
   /// Product has variations
   bool _productHasVariations = false;
@@ -82,7 +67,7 @@ class CreateProductProvider extends ChangeNotifier {
 
   void _loadAvailableProductGroups(BuildContext context) async {
     try {
-      var groups = await _productGroupsRepository.select();
+      var groups = await _productGroupsRepository.getGroups();
 
       _availableProductGroups = groups.map<Group<Option<String>>>((e) {
         return Group(
@@ -101,6 +86,16 @@ class CreateProductProvider extends ChangeNotifier {
     }
   }
 
+  void clearForm() {
+    _nameController.clear();
+    _brandController.clear();
+    _barcodes.clear();
+    _pictures.clear();
+    _barcodes.add(TextEditingController());
+    _validateOnInput = false;
+    notifyListeners();
+  }
+
   /// Add new Pictures to the product
   void addPictures(List<String> newPictures) {
     _pictures.addAll(newPictures);
@@ -115,30 +110,52 @@ class CreateProductProvider extends ChangeNotifier {
 
   /// Add bar code
   void addBarCode() {
-    _entity.barcodes!.add(ProductBarcodeEntity(
-      productBarcodeId: const UuidV4().generate(),
-      productId: _productId,
-      value: "",
-    ));
+    _barcodes.add(TextEditingController());
     notifyListeners();
   }
 
   /// Remove bar code
   void removeBarCode(int index) {
-    _entity.barcodes!.removeAt(index);
-    notifyListeners();
-  }
-
-  void editBarcode(int index, String value) {
-    _entity.barcodes![index].value = value;
+    _barcodes.removeAt(index);
     notifyListeners();
   }
 
   /// Submit product information form
-  void submitProductInfoForm() {
+  void submitProductInfoForm() async {
     _validateOnInput = true;
     notifyListeners();
+
+    // Validate form
     var isValid = _productInfoForm.currentState?.validate() ?? false;
-    print(isValid);
+    if (!isValid) return;
+
+    const uuid = Uuid();
+    var productId = uuid.v4();
+
+    var imageBlobs = await Future.wait(
+      _pictures.map((picture) => File(picture).readAsBytes()),
+    );
+
+    // Add the entity
+    var entity = ProductEntity(
+      productId: productId,
+      categoryId: _selectedCategory,
+      brand: _brandController.text,
+      unit: _unit,
+      name: _nameController.text,
+      images: [],
+      barcodes: _barcodes
+          .map(
+            (e) => ProductBarcodeEntity(
+              productBarcodeId: uuid.v4(),
+              productId: productId,
+              value: e.text,
+            ),
+          )
+          .toList(),
+    );
+    await _productsRepository.addProduct(entity);
+
+    clearForm();
   }
 }

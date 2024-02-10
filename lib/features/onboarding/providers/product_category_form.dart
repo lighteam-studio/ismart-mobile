@@ -31,8 +31,10 @@ class ProductCategoryForm extends ChangeNotifier {
 
     try {
       _loading = true;
-      await _productGroupRepository.batchInsert(
-        _availableProductGroups.where((group) => _selectedTemplateGroups.contains(group.productGroupId)).toList(),
+      await _productGroupRepository.createGroups(
+        _availableProductGroups
+            .where((group) => _selectedTemplateGroups.contains(group.productGroupId)) //
+            .toList(),
       );
 
       return true;

@@ -10,11 +10,13 @@ import 'package:ismart/resources/app_colors.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:ismart/router/app_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   GetIt.instance.registerLazySingleton<IPreferencesRepository>(() => PreferencesRepository());
   GetIt.instance.registerLazySingleton<IProductGroupRepository>(() => ProductGroupRepository());
   GetIt.instance.registerLazySingleton<IProductsRepository>(() => ProductsRepository());
+  sqfliteFfiInit();
   runApp(const MyApp());
 }
 

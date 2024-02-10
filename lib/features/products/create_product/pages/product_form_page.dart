@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_file_picker.dart';
+import 'package:ismart/components/lt_popup_menu_button.dart';
 import 'package:ismart/components/lt_primary_button.dart';
 import 'package:ismart/components/lt_secondary_button.dart';
 import 'package:ismart/components/lt_select_form_field.dart';
-import 'package:ismart/components/lt_surface_button.dart';
 import 'package:ismart/components/lt_switch_list_tile.dart';
 import 'package:ismart/components/lt_text_form_field.dart';
 import 'package:ismart/core/enums/product_unit.dart';
@@ -31,6 +31,7 @@ class ProductFormPage extends StatelessWidget {
     CreateProductProvider provider = Provider.of(context);
     final s = S.of(context);
     final validators = Validators.of(context);
+    var colorScheme = Theme.of(context).colorScheme;
 
     return Form(
       autovalidateMode: provider.validateOnInput
@@ -52,8 +53,8 @@ class ProductFormPage extends StatelessWidget {
             label: s.category,
             placeholder: s.placeholderCategory,
             title: s.categories,
-            onChange: (value) => provider.category = value ?? '',
-            value: provider.category,
+            onChange: (value) => provider.selectedCategory = value ?? '',
+            value: provider.selectedCategory,
             options: provider.availableProductGroups,
             validators: [
               validators.required,
@@ -65,8 +66,7 @@ class ProductFormPage extends StatelessWidget {
           LtTextFormField(
             label: s.name,
             placeholder: s.placeholderName,
-            initialValue: provider.name,
-            onChanged: (value) => provider.name = value,
+            controller: provider.nameController,
             validators: [
               validators.required,
             ],
@@ -77,8 +77,7 @@ class ProductFormPage extends StatelessWidget {
           LtTextFormField(
             label: s.brand,
             placeholder: s.placeholderBrand,
-            initialValue: provider.brand,
-            onChanged: (value) => provider.brand = value,
+            controller: provider.brandController,
             validators: [
               Validators.of(context).required,
             ],
@@ -124,21 +123,33 @@ class ProductFormPage extends StatelessWidget {
                       child: LtTextFormField(
                         label: i == 0 ? s.barCode : null,
                         placeholder: s.placeholderBarCode,
-                        initialValue: barcode.value,
-                        onChanged: (value) => provider.editBarcode(i, value),
+                        controller: barcode,
                         validators: [
                           Validators.of(context).required,
                         ],
                       ),
                     ),
-                    if (i > 0)
-                      Padding(
-                        padding: const EdgeInsets.only(left: AppSizes.s03),
-                        child: LtSurfaceButton(
-                          icon: AppIcons.times,
-                          onTap: () => provider.removeBarCode(i),
-                        ),
-                      )
+                    const SizedBox(width: AppSizes.s02),
+                    Padding(
+                      padding: i == 0 ? const EdgeInsets.only(top: AppSizes.s05) : EdgeInsets.zero,
+                      child: LtPopupMenuButton(
+                        icon: AppIcons.circleEllipsis,
+                        options: [
+                          LtPopupMenuButtonOption(
+                            label: "Scanner",
+                            onTap: () {},
+                            icon: AppIcons.scanner,
+                          ),
+                          if (i > 0)
+                            LtPopupMenuButtonOption(
+                              label: "Remove",
+                              onTap: () => provider.removeBarCode(i),
+                              icon: AppIcons.trash,
+                              color: colorScheme.error,
+                            ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               );

@@ -1,23 +1,24 @@
 import 'package:ismart/core/entities/product_entity.dart';
-import 'package:ismart/core/query/product_query.dart';
+import 'package:ismart/core/query/query.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
+import 'package:ismart/database/ismart_db_context.dart';
 
 class ProductsRepository implements IProductsRepository {
+  final IsMartDatabaseContext _context = IsMartDatabaseContext();
+
   @override
-  Future<ProductEntity> find(String id) {
-    // TODO: implement find
+  Future<ProductEntity> getProduct(String id) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> insert() {
-    // TODO: implement insert
-    throw UnimplementedError();
+  Future<void> addProduct(ProductEntity entity) async {
+    await _context.product.insert(entity);
+    await _context.productBarcode.batchInsert(entity.barcodes);
   }
 
   @override
-  Future<List<ProductEntity>> search(ProductQuery query) {
-    // TODO: implement search
-    throw UnimplementedError();
+  Future<List<ProductEntity>> searchProducts(Query query) async {
+    return await _context.product.search(query);
   }
 }

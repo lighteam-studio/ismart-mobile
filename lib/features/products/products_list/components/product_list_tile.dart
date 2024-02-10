@@ -3,7 +3,9 @@ import 'package:ismart/resources/app_sizes.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProductListTile extends StatelessWidget {
-  const ProductListTile({super.key});
+  final String name;
+  final String brand;
+  const ProductListTile({required this.name, required this.brand, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class ProductListTile extends StatelessWidget {
                   children: [
                     // Product Name
                     Text(
-                      "Maçã fuji",
+                      name,
                       style: TextStyle(
                         fontSize: AppSizes.s04,
                         fontWeight: FontWeight.bold,
@@ -63,7 +65,7 @@ class ProductListTile extends StatelessWidget {
 
                     // Product brand
                     Text(
-                      "Doce fruta",
+                      brand,
                       style: TextStyle(
                         fontSize: AppSizes.s03,
                         color: colorScheme.onSurface.withOpacity(.6),
@@ -72,32 +74,6 @@ class ProductListTile extends StatelessWidget {
                   ],
                 ),
               ),
-
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    "R\$ 8,99",
-                    style: TextStyle(
-                      fontSize: AppSizes.s04,
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
-                  // Product brand
-                  Text(
-                    "45,5 kg",
-                    style: TextStyle(
-                      fontSize: AppSizes.s03,
-                      color: colorScheme.onSurface.withOpacity(.6),
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),
