@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -10,7 +8,7 @@ class IsMartDatabaseUtils {
   static const int dbVersion = 1;
 
   /// Get database patch
-  static Future<String> _getDatabasePath() async {
+  static Future<String> getDatabasePath() async {
     var databasesPath = await getApplicationDocumentsDirectory();
     String path = join(databasesPath.path, dbName);
     return path;
@@ -18,7 +16,7 @@ class IsMartDatabaseUtils {
 
   /// Get database
   static Future<Database> getDatabase() async {
-    var path = await _getDatabasePath();
+    var path = await getDatabasePath();
     // ignore: avoid_print
     print(path);
 
@@ -26,11 +24,5 @@ class IsMartDatabaseUtils {
     Database database = await databaseFactoryFfi.openDatabase(path);
 
     return database;
-  }
-
-  /// Check if database exists
-  Future<bool> hasDatabase() async {
-    var path = await _getDatabasePath();
-    return await File(path).exists();
   }
 }
