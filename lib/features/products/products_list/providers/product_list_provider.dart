@@ -25,10 +25,13 @@ class ProductListProvider extends ChangeNotifier {
         .map((e) => Group(
               title: e.key,
               items: e.value
-                  .map((e) => ProductListModel(
-                        name: e.name,
-                        brand: e.brand,
-                      ))
+                  .map(
+                    (e) => ProductListModel(
+                      name: e.name,
+                      brand: e.brand,
+                      image: e.images.isNotEmpty ? MemoryImage(e.images.first.data) : null,
+                    ),
+                  )
                   .toList(),
             ))
         .toList();

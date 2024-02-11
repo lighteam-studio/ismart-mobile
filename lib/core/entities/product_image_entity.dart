@@ -21,4 +21,13 @@ class ProductImageEntity {
       "product_id": productId,
     };
   }
+
+  factory ProductImageEntity.fromMap(Map<String, dynamic> map) {
+    return ProductImageEntity(
+      productImageId: map['product_image_id'],
+      data: map['data'],
+      mimeType: map['mime_type'],
+      productId: map['product_id'],
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:ismart/core/query/query.dart';
 
-abstract class DbSet<T> {
+abstract class DbSet<T, Q extends Query> {
   String get tableName;
 
   String createTable();
@@ -11,5 +11,5 @@ abstract class DbSet<T> {
 
   Future<void> batchInsert(List<T> values);
 
-  Future<List<T>> search([Query? query]);
+  Future<List<T>> search([Q? query]);
 }

@@ -4,7 +4,7 @@ import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-class PreferenceDbSet implements DbSet<PreferenceEntity> {
+class PreferenceDbSet implements DbSet<PreferenceEntity, Query> {
   @override
   String get tableName => 'preferences';
 

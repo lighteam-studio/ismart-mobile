@@ -45,6 +45,7 @@ class ProductsListFeature extends StatelessWidget {
                     return ProductListTile(
                       brand: product.brand,
                       name: product.name,
+                      image: product.image,
                     );
                   },
                 )

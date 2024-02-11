@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:ismart/core/entities/product_entity.dart';
+import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
+import 'package:ismart/database/dbsets/product_barcode_dbset.dart';
+import 'package:ismart/database/dbsets/product_image_dbset.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 
-class ProductDbSet implements DbSet<ProductEntity> {
+class ProductDbSet implements DbSet<ProductEntity, Query> {
   @override
   String get tableName => 'product';
 
@@ -38,7 +41,21 @@ class ProductDbSet implements DbSet<ProductEntity> {
   @override
   Future<void> insert(ProductEntity entity) async {
     var database = await IsMartDatabaseUtils.getDatabase();
-    database.insert(tableName, entity.toEntityMap());
+
+    await database.transaction((txn) async {
+      await txn.insert(tableName, entity.toEntityMap());
+
+      var batch = txn.batch();
+      for (var barcode in entity.barcodes) {
+        batch.insert(ProductBarcodeDbSet().tableName, barcode.toEntityMap());
+      }
+
+      for (var image in entity.images) {
+        batch.insert(ProductImageDbSet().tableName, image.toEntityMap());
+      }
+
+      batch.commit(noResult: true);
+    });
     await database.close();
   }
 
@@ -72,14 +89,24 @@ class ProductDbSet implements DbSet<ProductEntity> {
       LEFT JOIN product_category pc on pc.product_category_id = product.category_id
       GROUP BY product.product_id
       ''';
+
     var database = await IsMartDatabaseUtils.getDatabase();
 
-    var result = await database.rawQuery(query);
+    var productsResult = await database.rawQuery(query);
+    var productsMap = productsResult.map((e) => jsonDecode(e[e.keys.first] as String));
 
-    var products = result
-        .map((e) => jsonDecode(e[e.keys.first] as String)) //
-        .map((p) => ProductEntity.fromMap(p))
-        .toList();
+    var imagesResult = await database.query(
+      ProductImageDbSet().tableName,
+      where: "product_id in (${List.filled(productsResult.length, '?').join(', ')})",
+      whereArgs: productsMap.map((e) => e['product_id']).toList(),
+    );
+
+    var images = imagesResult.map((e) => ProductImageEntity.fromMap(e)).toList();
+
+    var products = productsMap.map((p) => ProductEntity.fromMap(p)).toList();
+    for (var product in products) {
+      product.images = images.where((element) => element.productId == product.productId).toList();
+    }
 
     await database.close();
 

@@ -4,7 +4,7 @@ import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-class ProductCategoryDbSet implements DbSet<ProductCategoryEntity> {
+class ProductCategoryDbSet implements DbSet<ProductCategoryEntity, Query> {
   @override
   String get tableName => 'product_category';
 

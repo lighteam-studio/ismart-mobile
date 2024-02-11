@@ -3,7 +3,7 @@ import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 
-class ProductBarcodeDbSet implements DbSet<ProductBarcodeEntity> {
+class ProductBarcodeDbSet implements DbSet<ProductBarcodeEntity, Query> {
   @override
   String get tableName => 'product_barcode';
 

@@ -29,6 +29,7 @@ class LtFilePicker extends StatelessWidget {
 
     void pickFiles() async {
       var picker = ImagePicker();
+
       var files = await picker.pickMultiImage(
         imageQuality: 50,
         maxHeight: 500,

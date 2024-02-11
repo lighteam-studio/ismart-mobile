@@ -6,7 +6,7 @@ import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-class ProductGroupDbSet implements DbSet<ProductGroupEntity> {
+class ProductGroupDbSet implements DbSet<ProductGroupEntity, Query> {
   @override
   String get tableName => 'product_group';
 

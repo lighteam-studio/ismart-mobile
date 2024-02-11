@@ -5,7 +5,14 @@ import 'package:transparent_image/transparent_image.dart';
 class ProductListTile extends StatelessWidget {
   final String name;
   final String brand;
-  const ProductListTile({required this.name, required this.brand, super.key});
+  final ImageProvider? image;
+
+  const ProductListTile({
+    required this.name,
+    required this.brand,
+    required this.image,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +45,13 @@ class ProductListTile extends StatelessWidget {
                     )
                   ],
                 ),
-                child: FadeInImage(
-                  placeholder: MemoryImage(kTransparentImage),
-                  image: const NetworkImage("https://cdn.pixabay.com/photo/2016/11/18/13/47/apple-1834639_640.jpg"),
-                ),
+                child: image != null
+                    ? FadeInImage(
+                        placeholder: MemoryImage(kTransparentImage),
+                        image: image!,
+                        fit: BoxFit.cover,
+                      )
+                    : const SizedBox.shrink(),
               ),
               const SizedBox(width: AppSizes.s02_5),
 

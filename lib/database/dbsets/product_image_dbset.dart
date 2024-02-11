@@ -1,10 +1,10 @@
 import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
-import 'package:ismart/core/query/query.dart';
+import 'package:ismart/core/query/product_image_query.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-class ProductImageDbSet implements DbSet<ProductImageEntity> {
+class ProductImageDbSet implements DbSet<ProductImageEntity, ProductImageQuery> {
   @override
   String get tableName => 'product_image';
 
@@ -16,7 +16,6 @@ class ProductImageDbSet implements DbSet<ProductImageEntity> {
       product_image_id       VARCHAR(36) not null,
       data       BLOB        not null,
       mime_type  TEXT        not null,
-      name       TEXT        not null,
       product_id VARCHAR(36),
       constraint id
         primary key (product_image_id),
@@ -53,7 +52,15 @@ class ProductImageDbSet implements DbSet<ProductImageEntity> {
   }
 
   @override
-  Future<List<ProductImageEntity>> search([Query? query]) {
-    throw UnimplementedError();
+  Future<List<ProductImageEntity>> search([ProductImageQuery? query]) async {
+    var database = await IsMartDatabaseUtils.getDatabase();
+
+    var result = await database.query(
+      tableName,
+      where: "product_id = ?",
+      whereArgs: [query?.productId],
+    );
+
+    return result.map((e) => ProductImageEntity.fromMap(e)).toList();
   }
 }

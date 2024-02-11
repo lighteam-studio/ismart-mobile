@@ -14,7 +14,6 @@ class ProductsRepository implements IProductsRepository {
   @override
   Future<void> addProduct(ProductEntity entity) async {
     await _context.product.insert(entity);
-    await _context.productBarcode.batchInsert(entity.barcodes);
   }
 
   @override
