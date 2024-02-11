@@ -5,9 +5,12 @@ import 'package:ismart/database/ismart_db_utils.dart';
 
 class ProductBarcodeDbSet implements DbSet<ProductBarcodeEntity> {
   @override
+  String get tableName => 'product_barcode';
+
+  @override
   String createTable() {
     return '''
-      create table product_barcode
+      create table $tableName
       (
           product_barcode_id VARCHAR(36) not null,
           product_id         VARCHAR(36) not null,
@@ -18,9 +21,6 @@ class ProductBarcodeDbSet implements DbSet<ProductBarcodeEntity> {
               foreign key (product_id) references product
       )''';
   }
-
-  @override
-  String get tableName => 'product_barcode';
 
   @override
   Future<ProductBarcodeEntity> find(String id) {

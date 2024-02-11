@@ -29,7 +29,11 @@ class LtFilePicker extends StatelessWidget {
 
     void pickFiles() async {
       var picker = ImagePicker();
-      var files = await picker.pickMultiImage();
+      var files = await picker.pickMultiImage(
+        imageQuality: 50,
+        maxHeight: 500,
+        maxWidth: 500,
+      );
 
       if (files.isNotEmpty) {
         var filteredFiles = files.where((element) => !pictures.contains(element.path));
@@ -39,7 +43,12 @@ class LtFilePicker extends StatelessWidget {
 
     void takePicture() async {
       var picker = ImagePicker();
-      var file = await picker.pickImage(source: ImageSource.camera);
+      var file = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 50,
+        maxHeight: 500,
+        maxWidth: 500,
+      );
       if (file is XFile) {
         onChange([file.path]);
       }

@@ -1,14 +1,17 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
+import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/interfaces/option.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
 import 'package:ismart/utils/helper_functions.dart';
+import 'package:mime/mime.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateProductProvider extends ChangeNotifier {
@@ -143,7 +146,16 @@ class CreateProductProvider extends ChangeNotifier {
       brand: _brandController.text,
       unit: _unit,
       name: _nameController.text,
-      images: [],
+      images: _pictures
+          .mapIndexed(
+            (index, element) => ProductImageEntity(
+              productImageId: uuid.v4(),
+              data: imageBlobs[index],
+              mimeType: lookupMimeType(element) ?? '',
+              productId: productId,
+            ),
+          )
+          .toList(),
       barcodes: _barcodes
           .map(
             (e) => ProductBarcodeEntity(

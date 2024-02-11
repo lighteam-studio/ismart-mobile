@@ -8,9 +8,12 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class ProductGroupDbSet implements DbSet<ProductGroupEntity> {
   @override
+  String get tableName => 'product_group';
+
+  @override
   String createTable() {
     return '''
-    create table product_group
+    create table $tableName
     (
       product_group_id VARCHAR(36) not null,
       title            TEXT        not null,
@@ -20,9 +23,6 @@ class ProductGroupDbSet implements DbSet<ProductGroupEntity> {
           check (length(product_group_id) == 36)
     )''';
   }
-
-  @override
-  String get tableName => 'product_group';
 
   @override
   Future<ProductGroupEntity> find(String id) {

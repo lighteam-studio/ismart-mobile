@@ -12,4 +12,13 @@ class ProductImageEntity {
     required this.mimeType,
     required this.productId,
   });
+
+  Map<String, dynamic> toEntityMap() {
+    return {
+      "product_image_id": productImageId,
+      "data": data,
+      "mime_type": mimeType,
+      "product_id": productId,
+    };
+  }
 }

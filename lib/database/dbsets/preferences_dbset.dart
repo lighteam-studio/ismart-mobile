@@ -6,12 +6,12 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class PreferenceDbSet implements DbSet<PreferenceEntity> {
   @override
-  String get tableName => 'preference';
+  String get tableName => 'preferences';
 
   @override
   String createTable() {
     return '''
-    create table preferences
+    create table $tableName
     (
       key   TEXT not null,
       value TEXT,

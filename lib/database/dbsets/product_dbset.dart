@@ -12,7 +12,7 @@ class ProductDbSet implements DbSet<ProductEntity> {
   @override
   String createTable() {
     return '''
-      create table product
+      create table $tableName
       (
           category_id VARCHAR(36) not null,
           brand       VARCHAR     not null,

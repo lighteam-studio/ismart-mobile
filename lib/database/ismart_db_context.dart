@@ -7,7 +7,7 @@ import 'package:ismart/core/entities/product_entity.dart';
 import 'package:ismart/core/entities/product_group_entity.dart';
 import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
-import 'package:ismart/database/dbsets/preference_dbset.dart';
+import 'package:ismart/database/dbsets/preferences_dbset.dart';
 import 'package:ismart/database/dbsets/product_barcode_dbset.dart';
 import 'package:ismart/database/dbsets/product_category_dbset.dart';
 import 'package:ismart/database/dbsets/product_dbset.dart';
