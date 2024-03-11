@@ -167,14 +167,18 @@ class ProductFormPage extends StatelessWidget {
           // Product Has Variations
           LtSwitchListTitle(
             label: s.productHasVariations,
-            onChange: (value) => provider.productHasVariations = value,
+            onChange: provider.setProductHasVariations,
             selected: provider.productHasVariations,
           ),
+
           if (provider.productHasVariations) ...[
             const Divider(thickness: 2, height: AppSizes.s08),
-            // Variations
-            const ProductPropertyContainer(),
-
+            ...provider.productProperties.map(
+              (e) => ChangeNotifierProvider.value(
+                value: e,
+                child: ProductPropertyContainer(),
+              ),
+            ),
             LtSecondaryButton(
               label: "Add new characteristic",
               onTap: () => provider.addBarCode(),

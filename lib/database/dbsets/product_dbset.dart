@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:ismart/core/entities/product_entity.dart';
-import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/dbsets/product_barcode_dbset.dart';
@@ -67,49 +64,18 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
   @override
   Future<List<ProductEntity>> search([Query? query]) async {
     var query = '''
-      SELECT json_object(
-        'product_id', product.product_id,
-        'name', product.name,
-        'brand', product.brand,
-        'category_id', product.category_id,
-        'category', json_object(
-          'product_category_id', pc.product_category_id,
-          'product_group_id', pc.product_category_id,
-          'name', pc.name
-        ),
-        'barcodes', json_group_array(
-          json_object(
-            'product_barcode_id', pb.product_barcode_id,
-            'product_id', pb.product_id,
-            'value', pb.value
-          )
-        )
-      ) from product
-      LEFT JOIN main.product_barcode pb on product.product_id = pb.product_id
-      LEFT JOIN product_category pc on pc.product_category_id = product.category_id
-      GROUP BY product.product_id
+      SELECT p.*, pi.data, pi.mime_type FROM product p
+      LEFT JOIN product_image pi on pi.product_id = p.product_id
+      ORDER BY p.name
       ''';
 
     var database = await IsMartDatabaseUtils.getDatabase();
 
     var productsResult = await database.rawQuery(query);
-    var productsMap = productsResult.map((e) => jsonDecode(e[e.keys.first] as String));
-
-    var imagesResult = await database.query(
-      ProductImageDbSet().tableName,
-      where: "product_id in (${List.filled(productsResult.length, '?').join(', ')})",
-      whereArgs: productsMap.map((e) => e['product_id']).toList(),
-    );
-
-    var images = imagesResult.map((e) => ProductImageEntity.fromMap(e)).toList();
-
-    var products = productsMap.map((p) => ProductEntity.fromMap(p)).toList();
-    for (var product in products) {
-      product.images = images.where((element) => element.productId == product.productId).toList();
-    }
+    print(productsResult);
 
     await database.close();
 
-    return products;
+    return [];
   }
 }

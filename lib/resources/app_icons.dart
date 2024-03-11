@@ -20,4 +20,5 @@ class AppIcons {
   static const String paintBrush = "lib/assets/icons/paint_brush.png";
   static const String arrowLeftCircle = "lib/assets/icons/arrow_left_circle.png";
   static const String scanner = "lib/assets/icons/scanner.png";
+  static const String circlePlus = "lib/assets/icons/circle_plus.png";
 }

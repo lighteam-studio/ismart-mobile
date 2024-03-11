@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ismart/components/lt_surface_button.dart';
-import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LtSearchSliver extends StatelessWidget {
-  final void Function()? onFilterClick;
   final void Function(String value)? onSearchChange;
   final String? placeholder;
-  const LtSearchSliver({this.onFilterClick, this.placeholder, this.onSearchChange, super.key});
+  final Widget? action;
+
+  const LtSearchSliver({this.placeholder, this.onSearchChange, this.action, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +60,10 @@ class LtSearchSliver extends StatelessWidget {
                 ),
               ),
             ),
-            if (onFilterClick != null)
+            if (action != null)
               Padding(
                 padding: const EdgeInsets.only(left: AppSizes.s02_5),
-                child: LtSurfaceButton(
-                  icon: AppIcons.filter,
-                  size: AppSizes.s12,
-                  backgroundColor: colorScheme.onPrimary,
-                  hasShadow: true,
-                  onTap: () {},
-                ),
+                child: action!,
               )
           ],
         ),

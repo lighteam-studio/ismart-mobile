@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_list_group_title_sliver.dart';
 import 'package:ismart/components/lt_search_sliver.dart';
+import 'package:ismart/components/lt_surface_button.dart';
 import 'package:ismart/features/products/products_list/components/product_list_tile.dart';
 import 'package:ismart/features/products/products_list/providers/product_list_provider.dart';
+import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +59,13 @@ class ProductsListFeature extends StatelessWidget {
           slivers: [
             // Search sliver
             LtSearchSliver(
-              onFilterClick: () {},
+              action: LtSurfaceButton(
+                icon: AppIcons.filter,
+                size: AppSizes.s12,
+                backgroundColor: colorScheme.onPrimary,
+                hasShadow: true,
+                onTap: () {},
+              ),
             ),
             ...content.expand((e) => e),
 

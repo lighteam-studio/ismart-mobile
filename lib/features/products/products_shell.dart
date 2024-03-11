@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_navigation_bar.dart';
 import 'package:ismart/features/products/categories/categories_feature.dart';
+import 'package:ismart/features/products/categories/providers/categories_provider.dart';
 import 'package:ismart/features/products/create_product/create_product_feature.dart';
 import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
 import 'package:ismart/features/products/products_dashboard/products_dashboard_feature.dart';
@@ -92,6 +93,7 @@ class _ProductsShellState extends State<ProductsShell> {
           providers: [
             ChangeNotifierProvider(create: (context) => CreateProductProvider(context)),
             ChangeNotifierProvider(create: (context) => ProductListProvider()),
+            ChangeNotifierProvider(create: (context) => CategoriesProvider()),
           ],
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 600),

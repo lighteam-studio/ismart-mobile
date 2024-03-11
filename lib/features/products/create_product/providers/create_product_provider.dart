@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
 import 'package:ismart/core/entities/product_image_entity.dart';
+import 'package:ismart/core/enums/product_property_type.dart';
 import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/interfaces/option.dart';
+import 'package:ismart/features/products/create_product/providers/product_property_provider.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
 import 'package:ismart/utils/helper_functions.dart';
@@ -15,19 +17,32 @@ import 'package:mime/mime.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateProductProvider extends ChangeNotifier {
+  /// Repositories
   late final IProductsRepository _productsRepository = IProductsRepository.getInstance();
+  final IProductGroupRepository _productGroupsRepository = IProductGroupRepository.getInstance();
 
+  /// Form keys
   final GlobalKey<FormState> _productInfoForm = GlobalKey();
   GlobalKey<FormState> get productInfoForm => _productInfoForm;
 
   bool _validateOnInput = false;
   bool get validateOnInput => _validateOnInput;
 
-  final IProductGroupRepository _productGroupsRepository = IProductGroupRepository.getInstance();
-
   /// Available product groups
   List<Group<Option<String>>> _availableProductGroups = [];
   List<Group<Option<String>>> get availableProductGroups => _availableProductGroups;
+
+  /// Pictures
+  final List<String> _pictures = [];
+  List<String> get pictures => _pictures;
+
+  /// Selected category
+  String _selectedCategory = "";
+  String get selectedCategory => _selectedCategory;
+  set selectedCategory(String value) {
+    _selectedCategory = value;
+    notifyListeners();
+  }
 
   final TextEditingController _nameController = TextEditingController();
   TextEditingController get nameController => _nameController;
@@ -42,27 +57,15 @@ class CreateProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedCategory = "";
-  String get selectedCategory => _selectedCategory;
-  set selectedCategory(String value) {
-    _selectedCategory = value;
-    notifyListeners();
-  }
-
   final List<TextEditingController> _barcodes = [TextEditingController()];
   List<TextEditingController> get barcodes => _barcodes;
 
   /// Product has variations
   bool _productHasVariations = false;
   bool get productHasVariations => _productHasVariations;
-  set productHasVariations(bool value) {
-    _productHasVariations = value;
-    notifyListeners();
-  }
 
-  /// Pictures
-  final List<String> _pictures = [];
-  List<String> get pictures => _pictures;
+  List<ProductPropertyProvider> _productProperties = [ProductPropertyProvider()];
+  List<ProductPropertyProvider> get productProperties => _productProperties;
 
   CreateProductProvider(BuildContext context) {
     _loadAvailableProductGroups(context);
@@ -120,6 +123,15 @@ class CreateProductProvider extends ChangeNotifier {
   /// Remove bar code
   void removeBarCode(int index) {
     _barcodes.removeAt(index);
+    notifyListeners();
+  }
+
+  /// Set product has variations
+  void setProductHasVariations(bool hasVariations) {
+    _productProperties = hasVariations
+        ? [ProductPropertyProvider(type: ProductPropertyType.text)] //
+        : [ProductPropertyProvider()];
+    _productHasVariations = hasVariations;
     notifyListeners();
   }
 
