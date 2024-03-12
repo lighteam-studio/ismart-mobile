@@ -12,14 +12,15 @@ class ProductBarcodeDbSet implements DbSet<ProductBarcodeEntity, Query> {
     return '''
       create table $tableName
       (
-          product_barcode_id VARCHAR(36) not null,
-          product_id         VARCHAR(36) not null,
-          value              TEXT        not null,
-          constraint product_barcode_pk
-              primary key (product_barcode_id),
-          constraint product_id_fk
-              foreign key (product_id) references product
-      )''';
+        product_barcode_id TEXT not null,
+        product_id         TEXT not null,
+        value              TEXT not null,
+        constraint product_barcode_pk
+          primary key (product_barcode_id),
+        constraint product_id_fk
+          foreign key (product_id) references product
+      );
+      ''';
   }
 
   @override

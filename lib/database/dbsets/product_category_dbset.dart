@@ -13,16 +13,17 @@ class ProductCategoryDbSet implements DbSet<ProductCategoryEntity, Query> {
     return '''
     create table $tableName
     (
-        product_category_id varchar(36) not null,
-        name                TEXT        not null,
-        product_group_id    TEXT        not null,
-        constraint id
-            primary key (product_category_id),
-        constraint product_group_id
-            foreign key (product_group_id) references product_group,
-        constraint valid_id
-            check (length(product_category_id) == 36)
-    )''';
+      product_category_id TEXT not null,
+      name                TEXT not null,
+      product_group_id    TEXT not null,
+      constraint id
+        primary key (product_category_id),
+      constraint product_group_id
+        foreign key (product_group_id) references product_group,
+      constraint valid_id
+        check (length(product_category_id) == 36)
+    );
+    ''';
   }
 
   @override

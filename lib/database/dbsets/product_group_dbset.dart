@@ -15,13 +15,14 @@ class ProductGroupDbSet implements DbSet<ProductGroupEntity, Query> {
     return '''
     create table $tableName
     (
-      product_group_id VARCHAR(36) not null,
-      title            TEXT        not null,
+      product_group_id TEXT not null,
+      title            TEXT not null,
       constraint product_group_pk
-          primary key (product_group_id),
+        primary key (product_group_id),
       constraint valid_id
-          check (length(product_group_id) == 36)
-    )''';
+        check (length(product_group_id) == 36)
+    );
+    ''';
   }
 
   @override

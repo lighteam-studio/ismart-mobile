@@ -12,22 +12,25 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
   @override
   String createTable() {
     return '''
-      create table $tableName
-      (
-          category_id VARCHAR(36) not null,
-          brand       VARCHAR     not null,
-          unit        TEXT        not null,
-          name        TEXT        not null,
-          product_id  VARCHAR(36) not null,
-          constraint products_pk
-              primary key (product_id),
-          constraint category_id
-              check (length(category_id) == 36),
-          constraint product_id
-              check (length(product_id) == 36),
-          constraint unit
-              check (unit in ('un', 'kg'))
-      )''';
+    create table $tableName
+    (
+      category_id TEXT not null,
+      brand       TEXT not null,
+      unit        TEXT not null,
+      name        TEXT not null,
+      product_id  TEXT not null,
+      constraint products_pk
+        primary key (product_id),
+      constraint category_fk
+        foreign key (category_id) references product_category,
+      constraint category_id
+        check (length(category_id) == 36),
+      constraint product_id
+        check (length(product_id) == 36),
+      constraint unit
+        check (unit in ('un', 'kg'))
+    );
+      ''';
   }
 
   @override
