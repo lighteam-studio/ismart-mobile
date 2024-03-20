@@ -10,7 +10,7 @@ import 'package:ismart/components/lt_text_form_field.dart';
 import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/interfaces/option.dart';
-import 'package:ismart/features/products/create_product/components/product_property_container.dart';
+import 'package:ismart/features/products/create_product/components/product_property_list_tile.dart';
 import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
@@ -32,6 +32,7 @@ class ProductFormPage extends StatelessWidget {
     final s = S.of(context);
     final validators = Validators.of(context);
     var colorScheme = Theme.of(context).colorScheme;
+    var textTheme = Theme.of(context).textTheme;
 
     return Form(
       autovalidateMode: provider.validateOnInput
@@ -39,7 +40,12 @@ class ProductFormPage extends StatelessWidget {
           : AutovalidateMode.disabled,
       key: provider.productInfoForm,
       child: ListView(
-        padding: padding ?? const EdgeInsets.all(AppSizes.s05),
+        padding: padding ??
+            const EdgeInsets.only(
+              left: AppSizes.s05,
+              right: AppSizes.s05,
+              bottom: AppSizes.s05,
+            ),
         children: [
           LtFilePicker(
             onChange: (pictures) => provider.addPictures(pictures),
@@ -62,7 +68,7 @@ class ProductFormPage extends StatelessWidget {
           ),
           const SizedBox(height: AppSizes.s03),
 
-          // User Name
+          // Product name
           LtTextFormField(
             label: s.name,
             placeholder: s.placeholderName,
@@ -124,9 +130,11 @@ class ProductFormPage extends StatelessWidget {
                         label: i == 0 ? s.barCode : null,
                         placeholder: s.placeholderBarCode,
                         controller: barcode,
-                        validators: [
-                          Validators.of(context).required,
-                        ],
+                        validators: provider.barcodes.length > 1
+                            ? [
+                                Validators.of(context).required,
+                              ]
+                            : null,
                       ),
                     ),
                     const SizedBox(width: AppSizes.s02),
@@ -173,22 +181,35 @@ class ProductFormPage extends StatelessWidget {
 
           if (provider.productHasVariations) ...[
             const Divider(thickness: 2, height: AppSizes.s08),
-            ...provider.productProperties.map(
-              (e) => ChangeNotifierProvider.value(
-                value: e,
-                child: ProductPropertyContainer(),
+
+            Text(
+              "Properties",
+              style: textTheme.labelMedium,
+            ),
+            const SizedBox(height: AppSizes.s02),
+            // Product properties
+            ...provider.productProperties.mapIndexed(
+              (i, e) => Padding(
+                padding: const EdgeInsets.only(bottom: AppSizes.s02),
+                child: ProductPropertyListTile(
+                  onChange: (property) => provider.editProperty(context, property),
+                  property: e,
+                ),
               ),
             ),
-            LtSecondaryButton(
-              label: "Add new characteristic",
-              onTap: () => provider.addBarCode(),
-            ),
+
+            // Add new property
+            if (provider.canAddProperty)
+              LtSecondaryButton(
+                label: "Add new characteristic",
+                onTap: () => provider.addProperty(context),
+              ),
           ],
 
           const Divider(thickness: 2, height: AppSizes.s08),
 
           // Submit button
-          LtPrimaryButton(label: s.next, onTap: () => provider.submitProductInfoForm()),
+          LtPrimaryButton(label: s.next, onTap: () => provider.submitProductInfoForm(context)),
           const SizedBox(height: AppSizes.s08),
         ],
       ),

@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
 import 'package:ismart/core/entities/product_image_entity.dart';
-import 'package:ismart/core/enums/product_property_type.dart';
+import 'package:ismart/core/entities/product_property_entity.dart';
+import 'package:ismart/core/entities/product_variation_entity.dart';
+import 'package:ismart/core/entities/product_variation_property_value_entity.dart';
 import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/interfaces/option.dart';
-import 'package:ismart/features/products/create_product/providers/product_property_provider.dart';
+import 'package:ismart/features/products/create_product/components/product_property_dialog.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
 import 'package:ismart/utils/helper_functions.dart';
@@ -25,6 +27,9 @@ class CreateProductProvider extends ChangeNotifier {
   final GlobalKey<FormState> _productInfoForm = GlobalKey();
   GlobalKey<FormState> get productInfoForm => _productInfoForm;
 
+  final PageController _pageController = PageController();
+  PageController get pageController => _pageController;
+
   bool _validateOnInput = false;
   bool get validateOnInput => _validateOnInput;
 
@@ -35,6 +40,9 @@ class CreateProductProvider extends ChangeNotifier {
   /// Pictures
   final List<String> _pictures = [];
   List<String> get pictures => _pictures;
+
+  /// Temp product id
+  String _tempProductId = Uuid().v4();
 
   /// Selected category
   String _selectedCategory = "";
@@ -64,8 +72,15 @@ class CreateProductProvider extends ChangeNotifier {
   bool _productHasVariations = false;
   bool get productHasVariations => _productHasVariations;
 
-  List<ProductPropertyProvider> _productProperties = [ProductPropertyProvider()];
-  List<ProductPropertyProvider> get productProperties => _productProperties;
+  /// Product properties
+  List<ProductPropertyEntity> _productProperties = [];
+  List<ProductPropertyEntity> get productProperties => _productProperties;
+
+  /// Product variation
+  List<ProductVariationEntity> _variations = [];
+  List<ProductVariationEntity> get variations => _variations;
+
+  bool get canAddProperty => _productProperties.length < 3;
 
   CreateProductProvider(BuildContext context) {
     _loadAvailableProductGroups(context);
@@ -128,15 +143,90 @@ class CreateProductProvider extends ChangeNotifier {
 
   /// Set product has variations
   void setProductHasVariations(bool hasVariations) {
-    _productProperties = hasVariations
-        ? [ProductPropertyProvider(type: ProductPropertyType.text)] //
-        : [ProductPropertyProvider()];
+    _productProperties = [];
     _productHasVariations = hasVariations;
     notifyListeners();
   }
 
+  /// Add new property to product
+  void addProperty(BuildContext context) async {
+    var response = await showBottomSheetHelper<ProductPropertyEntity>(
+      context,
+      child: const ProductPropertyDialog(),
+    );
+
+    if (response is ProductPropertyEntity) {
+      _productProperties.add(response);
+      notifyListeners();
+    }
+  }
+
+  /// Edit product property
+  void editProperty(BuildContext context, ProductPropertyEntity property) async {
+    var response = await showBottomSheetHelper(
+      context,
+      child: ProductPropertyDialog(
+        property: property,
+      ),
+    );
+
+    if (response == ProductPropertyDialogAction.delete) {
+      _productProperties.remove(property);
+      notifyListeners();
+    }
+
+    if (response is ProductPropertyEntity) {
+      _productProperties.add(response);
+      notifyListeners();
+    }
+  }
+
+  /// Submit form data
+  void submitProductInfoForm(BuildContext context) {
+    FocusScope.of(context).unfocus();
+    _validateOnInput = true;
+    notifyListeners();
+
+    // Validate form
+    var isValid = _productInfoForm.currentState?.validate() ?? false;
+    if (!isValid) return;
+
+    var valueMatrix = _productProperties.map((e) => e.propertyValues).toList();
+    var cartesian = createCartesianMatrix(valueMatrix);
+
+    _variations = cartesian.map(
+      (combination) {
+        var variationId = const Uuid().v4();
+
+        return ProductVariationEntity(
+          id: variationId,
+          productId: _tempProductId,
+          price: 0,
+          stock: 0,
+          values: combination
+              .mapIndexed(
+                (i, value) => ProductVariationPropertyValueEntity(
+                  value: value,
+                  propertyId: _productProperties[i].propertyId,
+                  valueId: const Uuid().v4(),
+                  variationId: variationId,
+                ),
+              )
+              .toList(),
+        );
+      },
+    ).toList();
+    notifyListeners();
+
+    pageController.nextPage(duration: const Duration(milliseconds: 150), curve: Curves.ease);
+  }
+
+  void backToFormPage() {
+    pageController.previousPage(duration: Duration(milliseconds: 150), curve: Curves.ease);
+  }
+
   /// Submit product information form
-  void submitProductInfoForm() async {
+  void createProduct() async {
     _validateOnInput = true;
     notifyListeners();
 
@@ -158,6 +248,17 @@ class CreateProductProvider extends ChangeNotifier {
       brand: _brandController.text,
       unit: _unit,
       name: _nameController.text,
+      properties: _productProperties
+          .map(
+            (e) => ProductPropertyEntity(
+              productId: productId,
+              name: e.name,
+              propertyId: uuid.v4(),
+              type: e.type,
+              propertyValues: e.propertyValues,
+            ),
+          )
+          .toList(),
       images: _pictures
           .mapIndexed(
             (index, element) => ProductImageEntity(
@@ -169,6 +270,7 @@ class CreateProductProvider extends ChangeNotifier {
           )
           .toList(),
       barcodes: _barcodes
+          .where((element) => element.text.isNotEmpty)
           .map(
             (e) => ProductBarcodeEntity(
               productBarcodeId: uuid.v4(),

@@ -5,14 +5,30 @@ class ProductPropertyProvider extends ChangeNotifier {
   final TextEditingController _nameController = TextEditingController();
   TextEditingController get nameController => _nameController;
 
-  late ProductPropertyType _propertyType;
-  ProductPropertyType get propertyType => _propertyType;
-  set propertyType(ProductPropertyType type) {
-    _propertyType = type;
+  List<TextEditingController> _values = [
+    TextEditingController(),
+  ];
+  List<TextEditingController> get values => _values;
+
+  late ProductPropertyType _type;
+  ProductPropertyType get type => _type;
+  set type(ProductPropertyType type) {
+    _type = type;
+    _values = [TextEditingController()];
+    notifyListeners();
+  }
+
+  addValue() {
+    _values.add(TextEditingController());
+    notifyListeners();
+  }
+
+  removeValue(int index) {
+    _values.removeAt(index);
     notifyListeners();
   }
 
   ProductPropertyProvider({ProductPropertyType type = ProductPropertyType.base}) {
-    _propertyType = type;
+    _type = type;
   }
 }

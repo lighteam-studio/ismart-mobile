@@ -141,35 +141,6 @@ class _LtSelectDialogState extends State<LtSelectDialog> {
                       )
                       .flattened
                       .toList(),
-
-                  //   // Group
-                  //   const ,
-
-                  //  ,
-
-                  //   // Group
-                  //   const LtListGroupTitleSliver(
-                  //     content: "Horti-fruti",
-                  //   ),
-
-                  //   SliverList.separated(
-                  //     itemCount: 5,
-                  //     separatorBuilder: (context, index) => Divider(
-                  //       height: 1,
-                  //       thickness: 1,
-                  //       indent: AppSizes.s05,
-                  //       endIndent: AppSizes.s05,
-                  //       color: colorScheme.surface,
-                  //     ),
-                  //     itemBuilder: (c, i) => ListTile(
-                  //       dense: true,
-                  //       contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.s07),
-                  //       title: Text(
-                  //         "Element",
-                  //         style: textTheme.bodyMedium,
-                  //       ),
-                  //     ),
-                  //   ),
                 ],
               ),
             )

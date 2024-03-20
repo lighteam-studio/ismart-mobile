@@ -6,6 +6,7 @@ import 'package:ismart/core/entities/product_category_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
 import 'package:ismart/core/entities/product_group_entity.dart';
 import 'package:ismart/core/entities/product_image_entity.dart';
+import 'package:ismart/core/entities/product_property_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/dbsets/preferences_dbset.dart';
@@ -14,6 +15,7 @@ import 'package:ismart/database/dbsets/product_category_dbset.dart';
 import 'package:ismart/database/dbsets/product_dbset.dart';
 import 'package:ismart/database/dbsets/product_group_dbset.dart';
 import 'package:ismart/database/dbsets/product_image_dbset.dart';
+import 'package:ismart/database/dbsets/product_property_dbset.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 
 class IsMartDatabaseContext {
@@ -23,6 +25,7 @@ class IsMartDatabaseContext {
   DbSet<ProductCategoryEntity, Query> productCategory = ProductCategoryDbSet();
   DbSet<ProductGroupEntity, Query> productGroup = ProductGroupDbSet();
   DbSet<ProductImageEntity, Query> productImage = ProductImageDbSet();
+  DbSet<ProductPropertyEntity, Query> productProperty = ProductPropertyDbset();
 
   Future<void> createDatabase() async {
     var database = await IsMartDatabaseUtils.getDatabase();
@@ -34,6 +37,7 @@ class IsMartDatabaseContext {
       await txn.execute(productCategory.createTable());
       await txn.execute(productGroup.createTable());
       await txn.execute(productImage.createTable());
+      await txn.execute(productProperty.createTable());
     });
   }
 

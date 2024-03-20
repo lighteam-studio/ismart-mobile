@@ -3,6 +3,7 @@ import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/dbsets/product_barcode_dbset.dart';
 import 'package:ismart/database/dbsets/product_image_dbset.dart';
+import 'package:ismart/database/dbsets/product_property_dbset.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 
 class ProductDbSet implements DbSet<ProductEntity, Query> {
@@ -46,15 +47,25 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
       await txn.insert(tableName, entity.toEntityMap());
 
       var batch = txn.batch();
-      for (var barcode in entity.barcodes) {
-        batch.insert(ProductBarcodeDbSet().tableName, barcode.toEntityMap());
+      if (entity.barcodes != null) {
+        for (var barcode in entity.barcodes ?? []) {
+          batch.insert(ProductBarcodeDbSet().tableName, barcode.toEntityMap());
+        }
       }
 
-      for (var image in entity.images) {
-        batch.insert(ProductImageDbSet().tableName, image.toEntityMap());
+      if (entity.images != null) {
+        for (var image in entity.images!) {
+          batch.insert(ProductImageDbSet().tableName, image.toEntityMap());
+        }
       }
 
-      batch.commit(noResult: true);
+      if (entity.properties != null) {
+        for (var property in entity.properties!) {
+          batch.insert(ProductPropertyDbset().tableName, property.toEntityMap());
+        }
+      }
+
+      await batch.commit(noResult: true);
     });
     await database.close();
   }
@@ -75,7 +86,6 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
     var database = await IsMartDatabaseUtils.getDatabase();
 
     var productsResult = await database.rawQuery(query);
-    print(productsResult);
 
     await database.close();
 

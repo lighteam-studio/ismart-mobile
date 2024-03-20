@@ -13,10 +13,11 @@ class ProductPropertyDbset implements DbSet<ProductPropertyEntity, Query> {
     return '''
     create table $tableName
     (
-      property_id TEXT not null,
-      type        TEXT not null,
-      name        TEXT not null,
-      product_id  TEXT not null,
+      property_id     TEXT not null,
+      type            TEXT not null,
+      name            TEXT not null,
+      product_id      TEXT not null,
+      property_values TEXT not null,
       constraint property_id_pk
         primary key (property_id),
       constraint product_fk

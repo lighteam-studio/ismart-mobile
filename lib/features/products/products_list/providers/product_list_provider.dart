@@ -29,7 +29,7 @@ class ProductListProvider extends ChangeNotifier {
                     (e) => ProductListModel(
                       name: e.name,
                       brand: e.brand,
-                      image: e.images.isNotEmpty ? MemoryImage(e.images.first.data) : null,
+                      image: null,
                     ),
                   )
                   .toList(),

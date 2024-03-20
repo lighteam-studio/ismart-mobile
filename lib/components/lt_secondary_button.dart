@@ -4,8 +4,14 @@ import 'package:ismart/resources/app_sizes.dart';
 class LtSecondaryButton extends StatelessWidget {
   final String label;
   final void Function() onTap;
+  final Color? textColor;
 
-  const LtSecondaryButton({required this.label, required this.onTap, super.key});
+  const LtSecondaryButton({
+    required this.label,
+    required this.onTap,
+    this.textColor,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,7 @@ class LtSecondaryButton extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: colorScheme.onSurface,
+                color: textColor ?? colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
                 fontSize: AppSizes.s04,
               ),

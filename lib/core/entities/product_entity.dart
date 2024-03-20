@@ -1,6 +1,7 @@
 import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_category_entity.dart';
 import 'package:ismart/core/entities/product_image_entity.dart';
+import 'package:ismart/core/entities/product_property_entity.dart';
 import 'package:ismart/core/enums/product_unit.dart';
 
 class ProductEntity {
@@ -11,9 +12,10 @@ class ProductEntity {
   String name;
 
   // Relationship fields
-  List<ProductImageEntity> images;
-  final List<ProductBarcodeEntity> barcodes;
-  final ProductCategoryEntity? category;
+  List<ProductImageEntity>? images;
+  List<ProductBarcodeEntity>? barcodes;
+  List<ProductPropertyEntity>? properties;
+  ProductCategoryEntity? category;
 
   Map<String, String> toEntityMap() {
     return {
@@ -31,8 +33,9 @@ class ProductEntity {
     required this.brand,
     required this.unit,
     required this.name,
-    required this.images,
-    required this.barcodes,
+    this.images,
+    this.barcodes,
+    this.properties,
     this.category,
   });
 
@@ -46,11 +49,6 @@ class ProductEntity {
         orElse: () => ProductUnit.un,
       ),
       name: map['name']?.toString() ?? '',
-      barcodes: map.containsKey('barcodes')
-          ? List.from(map['barcodes']).map((e) => ProductBarcodeEntity.fromMap(e)).toList() //
-          : [],
-      category: map.containsKey('category') ? ProductCategoryEntity.fromMap(map['category']) : null,
-      images: [],
     );
   }
 }

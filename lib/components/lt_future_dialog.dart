@@ -34,32 +34,33 @@ class _LtFutureDialogState extends State<LtFutureDialog> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-          //
-          // Future builder
-          child: FutureBuilder(
-            future: _loadingRequest,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text("ERROR"),
-                );
-              }
-              // Content
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(child: Lottie.asset('lib/assets/lottie/loading.json', height: 200)),
-                  const Text(
-                    "Finalizando alguns ajustes...",
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        //
+        // Future builder
+        child: FutureBuilder(
+          future: _loadingRequest,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text("ERROR"),
               );
-            },
-          )),
+            }
+            // Content
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(child: Lottie.asset('lib/assets/lottie/loading.json', height: 200)),
+                const Text(
+                  "Finalizando alguns ajustes...",
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

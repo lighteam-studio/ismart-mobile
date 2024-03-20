@@ -6,12 +6,14 @@ class LtSurfaceButton extends StatelessWidget {
   final void Function() onTap;
   final double size;
   final Color? backgroundColor;
+  final Color? iconColor;
   final bool hasShadow;
 
   const LtSurfaceButton({
     required this.icon,
     required this.onTap,
     this.size = AppSizes.s14,
+    this.iconColor,
     this.backgroundColor,
     this.hasShadow = false,
     super.key,
@@ -46,7 +48,7 @@ class LtSurfaceButton extends StatelessWidget {
             child: Image.asset(
               icon,
               width: AppSizes.s06,
-              color: colorScheme.onSurface,
+              color: iconColor ?? colorScheme.onSurface,
             ),
           ),
         ),
