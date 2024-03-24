@@ -12,6 +12,7 @@ class AppIcons {
   static const String shop = "lib/assets/icons/shop.png";
   static const String times = "lib/assets/icons/times.png";
   static const String chevronLeft = "lib/assets/icons/chevron_left.png";
+  static const String chevronRight = "lib/assets/icons/chevron_right.png";
   static const String chevronDown = "lib/assets/icons/chevron_down.png";
   static const String gallery = "lib/assets/icons/gallery.png";
   static const String trash = "lib/assets/icons/trash.png";
@@ -22,4 +23,5 @@ class AppIcons {
   static const String scanner = "lib/assets/icons/scanner.png";
   static const String circlePlus = "lib/assets/icons/circle_plus.png";
   static const String popup = "lib/assets/icons/popup.png";
+  static const String shopOutline = "lib/assets/icons/shop_outline.png";
 }

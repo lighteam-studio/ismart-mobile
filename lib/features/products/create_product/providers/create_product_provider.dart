@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:collection/collection.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
@@ -12,8 +12,10 @@ import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/interfaces/option.dart';
 import 'package:ismart/features/products/create_product/components/product_property_dialog.dart';
+import 'package:ismart/features/products/create_product/components/product_variation_dialog.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
+import 'package:ismart/resources/app_images.dart';
 import 'package:ismart/utils/helper_functions.dart';
 import 'package:mime/mime.dart';
 import 'package:uuid/uuid.dart';
@@ -26,6 +28,9 @@ class CreateProductProvider extends ChangeNotifier {
   /// Form keys
   final GlobalKey<FormState> _productInfoForm = GlobalKey();
   GlobalKey<FormState> get productInfoForm => _productInfoForm;
+
+  final ScrollController _scrollController = ScrollController();
+  ScrollController get scrollController => _scrollController;
 
   final PageController _pageController = PageController();
   PageController get pageController => _pageController;
@@ -42,7 +47,7 @@ class CreateProductProvider extends ChangeNotifier {
   List<String> get pictures => _pictures;
 
   /// Temp product id
-  String _tempProductId = Uuid().v4();
+  String _tempProductId = const Uuid().v4();
 
   /// Selected category
   String _selectedCategory = "";
@@ -65,7 +70,7 @@ class CreateProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  final List<TextEditingController> _barcodes = [TextEditingController()];
+  List<TextEditingController> _barcodes = [TextEditingController()];
   List<TextEditingController> get barcodes => _barcodes;
 
   /// Product has variations
@@ -79,6 +84,21 @@ class CreateProductProvider extends ChangeNotifier {
   /// Product variation
   List<ProductVariationEntity> _variations = [];
   List<ProductVariationEntity> get variations => _variations;
+
+  /// Price controller
+  final TextEditingController _priceController = TextEditingController();
+  TextEditingController get priceController => _priceController;
+
+  /// Currency
+  final CurrencyTextInputFormatter _currencyFormatter = CurrencyTextInputFormatter(
+    decimalDigits: 2,
+    symbol: "€ ",
+  );
+  CurrencyTextInputFormatter get currencyFormatter => _currencyFormatter;
+
+  /// Stock controller
+  final TextEditingController _stockController = TextEditingController();
+  TextEditingController get stockController => _stockController;
 
   bool get canAddProperty => _productProperties.length < 3;
 
@@ -110,10 +130,17 @@ class CreateProductProvider extends ChangeNotifier {
   void clearForm() {
     _nameController.clear();
     _brandController.clear();
-    _barcodes.clear();
     _pictures.clear();
-    _barcodes.add(TextEditingController());
+    _barcodes = [TextEditingController()];
     _validateOnInput = false;
+    _productProperties.clear();
+    _variations.clear();
+    _selectedCategory = '';
+    _productHasVariations = false;
+    _tempProductId = const Uuid().v4();
+    _priceController.clear();
+    _stockController.clear();
+    _pageController.jumpToPage(0);
     notifyListeners();
   }
 
@@ -145,6 +172,9 @@ class CreateProductProvider extends ChangeNotifier {
   void setProductHasVariations(bool hasVariations) {
     _productProperties = [];
     _productHasVariations = hasVariations;
+    _priceController.clear();
+    _stockController.clear();
+
     notifyListeners();
   }
 
@@ -191,6 +221,15 @@ class CreateProductProvider extends ChangeNotifier {
     var isValid = _productInfoForm.currentState?.validate() ?? false;
     if (!isValid) return;
 
+    if (_productHasVariations && _productProperties.isEmpty) {
+      showAlertHelper(
+        context,
+        description: "Please, add some characteristics to this product",
+      );
+
+      return;
+    }
+
     var valueMatrix = _productProperties.map((e) => e.propertyValues).toList();
     var cartesian = createCartesianMatrix(valueMatrix);
 
@@ -199,7 +238,7 @@ class CreateProductProvider extends ChangeNotifier {
         var variationId = const Uuid().v4();
 
         return ProductVariationEntity(
-          id: variationId,
+          variationId: variationId,
           productId: _tempProductId,
           price: 0,
           stock: 0,
@@ -218,70 +257,127 @@ class CreateProductProvider extends ChangeNotifier {
     ).toList();
     notifyListeners();
 
-    pageController.nextPage(duration: const Duration(milliseconds: 150), curve: Curves.ease);
+    if (_productHasVariations) {
+      pageController.nextPage(duration: const Duration(milliseconds: 150), curve: Curves.ease);
+      return;
+    }
+
+    createProduct(context);
   }
 
+  /// Back to product form page
   void backToFormPage() {
-    pageController.previousPage(duration: Duration(milliseconds: 150), curve: Curves.ease);
+    pageController.previousPage(duration: const Duration(milliseconds: 150), curve: Curves.ease);
+  }
+
+  /// Edit variation
+  void editVariation(BuildContext context, ProductVariationEntity variation) async {
+    var newVariation = await showBottomSheetHelper(
+      context,
+      child: ProductVariationDialog(variation: variation),
+    );
+
+    if (newVariation is ProductVariationEntity) {
+      _variations[_variations.indexOf(variation)] = newVariation;
+      notifyListeners();
+    }
   }
 
   /// Submit product information form
-  void createProduct() async {
-    _validateOnInput = true;
-    notifyListeners();
+  void createProduct(BuildContext context) async {
+    try {
+      const uuid = Uuid();
 
-    // Validate form
-    var isValid = _productInfoForm.currentState?.validate() ?? false;
-    if (!isValid) return;
+      var imageBlobs = await Future.wait(
+        _pictures.map((picture) => File(picture).readAsBytes()),
+      );
 
-    const uuid = Uuid();
-    var productId = uuid.v4();
+      // Add the entity
+      var entity = ProductEntity(
+        productId: _tempProductId,
+        categoryId: _selectedCategory,
+        brand: _brandController.text,
+        unit: _unit,
+        thumbnail: imageBlobs.isNotEmpty ? imageBlobs.first : null,
+        name: _nameController.text,
+        properties: _productProperties
+            .map(
+              (e) => ProductPropertyEntity(
+                productId: _tempProductId,
+                name: e.name,
+                propertyId: uuid.v4(),
+                type: e.type,
+                propertyValues: e.propertyValues,
+              ),
+            )
+            .toList(),
+        images: _pictures
+            .mapIndexed(
+              (index, element) => ProductImageEntity(
+                productImageId: uuid.v4(),
+                data: imageBlobs[index],
+                mimeType: lookupMimeType(element) ?? '',
+                productId: _tempProductId,
+              ),
+            )
+            .toList(),
+        barcodes: _barcodes
+            .where((element) => element.text.isNotEmpty)
+            .map(
+              (e) => ProductBarcodeEntity(
+                productBarcodeId: uuid.v4(),
+                productId: _tempProductId,
+                value: e.text,
+              ),
+            )
+            .toList(),
+        variations: _productHasVariations
+            ? _variations
+                .map(
+                  (e) => ProductVariationEntity(
+                    variationId: e.variationId,
+                    productId: _tempProductId,
+                    price: e.price,
+                    stock: e.stock,
+                    values: e.values!
+                        .map(
+                          (e) => ProductVariationPropertyValueEntity(
+                            value: e.value,
+                            propertyId: e.propertyId,
+                            valueId: e.valueId,
+                            variationId: e.variationId,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
+                .toList()
+            : [
+                ProductVariationEntity(
+                  price: _currencyFormatter.getUnformattedValue().toDouble(),
+                  productId: _tempProductId,
+                  stock: double.tryParse(_stockController.text) ?? 0,
+                  variationId: uuid.v4(),
+                )
+              ],
+      );
+      await _productsRepository.addProduct(entity);
 
-    var imageBlobs = await Future.wait(
-      _pictures.map((picture) => File(picture).readAsBytes()),
-    );
+      scrollController.jumpTo(0);
 
-    // Add the entity
-    var entity = ProductEntity(
-      productId: productId,
-      categoryId: _selectedCategory,
-      brand: _brandController.text,
-      unit: _unit,
-      name: _nameController.text,
-      properties: _productProperties
-          .map(
-            (e) => ProductPropertyEntity(
-              productId: productId,
-              name: e.name,
-              propertyId: uuid.v4(),
-              type: e.type,
-              propertyValues: e.propertyValues,
-            ),
-          )
-          .toList(),
-      images: _pictures
-          .mapIndexed(
-            (index, element) => ProductImageEntity(
-              productImageId: uuid.v4(),
-              data: imageBlobs[index],
-              mimeType: lookupMimeType(element) ?? '',
-              productId: productId,
-            ),
-          )
-          .toList(),
-      barcodes: _barcodes
-          .where((element) => element.text.isNotEmpty)
-          .map(
-            (e) => ProductBarcodeEntity(
-              productBarcodeId: uuid.v4(),
-              productId: productId,
-              value: e.text,
-            ),
-          )
-          .toList(),
-    );
-    await _productsRepository.addProduct(entity);
+      showAlertHelper(
+        context,
+        image: AppImages.success,
+        title: "Success!",
+        description: "The product was created successfully",
+      );
 
-    clearForm();
+      clearForm();
+    } catch (e) {
+      showAlertHelper(
+        context,
+        description: "It was not possible create the product, try again later",
+      );
+    }
   }
 }

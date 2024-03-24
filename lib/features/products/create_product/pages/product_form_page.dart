@@ -40,6 +40,7 @@ class ProductFormPage extends StatelessWidget {
           : AutovalidateMode.disabled,
       key: provider.productInfoForm,
       child: ListView(
+        controller: provider.scrollController,
         padding: padding ??
             const EdgeInsets.only(
               left: AppSizes.s05,
@@ -204,12 +205,40 @@ class ProductFormPage extends StatelessWidget {
                 label: "Add new characteristic",
                 onTap: () => provider.addProperty(context),
               ),
+          ] else ...[
+            const Divider(thickness: 2, height: AppSizes.s08),
+
+            // Product price
+            LtTextFormField(
+              controller: provider.priceController,
+              mask: provider.currencyFormatter,
+              label: "Product price",
+              validators: [
+                Validators.of(context).required,
+              ],
+              placeholder: "Insert your price",
+            ),
+            const SizedBox(height: AppSizes.s03),
+
+            // Stock controller
+            LtTextFormField(
+              controller: provider.stockController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              label: "Product stock",
+              placeholder: "Insert the stock",
+              validators: [
+                Validators.of(context).required,
+              ],
+            ),
           ],
 
           const Divider(thickness: 2, height: AppSizes.s08),
 
           // Submit button
-          LtPrimaryButton(label: s.next, onTap: () => provider.submitProductInfoForm(context)),
+          LtPrimaryButton(
+            label: provider.productHasVariations ? s.next : "Submit",
+            onTap: () => provider.submitProductInfoForm(context),
+          ),
           const SizedBox(height: AppSizes.s08),
         ],
       ),

@@ -4,6 +4,8 @@ import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/dbsets/product_barcode_dbset.dart';
 import 'package:ismart/database/dbsets/product_image_dbset.dart';
 import 'package:ismart/database/dbsets/product_property_dbset.dart';
+import 'package:ismart/database/dbsets/product_variation_dbset.dart';
+import 'package:ismart/database/dbsets/product_variation_property_value_dbset.dart';
 import 'package:ismart/database/ismart_db_utils.dart';
 
 class ProductDbSet implements DbSet<ProductEntity, Query> {
@@ -13,24 +15,25 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
   @override
   String createTable() {
     return '''
-    create table $tableName
-    (
-      category_id TEXT not null,
-      brand       TEXT not null,
-      unit        TEXT not null,
-      name        TEXT not null,
-      product_id  TEXT not null,
-      constraint products_pk
-        primary key (product_id),
-      constraint category_fk
-        foreign key (category_id) references product_category,
-      constraint category_id
-        check (length(category_id) == 36),
-      constraint product_id
-        check (length(product_id) == 36),
-      constraint unit
-        check (unit in ('un', 'kg'))
-    );
+      create table $tableName
+      (
+        category_id TEXT not null,
+        brand       TEXT not null,
+        unit        TEXT not null,
+        name        TEXT not null,
+        product_id  TEXT not null,
+        thumbnail   BLOB,
+        constraint products_pk
+          primary key (product_id),
+        constraint category_fk
+          foreign key (category_id) references product_category,
+        constraint category_id
+          check (length(category_id) == 36),
+        constraint product_id
+          check (length(product_id) == 36),
+        constraint unit
+          check (unit in ('un', 'kg'))
+      );
       ''';
   }
 
@@ -47,6 +50,8 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
       await txn.insert(tableName, entity.toEntityMap());
 
       var batch = txn.batch();
+
+      // Insert bar codes
       if (entity.barcodes != null) {
         for (var barcode in entity.barcodes ?? []) {
           batch.insert(ProductBarcodeDbSet().tableName, barcode.toEntityMap());
@@ -65,6 +70,18 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
         }
       }
 
+      if (entity.variations != null) {
+        for (var variation in entity.variations!) {
+          batch.insert(ProductVariationDbSet().tableName, variation.toEntityMap());
+
+          if (variation.values != null) {
+            for (var value in variation.values!) {
+              batch.insert(ProductVariationPropertyValueDbSet().tableName, value.toEntityMap());
+            }
+          }
+        }
+      }
+
       await batch.commit(noResult: true);
     });
     await database.close();
@@ -77,18 +94,10 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
 
   @override
   Future<List<ProductEntity>> search([Query? query]) async {
-    var query = '''
-      SELECT p.*, pi.data, pi.mime_type FROM product p
-      LEFT JOIN product_image pi on pi.product_id = p.product_id
-      ORDER BY p.name
-      ''';
-
     var database = await IsMartDatabaseUtils.getDatabase();
-
-    var productsResult = await database.rawQuery(query);
-
+    var productsResult = await database.query(tableName, orderBy: 'name');
+    var products = productsResult.map((e) => ProductEntity.fromMap(e)).toList();
     await database.close();
-
-    return [];
+    return products;
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ismart/components/lt_surface.dart';
 import 'package:ismart/features/products/create_product/pages/product_form_page.dart';
 import 'package:ismart/features/products/create_product/pages/product_variations_page.dart';
 import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
@@ -17,7 +16,7 @@ class CreateProductFeature extends StatelessWidget {
     Widget createProductStep(bool active) {
       return Expanded(
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 150),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSizes.s03),
             color: active //
@@ -43,11 +42,14 @@ class CreateProductFeature extends StatelessWidget {
               child: AnimatedBuilder(
                 animation: provider.pageController,
                 builder: (context, child) {
+                  var currentPage = provider.pageController.hasClients && provider.pageController.page != null
+                      ? provider.pageController.page!
+                      : 0.0;
                   return Row(
                     children: [
-                      createProductStep((provider.pageController.page ?? 0) >= 0),
+                      createProductStep(currentPage >= 0),
                       const SizedBox(width: AppSizes.s02),
-                      createProductStep((provider.pageController.page ?? 0) >= 0.5),
+                      createProductStep(currentPage >= 0.5),
                     ],
                   );
                 },

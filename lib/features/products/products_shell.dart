@@ -54,14 +54,6 @@ class _ProductsShellState extends State<ProductsShell> {
       selectedMenuName: selectedPage,
       onSelectMenu: (menu) => setState(() => selectedPage = menu),
       menus: [
-        //
-        // // Products router
-        // LtNavigationMenu(
-        //   icon: AppIcons.dashboard,
-        //   label: "Dashboard",
-        //   routeName: "dashboard",
-        // ),
-
         // Products router
         LtNavigationMenu(
           icon: AppIcons.queue,

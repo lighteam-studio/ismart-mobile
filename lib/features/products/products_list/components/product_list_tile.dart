@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -6,11 +7,13 @@ class ProductListTile extends StatelessWidget {
   final String name;
   final String brand;
   final ImageProvider? image;
+  final void Function() onTap;
 
   const ProductListTile({
     required this.name,
     required this.brand,
     required this.image,
+    required this.onTap,
     super.key,
   });
 
@@ -21,7 +24,7 @@ class ProductListTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           height: AppSizes.s19,
           padding: const EdgeInsets.symmetric(
@@ -51,7 +54,13 @@ class ProductListTile extends StatelessWidget {
                         image: image!,
                         fit: BoxFit.cover,
                       )
-                    : const SizedBox.shrink(),
+                    : Center(
+                        child: Image.asset(
+                          AppIcons.bag,
+                          width: AppSizes.s08,
+                          color: colorScheme.onSurface.withOpacity(.1),
+                        ),
+                      ),
               ),
               const SizedBox(width: AppSizes.s02_5),
 

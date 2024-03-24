@@ -6,6 +6,7 @@ import 'package:ismart/features/products/products_list/components/product_list_t
 import 'package:ismart/features/products/products_list/providers/product_list_provider.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
+import 'package:ismart/router/app_router.dart';
 import 'package:provider/provider.dart';
 
 class ProductsListFeature extends StatelessWidget {
@@ -44,10 +45,12 @@ class ProductsListFeature extends StatelessWidget {
                   ),
                   itemBuilder: (c, i) {
                     var product = group.items[i];
+
                     return ProductListTile(
                       brand: product.brand,
                       name: product.name,
-                      image: product.image,
+                      image: product.thumbnail != null ? MemoryImage(product.thumbnail!) : null,
+                      onTap: () => Navigator.of(context).pushNamed(AppRouter.productDetail),
                     );
                   },
                 )

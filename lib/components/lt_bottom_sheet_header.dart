@@ -23,15 +23,16 @@ class LtBottomSheetHeader extends StatelessWidget {
       child: Stack(
         children: [
           // Back button
-          Align(
-            alignment: Alignment.centerLeft,
-            child: LtIconButton(
-              icon: AppIcons.chevronDown,
-              iconSize: AppSizes.s06,
-              color: colorScheme.onSurface,
-              onPressed: () => Navigator.of(context).pop(),
+          if (Navigator.of(context).canPop())
+            Align(
+              alignment: Alignment.centerLeft,
+              child: LtIconButton(
+                icon: AppIcons.chevronDown,
+                iconSize: AppSizes.s06,
+                color: colorScheme.onSurface,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ),
-          ),
 
           // Title
           Center(

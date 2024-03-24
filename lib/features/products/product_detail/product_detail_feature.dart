@@ -5,6 +5,6 @@ class ProductDetailFeature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Product detail feature");
+    return const Placeholder();
   }
 }

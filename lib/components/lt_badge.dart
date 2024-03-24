@@ -7,7 +7,7 @@ class LtBadge extends StatelessWidget {
 
   const LtBadge({
     required this.text,
-    required this.onTap,
+    this.onTap,
     super.key,
   });
 

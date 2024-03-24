@@ -15,6 +15,7 @@ class ProductVariationsPage extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
 
     return ListView(
+      controller: provider.scrollController,
       padding: const EdgeInsets.only(
         left: AppSizes.s05,
         right: AppSizes.s05,
@@ -27,19 +28,28 @@ class ProductVariationsPage extends StatelessWidget {
         ),
         const SizedBox(height: AppSizes.s02),
         ...provider.variations
-            .map((e) => ProductVariationListTile(
-                  variation: e,
-                  onChange: (variation) {},
-                ))
+            .map(
+              (e) => ProductVariationListTile(
+                variation: e,
+                unit: provider.unit,
+                onChange: (variation) => provider.editVariation(context, variation),
+              ),
+            )
             .toList(),
 
         const Divider(thickness: 2, height: AppSizes.s08),
 
         // Submit button
-        LtPrimaryButton(label: "Cadastrar", onTap: () {}),
+        LtPrimaryButton(
+          label: "Cadastrar",
+          onTap: () => provider.createProduct(context),
+        ),
         const SizedBox(height: AppSizes.s02),
 
-        LtHollowButton(label: "Voltar", onTap: () => provider.backToFormPage()),
+        LtHollowButton(
+          label: "Voltar",
+          onTap: () => provider.backToFormPage(),
+        ),
         const SizedBox(height: AppSizes.s08),
       ],
     );

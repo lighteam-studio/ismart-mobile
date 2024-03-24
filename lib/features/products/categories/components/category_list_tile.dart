@@ -15,7 +15,7 @@ class CategoryListTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: AppSizes.s04,
-            horizontal: AppSizes.s05,
+            horizontal: AppSizes.s09,
           ),
           child: Text(title),
         ),

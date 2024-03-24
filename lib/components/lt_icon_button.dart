@@ -9,8 +9,8 @@ class LtIconButton extends StatelessWidget {
   final String icon;
 
   const LtIconButton({
-    this.size = AppSizes.s12,
-    this.iconSize = AppSizes.s08,
+    this.size = AppSizes.s10,
+    this.iconSize = AppSizes.s06,
     required this.onPressed,
     required this.icon,
     this.color,
@@ -25,9 +25,10 @@ class LtIconButton extends StatelessWidget {
       height: size,
       width: size,
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(999)),
-        color: colorScheme.background.withOpacity(.8),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(999),
+        ),
       ),
       child: Material(
         color: Colors.transparent,

@@ -1,17 +1,20 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_surface.dart';
-import 'package:ismart/core/entities/product_property_entity.dart';
 import 'package:ismart/core/entities/product_variation_entity.dart';
+import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
 class ProductVariationListTile extends StatelessWidget {
   final ProductVariationEntity variation;
+  final ProductUnit unit;
   final void Function(ProductVariationEntity variation) onChange;
 
   const ProductVariationListTile({
     required this.variation,
     required this.onChange,
+    required this.unit,
     super.key,
   });
 
@@ -37,7 +40,7 @@ class ProductVariationListTile extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.only(bottom: AppSizes.s04),
+      padding: const EdgeInsets.only(bottom: AppSizes.s04),
       child: LtSurface(
         padding: EdgeInsets.zero,
         child: Material(
@@ -67,11 +70,13 @@ class ProductVariationListTile extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSizes.s04),
-                  const Text("Price: € 0.0"),
+                  Text(
+                    "Price: ${CurrencyTextInputFormatter(decimalDigits: 2, symbol: "€").formatDouble((variation.price))}",
+                  ),
                   Divider(
                     color: colorScheme.onSurface.withOpacity(.1),
                   ),
-                  const Text("Stock: 0 un")
+                  Text("Stock: ${variation.stock} ${unit.name}")
                 ],
               ),
             ),

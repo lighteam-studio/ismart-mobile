@@ -3,7 +3,7 @@ import 'package:ismart/features/marketing/marketing_feature.dart';
 import 'package:ismart/features/products/products_shell.dart';
 import 'package:ismart/features/shell/components/app_navigation_bar.dart';
 import 'package:ismart/features/shell/components/app_shell_animated_switcher.dart';
-import 'package:ismart/features/store/store_feature.dart';
+import 'package:ismart/features/my_store/my_store_feature.dart';
 import 'package:ismart/features/transactions/transactions_feature.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
@@ -32,7 +32,7 @@ class _AppShellState extends State<AppShell> {
     }
 
     if (selectedPage == 4) {
-      return const StoreFeature();
+      return const MyStoreFeature();
     }
 
     return const SizedBox.shrink();
