@@ -14,14 +14,18 @@ class ProductVariationDbSet implements DbSet<ProductVariationEntity, Query> {
   @override
   String createTable() {
     return '''
-    create table product_variation
+    create table $tableName
     (
       variation_id VARCHAR(36) not null,
       price        REAL        not null,
       stock        REAL        not null,
       product_id   TEXT        not null,
+      sku          TEXT        not null,
+      thumbnail    BLOB,
       constraint variation_id
         primary key (variation_id),
+      constraint product_variation_pk
+        unique (sku),
       constraint product_fk
         foreign key (product_id) references product
     );

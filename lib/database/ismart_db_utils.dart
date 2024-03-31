@@ -7,6 +7,8 @@ class IsMartDatabaseUtils {
 
   static const int dbVersion = 1;
 
+  IsMartDatabaseUtils._();
+
   /// Get database patch
   static Future<String> getDatabasePath() async {
     var databasesPath = await getApplicationDocumentsDirectory();

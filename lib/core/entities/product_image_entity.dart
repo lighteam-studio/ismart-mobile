@@ -1,33 +1,27 @@
-import 'dart:typed_data';
-
 class ProductImageEntity {
-  final String productImageId;
-  final Uint8List data;
-  final String mimeType;
-  final String productId;
+  String productImageId;
+  String imageId;
+  String variationId;
 
   ProductImageEntity({
     required this.productImageId,
-    required this.data,
-    required this.mimeType,
-    required this.productId,
+    required this.imageId,
+    required this.variationId,
   });
 
   Map<String, dynamic> toEntityMap() {
     return {
       "product_image_id": productImageId,
-      "data": data,
-      "mime_type": mimeType,
-      "product_id": productId,
+      "image_id": imageId,
+      "variation_id": variationId,
     };
   }
 
   factory ProductImageEntity.fromMap(Map<String, dynamic> map) {
     return ProductImageEntity(
       productImageId: map['product_image_id'],
-      data: map['data'],
-      mimeType: map['mime_type'],
-      productId: map['product_id'],
+      imageId: map['image_id'],
+      variationId: map['variation_id'],
     );
   }
 }

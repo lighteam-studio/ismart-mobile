@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ismart/features/gallery/gallery_feature.dart';
+import 'package:ismart/features/gallery/provider/gallery_list_provider.dart';
 import 'package:ismart/features/initialization/initialization_feature.dart';
 import 'package:ismart/features/initialization/provider/initialization_provider.dart';
 import 'package:ismart/features/onboarding/onboarding_feature.dart';
@@ -19,6 +21,7 @@ class AppRouter {
   static const String appShell = "app_shell";
   static const String productDetail = "product_detail";
   static const String storeDetail = "store_detail";
+  static const String gallery = "gallery";
 
   static Route<dynamic> controller(RouteSettings settings) {
     var args = settings.arguments;
@@ -49,6 +52,14 @@ class AppRouter {
           builder: (context) => ChangeNotifierProvider(
             create: (context) => ProductDetailProvider(args.toString()),
             child: const ProductDetailFeature(),
+          ),
+        );
+
+      case gallery:
+        return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+            create: (context) => GalleryListProvider(),
+            child: const GalleryFeature(),
           ),
         );
 

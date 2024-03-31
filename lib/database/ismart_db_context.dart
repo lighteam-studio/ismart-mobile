@@ -5,12 +5,14 @@ import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_category_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
 import 'package:ismart/core/entities/product_group_entity.dart';
+import 'package:ismart/core/entities/media_entity.dart';
 import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/entities/product_property_entity.dart';
 import 'package:ismart/core/entities/product_variation_entity.dart';
 import 'package:ismart/core/entities/product_variation_property_value_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
+import 'package:ismart/database/dbsets/media_dbset.dart';
 import 'package:ismart/database/dbsets/preferences_dbset.dart';
 import 'package:ismart/database/dbsets/product_barcode_dbset.dart';
 import 'package:ismart/database/dbsets/product_category_dbset.dart';
@@ -23,6 +25,7 @@ import 'package:ismart/database/dbsets/product_variation_property_value_dbset.da
 import 'package:ismart/database/ismart_db_utils.dart';
 
 class IsMartDatabaseContext {
+  DbSet<MediaEntity, Query> image = MediaDbSet();
   DbSet<PreferenceEntity, Query> preferences = PreferenceDbSet();
   DbSet<ProductEntity, Query> product = ProductDbSet();
   DbSet<ProductBarcodeEntity, Query> productBarcode = ProductBarcodeDbSet();
@@ -38,6 +41,7 @@ class IsMartDatabaseContext {
     var database = await IsMartDatabaseUtils.getDatabase();
 
     await database.transaction((txn) async {
+      await txn.execute(image.createTable());
       await txn.execute(preferences.createTable());
       await txn.execute(product.createTable());
       await txn.execute(productBarcode.createTable());

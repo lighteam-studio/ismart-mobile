@@ -1,8 +1,6 @@
 import 'package:ismart/core/entities/product_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
-import 'package:ismart/database/dbsets/product_barcode_dbset.dart';
-import 'package:ismart/database/dbsets/product_image_dbset.dart';
 import 'package:ismart/database/dbsets/product_property_dbset.dart';
 import 'package:ismart/database/dbsets/product_variation_dbset.dart';
 import 'package:ismart/database/dbsets/product_variation_property_value_dbset.dart';
@@ -15,25 +13,24 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
   @override
   String createTable() {
     return '''
-      create table $tableName
-      (
-        category_id TEXT not null,
-        brand       TEXT not null,
-        unit        TEXT not null,
-        name        TEXT not null,
-        product_id  TEXT not null,
-        thumbnail   BLOB,
-        constraint products_pk
-          primary key (product_id),
-        constraint category_fk
-          foreign key (category_id) references product_category,
-        constraint category_id
-          check (length(category_id) == 36),
-        constraint product_id
-          check (length(product_id) == 36),
-        constraint unit
-          check (unit in ('un', 'kg'))
-      );
+    create table $tableName
+    (
+      category_id TEXT not null,
+      brand       TEXT not null,
+      unit        TEXT not null,
+      name        TEXT not null,
+      product_id  TEXT not null,
+      constraint products_pk
+        primary key (product_id),
+      constraint category_fk
+        foreign key (category_id) references product_category,
+      constraint category_id
+        check (length(category_id) == 36),
+      constraint product_id
+        check (length(product_id) == 36),
+      constraint unit
+        check (unit in ('un', 'kg'))
+    );
       ''';
   }
 
@@ -50,20 +47,6 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
       await txn.insert(tableName, entity.toEntityMap());
 
       var batch = txn.batch();
-
-      // Insert bar codes
-      if (entity.barcodes != null) {
-        for (var barcode in entity.barcodes ?? []) {
-          batch.insert(ProductBarcodeDbSet().tableName, barcode.toEntityMap());
-        }
-      }
-
-      if (entity.images != null) {
-        for (var image in entity.images!) {
-          batch.insert(ProductImageDbSet().tableName, image.toEntityMap());
-        }
-      }
-
       if (entity.properties != null) {
         for (var property in entity.properties!) {
           batch.insert(ProductPropertyDbset().tableName, property.toEntityMap());
@@ -72,8 +55,10 @@ class ProductDbSet implements DbSet<ProductEntity, Query> {
 
       if (entity.variations != null) {
         for (var variation in entity.variations!) {
+          // Insert variation
           batch.insert(ProductVariationDbSet().tableName, variation.toEntityMap());
 
+          // Insert variation values
           if (variation.values != null) {
             for (var value in variation.values!) {
               batch.insert(ProductVariationPropertyValueDbSet().tableName, value.toEntityMap());

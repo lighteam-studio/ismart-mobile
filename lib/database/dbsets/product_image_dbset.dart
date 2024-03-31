@@ -11,16 +11,17 @@ class ProductImageDbSet implements DbSet<ProductImageEntity, ProductImageQuery> 
   @override
   String createTable() {
     return '''
-    create table $tableName
+    create table product_image
     (
       product_image_id TEXT not null,
-      data             BLOB not null,
-      mime_type        TEXT not null,
-      product_id       TEXT,
-      constraint product_image_id
+      image_id         TEXT not null,
+      variation_id     integer,
+      constraint product_image_pk
         primary key (product_image_id),
-      constraint product_id_fk
-        foreign key (product_id) references product
+      constraint image_fk
+        foreign key (image_id, image_id) references image ("", image_id),
+      constraint variation_id
+        foreign key (variation_id) references product_variation
     );
     ''';
   }

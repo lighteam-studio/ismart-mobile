@@ -10,17 +10,17 @@ class ProductBarcodeDbSet implements DbSet<ProductBarcodeEntity, Query> {
   @override
   String createTable() {
     return '''
-      create table $tableName
-      (
-        product_barcode_id TEXT not null,
-        product_id         TEXT not null,
-        value              TEXT not null,
-        constraint product_barcode_pk
-          primary key (product_barcode_id),
-        constraint product_id_fk
-          foreign key (product_id) references product
-      );
-      ''';
+    create table product_barcode
+    (
+      product_barcode_id   TEXT not null,
+      value                TEXT not null,
+      product_variation_id TEXT not null,
+      constraint product_barcode_pk
+        primary key (product_barcode_id),
+      constraint product_variation_fk
+        foreign key (product_variation_id) references product_variation (product_variation_id)
+    );
+    ''';
   }
 
   @override

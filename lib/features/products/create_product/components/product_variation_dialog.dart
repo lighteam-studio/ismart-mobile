@@ -38,6 +38,8 @@ class _ProductVariationDialogState extends State<ProductVariationDialog> {
     if (valid) {
       Navigator.of(context).pop(
         ProductVariationEntity(
+          sku: "",
+          thumbnail: null,
           productId: widget.variation.productId,
           variationId: widget.variation.variationId,
           price: _currencyFormatter.getUnformattedValue().toDouble(),

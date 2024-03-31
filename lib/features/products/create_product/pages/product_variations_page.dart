@@ -27,6 +27,8 @@ class ProductVariationsPage extends StatelessWidget {
           style: textTheme.labelMedium,
         ),
         const SizedBox(height: AppSizes.s02),
+
+        // Variations
         ...provider.variations
             .map(
               (e) => ProductVariationListTile(

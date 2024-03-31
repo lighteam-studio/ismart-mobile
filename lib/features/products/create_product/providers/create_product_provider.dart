@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:ismart/core/entities/product_barcode_entity.dart';
+import 'package:ismart/core/entities/media_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
-import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/entities/product_property_entity.dart';
 import 'package:ismart/core/entities/product_variation_entity.dart';
 import 'package:ismart/core/entities/product_variation_property_value_entity.dart';
@@ -17,13 +15,12 @@ import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
 import 'package:ismart/resources/app_images.dart';
 import 'package:ismart/utils/helper_functions.dart';
-import 'package:mime/mime.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateProductProvider extends ChangeNotifier {
   /// Repositories
   late final IProductsRepository _productsRepository = IProductsRepository.getInstance();
-  final IProductGroupRepository _productGroupsRepository = IProductGroupRepository.getInstance();
+  final IProductGroupRepository _productGroupRepository = IProductGroupRepository.getInstance();
 
   /// Form keys
   final GlobalKey<FormState> _productInfoForm = GlobalKey();
@@ -43,8 +40,12 @@ class CreateProductProvider extends ChangeNotifier {
   List<Group<Option<String>>> get availableProductGroups => _availableProductGroups;
 
   /// Pictures
-  final List<String> _pictures = [];
-  List<String> get pictures => _pictures;
+  List<MediaEntity> _pictures = [];
+  List<MediaEntity> get pictures => _pictures;
+  set pictures(List<MediaEntity> pictures) {
+    _pictures = pictures;
+    notifyListeners();
+  }
 
   /// Temp product id
   String _tempProductId = const Uuid().v4();
@@ -108,12 +109,12 @@ class CreateProductProvider extends ChangeNotifier {
 
   void _loadAvailableProductGroups(BuildContext context) async {
     try {
-      var groups = await _productGroupsRepository.getGroups();
+      var groups = await _productGroupRepository.getGroups();
 
       _availableProductGroups = groups.map<Group<Option<String>>>((e) {
         return Group(
           title: e.title,
-          items: e.categories
+          items: e.categories!
               .map<Option<String>>(
                 (e) => Option(key: e.productCategoryId, label: e.name),
               )
@@ -141,12 +142,6 @@ class CreateProductProvider extends ChangeNotifier {
     _priceController.clear();
     _stockController.clear();
     _pageController.jumpToPage(0);
-    notifyListeners();
-  }
-
-  /// Add new Pictures to the product
-  void addPictures(List<String> newPictures) {
-    _pictures.addAll(newPictures);
     notifyListeners();
   }
 
@@ -238,6 +233,8 @@ class CreateProductProvider extends ChangeNotifier {
         var variationId = const Uuid().v4();
 
         return ProductVariationEntity(
+          sku: "",
+          thumbnail: null,
           variationId: variationId,
           productId: _tempProductId,
           price: 0,
@@ -288,17 +285,12 @@ class CreateProductProvider extends ChangeNotifier {
     try {
       const uuid = Uuid();
 
-      var imageBlobs = await Future.wait(
-        _pictures.map((picture) => File(picture).readAsBytes()),
-      );
-
       // Add the entity
       var entity = ProductEntity(
         productId: _tempProductId,
         categoryId: _selectedCategory,
         brand: _brandController.text,
         unit: _unit,
-        thumbnail: imageBlobs.isNotEmpty ? imageBlobs.first : null,
         name: _nameController.text,
         properties: _productProperties
             .map(
@@ -311,49 +303,12 @@ class CreateProductProvider extends ChangeNotifier {
               ),
             )
             .toList(),
-        images: _pictures
-            .mapIndexed(
-              (index, element) => ProductImageEntity(
-                productImageId: uuid.v4(),
-                data: imageBlobs[index],
-                mimeType: lookupMimeType(element) ?? '',
-                productId: _tempProductId,
-              ),
-            )
-            .toList(),
-        barcodes: _barcodes
-            .where((element) => element.text.isNotEmpty)
-            .map(
-              (e) => ProductBarcodeEntity(
-                productBarcodeId: uuid.v4(),
-                productId: _tempProductId,
-                value: e.text,
-              ),
-            )
-            .toList(),
         variations: _productHasVariations
             ? _variations
-                .map(
-                  (e) => ProductVariationEntity(
-                    variationId: e.variationId,
-                    productId: _tempProductId,
-                    price: e.price,
-                    stock: e.stock,
-                    values: e.values!
-                        .map(
-                          (e) => ProductVariationPropertyValueEntity(
-                            value: e.value,
-                            propertyId: e.propertyId,
-                            valueId: e.valueId,
-                            variationId: e.variationId,
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-                .toList()
             : [
                 ProductVariationEntity(
+                  sku: "",
+                  thumbnail: null,
                   price: _currencyFormatter.getUnformattedValue().toDouble(),
                   productId: _tempProductId,
                   stock: double.tryParse(_stockController.text) ?? 0,

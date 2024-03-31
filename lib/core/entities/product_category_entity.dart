@@ -11,7 +11,7 @@ class ProductCategoryEntity {
     required this.productGroupId,
   });
 
-  Map<String, String> toMap() {
+  Map<String, String> toEntityMap() {
     return {
       "product_category_id": productCategoryId,
       "name": name,
@@ -27,11 +27,11 @@ class ProductCategoryEntity {
     );
   }
 
-  factory ProductCategoryEntity.fromMap(Map<String, Object?> map) {
+  factory ProductCategoryEntity.fromMap(Map<String, dynamic> map) {
     return ProductCategoryEntity(
-      productCategoryId: map["product_category_id"]?.toString() ?? '',
-      name: map["name"]?.toString() ?? '',
-      productGroupId: map["product_group_id"]?.toString() ?? '',
+      productCategoryId: map["product_category_id"] ?? '',
+      name: map["name"] ?? '',
+      productGroupId: map["product_group_id"] ?? '',
     );
   }
 }

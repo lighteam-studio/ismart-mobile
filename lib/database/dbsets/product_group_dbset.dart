@@ -1,5 +1,5 @@
-import 'dart:convert';
-
+import 'package:collection/collection.dart';
+import 'package:ismart/core/entities/product_category_entity.dart';
 import 'package:ismart/core/entities/product_group_entity.dart';
 import 'package:ismart/core/interfaces/dbset.dart';
 import 'package:ismart/core/query/query.dart';
@@ -19,6 +19,8 @@ class ProductGroupDbSet implements DbSet<ProductGroupEntity, Query> {
       title            TEXT not null,
       constraint product_group_pk
         primary key (product_group_id),
+      constraint product_group_name_pk
+        unique (title),
       constraint valid_id
         check (length(product_group_id) == 36)
     );
@@ -26,13 +28,27 @@ class ProductGroupDbSet implements DbSet<ProductGroupEntity, Query> {
   }
 
   @override
-  Future<ProductGroupEntity> find(String id) {
-    throw UnimplementedError();
+  Future<ProductGroupEntity?> find(String id) async {
+    var database = await IsMartDatabaseUtils.getDatabase();
+    var result = await database.query(tableName, where: 'product_group_id = ?', whereArgs: [id]);
+    await database.close();
+
+    if (result.isEmpty) {
+      return null;
+    }
+
+    return ProductGroupEntity.fromMap(result.first);
   }
 
   @override
-  Future<void> insert(ProductGroupEntity entity) {
-    throw UnimplementedError();
+  Future<void> insert(ProductGroupEntity entity) async {
+    var database = await IsMartDatabaseUtils.getDatabase();
+    await database.insert(
+      tableName,
+      entity.toEntityMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    await database.close();
   }
 
   @override
@@ -43,7 +59,7 @@ class ProductGroupDbSet implements DbSet<ProductGroupEntity, Query> {
     for (var group in values) {
       batch.insert(
         tableName,
-        group.toMap(),
+        group.toEntityMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
@@ -54,36 +70,59 @@ class ProductGroupDbSet implements DbSet<ProductGroupEntity, Query> {
 
   @override
   Future<List<ProductGroupEntity>> search([Query? query]) async {
-    var query = '''
-      SELECT
-        json_object(
-          'product_group_id', product_group.product_group_id,
-          'title',product_group.title,
-          'categories', json_group_array(
-            json_object(
-              'product_group_id', product_group.product_group_id,
-              'name', product_category.name,
-              'product_category_id', product_category.product_category_id
-            )
-          )
-        ) result
-      FROM product_group
-      LEFT JOIN product_category
-          on product_group.product_group_id = product_category.product_group_id
-      GROUP BY
-          product_group.product_group_id''';
+    var search = query?.search ?? '';
+
+    var queryString = '''
+      SELECT pg.product_group_id, pg.title, pc.product_category_id, pc.name FROM product_group pg
+      LEFT JOIN main.product_category pc on pg.product_group_id = pc.product_group_id
+    ''';
+
+    if (search.isNotEmpty) {
+      queryString += '''
+        WHERE lower(pg.title) like lower(?)
+        OR lower(pc.name) like lower(?)
+      ''';
+    }
+
+    // Order by
+    queryString += '''
+      ORDER BY pg.title, pc.name;
+    ''';
 
     var database = await IsMartDatabaseUtils.getDatabase();
 
-    var response = await database.rawQuery(query);
+    var response = await database.rawQuery(
+      queryString,
+      search.isNotEmpty
+          ? [
+              '%$search%',
+              '%$search%',
+            ]
+          : [],
+    );
 
-    var results = response
-        .map((e) => jsonDecode(e[e.keys.first] as String)) //
-        .map((t) => ProductGroupEntity.fromMap(t))
+    var groupedResponse = groupBy(response, (p0) {
+      return (
+        id: p0['product_group_id'].toString(),
+        title: p0['title'].toString(),
+      );
+    });
+
+    var groups = groupedResponse.entries
+        .map(
+          (entry) => ProductGroupEntity(
+            productGroupId: entry.key.id,
+            title: entry.key.title,
+            categories: entry.value
+                .where((element) => element['product_category_id'] != null)
+                .map((e) => ProductCategoryEntity.fromMap(e))
+                .toList(),
+          ),
+        )
         .toList();
 
     await database.close();
 
-    return results;
+    return groups;
   }
 }

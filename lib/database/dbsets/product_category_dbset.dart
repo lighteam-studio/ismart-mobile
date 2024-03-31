@@ -32,8 +32,15 @@ class ProductCategoryDbSet implements DbSet<ProductCategoryEntity, Query> {
   }
 
   @override
-  Future<void> insert(ProductCategoryEntity entity) {
-    throw UnimplementedError();
+  Future<void> insert(ProductCategoryEntity entity) async {
+    var database = await IsMartDatabaseUtils.getDatabase();
+    await database.insert(
+      tableName,
+      entity.toEntityMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    await database.close();
   }
 
   @override
@@ -44,7 +51,7 @@ class ProductCategoryDbSet implements DbSet<ProductCategoryEntity, Query> {
     for (var category in values) {
       batch.insert(
         tableName,
-        category.toMap(),
+        category.toEntityMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
@@ -54,7 +61,7 @@ class ProductCategoryDbSet implements DbSet<ProductCategoryEntity, Query> {
   }
 
   @override
-  Future<List<ProductCategoryEntity>> search([Query? query]) {
+  Future<List<ProductCategoryEntity>> search([Query? query]) async {
     throw UnimplementedError();
   }
 }

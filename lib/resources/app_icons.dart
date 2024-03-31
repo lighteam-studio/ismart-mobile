@@ -24,4 +24,6 @@ class AppIcons {
   static const String circlePlus = "lib/assets/icons/circle_plus.png";
   static const String popup = "lib/assets/icons/popup.png";
   static const String shopOutline = "lib/assets/icons/shop_outline.png";
+  static const String phone = "lib/assets/icons/phone.png";
+  static const String check = "lib/assets/icons/check.png";
 }

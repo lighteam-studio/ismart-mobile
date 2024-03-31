@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ismart/repository/abstractions/i_media_repository.dart';
 import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
+import 'package:ismart/repository/abstractions/i_product_category_repository.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
+import 'package:ismart/repository/local/media_repository.dart';
 import 'package:ismart/repository/local/preferences_repository.dart';
+import 'package:ismart/repository/local/product_category_repository.dart';
 import 'package:ismart/repository/local/product_group_repository.dart';
 import 'package:ismart/repository/local/products_repository.dart';
 import 'package:ismart/resources/app_colors.dart';
@@ -16,6 +20,8 @@ void main() {
   GetIt.instance.registerLazySingleton<IPreferencesRepository>(() => PreferencesRepository());
   GetIt.instance.registerLazySingleton<IProductGroupRepository>(() => ProductGroupRepository());
   GetIt.instance.registerLazySingleton<IProductsRepository>(() => ProductsRepository());
+  GetIt.instance.registerLazySingleton<IProductCategoryRepository>(() => ProductCategoryRepository());
+  GetIt.instance.registerLazySingleton<IMediaRepository>(() => MediaRepository());
   sqfliteFfiInit();
   runApp(const MyApp());
 }

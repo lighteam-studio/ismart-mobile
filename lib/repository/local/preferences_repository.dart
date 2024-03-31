@@ -16,6 +16,7 @@ class PreferencesRepository implements IPreferencesRepository {
   @override
   Future<String> getPreference(Preference preference) async {
     var resp = await _context.preferences.find(preference.name);
+    if (resp == null) return '';
     return resp.value;
   }
 }

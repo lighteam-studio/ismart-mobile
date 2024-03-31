@@ -6,12 +6,12 @@ class ProductGroupEntity {
   final String title;
 
   // Relationship fields
-  List<ProductCategoryEntity> categories;
+  List<ProductCategoryEntity>? categories;
 
   ProductGroupEntity({
     required this.productGroupId,
     required this.title,
-    required this.categories,
+    this.categories,
   });
 
   factory ProductGroupEntity.create({required String title}) {
@@ -26,15 +26,11 @@ class ProductGroupEntity {
     return ProductGroupEntity(
       productGroupId: map["product_group_id"]?.toString() ?? '',
       title: map["title"]?.toString() ?? '',
-      categories: map['categories'] != null
-          ? List.from(map['categories'] as List)
-              .map((category) => ProductCategoryEntity.fromMap(category)) //
-              .toList()
-          : [],
+      categories: [],
     );
   }
 
-  Map<String, String> toMap() {
+  Map<String, String> toEntityMap() {
     return {
       "product_group_id": productGroupId,
       "title": title,
