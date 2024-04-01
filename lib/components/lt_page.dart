@@ -4,13 +4,13 @@ import 'package:ismart/components/lt_bottom_sheet_header.dart';
 class LtPage extends StatelessWidget {
   final String title;
   final Widget child;
-  final Widget? action;
+  final List<Widget>? actions;
 
   const LtPage({
     required this.title,
     required this.child,
     super.key,
-    this.action,
+    this.actions,
   });
 
   @override
@@ -39,7 +39,7 @@ class LtPage extends StatelessWidget {
               // Page title
               LtBottomSheetHeader(
                 title: title,
-                action: action,
+                actions: actions,
               ),
 
               Expanded(

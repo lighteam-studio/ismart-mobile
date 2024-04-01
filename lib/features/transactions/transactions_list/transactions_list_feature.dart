@@ -2,26 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_list_group_title_sliver.dart';
 import 'package:ismart/components/lt_search_sliver.dart';
 import 'package:ismart/components/lt_surface_button.dart';
-import 'package:ismart/features/products/products_list/components/product_list_tile.dart';
-import 'package:ismart/features/products/products_list/providers/product_list_provider.dart';
+import 'package:ismart/core/entities/transaction_entity.dart';
+import 'package:ismart/core/enums/transaction_type.dart';
+import 'package:ismart/core/interfaces/group.dart';
+import 'package:ismart/features/transactions/transactions_list/components/transaction_list_tile.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
-import 'package:ismart/router/app_router.dart';
-import 'package:provider/provider.dart';
 
-class ProductsListFeature extends StatelessWidget {
-  const ProductsListFeature({super.key});
+class TransactionsListFeature extends StatelessWidget {
+  const TransactionsListFeature({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
-    ProductListProvider provider = context.read();
+    List<Group<TransactionEntity>> data = [
+      Group(title: "January 25", items: [
+        TransactionEntity(id: "1", type: TransactionType.sale, amount: 854.75, date: DateTime.now()),
+        TransactionEntity(id: "2", type: TransactionType.devolution, amount: -247.35, date: DateTime.now()),
+        TransactionEntity(id: "3", type: TransactionType.reposition, amount: -534.54, date: DateTime.now()),
+        TransactionEntity(id: "4", type: TransactionType.withdrawal, amount: -120.99, date: DateTime.now()),
+        TransactionEntity(id: "5", type: TransactionType.deposit, amount: 251.50, date: DateTime.now()),
+      ])
+    ];
 
+    var colorScheme = Theme.of(context).colorScheme;
     return StreamBuilder(
-      stream: provider.productsListStream,
+      stream: Stream.fromFuture(Future.value(data)),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Text("Nenhum produto cadastrado");
+          return const Text("Nenhum transação realizada cadastrado");
         }
 
         if (snapshot.hasError) {
@@ -44,12 +52,12 @@ class ProductsListFeature extends StatelessWidget {
                     color: colorScheme.surface.withOpacity(.7),
                   ),
                   itemBuilder: (c, i) {
-                    var product = group.items[i];
+                    var transaction = group.items[i];
 
-                    return ProductListTile(
-                      brand: product.brand,
-                      name: product.name,
-                      image: product.thumbnail != null ? MemoryImage(product.thumbnail!) : null,
+                    return TransactionListTile(
+                      amount: transaction.amount,
+                      date: transaction.date,
+                      type: transaction.type,
                       onTap: () {},
                     );
                   },

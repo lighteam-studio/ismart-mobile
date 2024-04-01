@@ -83,16 +83,17 @@ class _ProductPropertyDialogState extends State<ProductPropertyDialog> {
             // SM Select Header
             LtBottomSheetHeader(
               title: "Product property",
-              action: widget.property != null
-                  ? LtIconButton(
-                      icon: AppIcons.trash,
-                      iconSize: AppSizes.s06,
-                      color: colorScheme.error,
-                      onPressed: () => Navigator.of(context).pop(
-                        ProductPropertyDialogAction.delete,
-                      ),
-                    )
-                  : null,
+              actions: [
+                if (widget.property != null)
+                  LtIconButton(
+                    icon: AppIcons.trash,
+                    iconSize: AppSizes.s06,
+                    color: colorScheme.error,
+                    onPressed: () => Navigator.of(context).pop(
+                      ProductPropertyDialogAction.delete,
+                    ),
+                  ),
+              ],
             ),
 
             Expanded(

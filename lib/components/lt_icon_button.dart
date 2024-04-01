@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
 class LtIconButton extends StatelessWidget {
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final Color? color;
   final double size;
   final double iconSize;
@@ -11,7 +11,7 @@ class LtIconButton extends StatelessWidget {
   const LtIconButton({
     this.size = AppSizes.s10,
     this.iconSize = AppSizes.s06,
-    required this.onPressed,
+    this.onPressed,
     required this.icon,
     this.color,
     Key? key,
@@ -40,7 +40,7 @@ class LtIconButton extends StatelessWidget {
               fit: BoxFit.contain,
               height: iconSize,
               width: iconSize,
-              color: color ?? colorScheme.primary,
+              color: color ?? colorScheme.onSurface,
             ),
           ),
         ),

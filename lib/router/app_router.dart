@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/features/gallery/gallery_feature.dart';
-import 'package:ismart/features/gallery/provider/gallery_list_provider.dart';
+import 'package:ismart/features/gallery/provider/gallery_provider.dart';
 import 'package:ismart/features/initialization/initialization_feature.dart';
 import 'package:ismart/features/initialization/provider/initialization_provider.dart';
 import 'package:ismart/features/onboarding/onboarding_feature.dart';
@@ -58,7 +58,7 @@ class AppRouter {
       case gallery:
         return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
-            create: (context) => GalleryListProvider(),
+            create: (context) => GalleryProvider(),
             child: const GalleryFeature(),
           ),
         );

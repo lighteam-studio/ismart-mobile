@@ -75,16 +75,17 @@ class _CategoryDetailDialogState extends State<CategoryDetailDialog> {
             // SM Select Header
             LtBottomSheetHeader(
               title: widget.category != null ? "Edit category" : "Create category",
-              action: widget.category != null
-                  ? LtIconButton(
-                      icon: AppIcons.trash,
-                      iconSize: AppSizes.s06,
-                      color: colorScheme.error,
-                      onPressed: () => Navigator.of(context).pop(
-                        DialogActionEnum.delete,
-                      ),
-                    )
-                  : null,
+              actions: [
+                if (widget.category != null)
+                  LtIconButton(
+                    icon: AppIcons.trash,
+                    iconSize: AppSizes.s06,
+                    color: colorScheme.error,
+                    onPressed: () => Navigator.of(context).pop(
+                      DialogActionEnum.delete,
+                    ),
+                  )
+              ],
             ),
 
             Expanded(

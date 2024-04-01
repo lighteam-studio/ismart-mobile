@@ -26,4 +26,10 @@ class AppIcons {
   static const String shopOutline = "lib/assets/icons/shop_outline.png";
   static const String phone = "lib/assets/icons/phone.png";
   static const String check = "lib/assets/icons/check.png";
+  static const String import = "lib/assets/icons/import.png";
+  static const String sale = "lib/assets/icons/sale.png";
+  static const String devolution = "lib/assets/icons/devolution.png";
+  static const String reposition = "lib/assets/icons/reposition.png";
+  static const String withdrawal = "lib/assets/icons/withdrawal.png";
+  static const String deposit = "lib/assets/icons/deposit.png";
 }

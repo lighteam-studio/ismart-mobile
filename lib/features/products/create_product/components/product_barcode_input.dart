@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ismart/components/lt_popup_menu_button.dart';
+import 'package:flutter/services.dart';
+import 'package:ismart/components/lt_popup_input_button.dart';
 import 'package:ismart/components/lt_text_form_field.dart';
+import 'package:ismart/core/interfaces/lt_popup_option.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:ismart/utils/validators.dart';
@@ -31,6 +33,7 @@ class ProductBarcodeInput extends StatelessWidget {
         children: [
           Expanded(
             child: LtTextFormField(
+              mask: FilteringTextInputFormatter.digitsOnly,
               label: showLabel ? s.barCode : null,
               placeholder: s.placeholderBarCode,
               controller: controller,
@@ -42,16 +45,16 @@ class ProductBarcodeInput extends StatelessWidget {
           const SizedBox(width: AppSizes.s02),
           Padding(
             padding: showLabel ? const EdgeInsets.only(top: 22) : EdgeInsets.zero,
-            child: LtPopupMenuButton(
+            child: LtPopupInputButton(
               icon: AppIcons.circleEllipsis,
               options: [
-                LtPopupMenuButtonOption(
+                LtPopupOption(
                   label: "Scanner",
                   onTap: () {},
                   icon: AppIcons.scanner,
                 ),
                 if (canRemove)
-                  LtPopupMenuButtonOption(
+                  LtPopupOption(
                     label: "Remove",
                     onTap: onRemove,
                     icon: AppIcons.trash,

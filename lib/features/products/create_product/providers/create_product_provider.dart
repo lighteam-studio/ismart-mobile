@@ -2,7 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/media_entity.dart';
+import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_entity.dart';
+import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/entities/product_property_entity.dart';
 import 'package:ismart/core/entities/product_variation_entity.dart';
 import 'package:ismart/core/entities/product_variation_property_value_entity.dart';
@@ -227,28 +229,39 @@ class CreateProductProvider extends ChangeNotifier {
 
     var valueMatrix = _productProperties.map((e) => e.propertyValues).toList();
     var cartesian = createCartesianMatrix(valueMatrix);
+    var categoryName = _availableProductGroups
+        .expand((element) => element.items)
+        .firstWhere((element) => element.key == _selectedCategory)
+        .label;
 
     _variations = cartesian.map(
       (combination) {
         var variationId = const Uuid().v4();
 
+        var values = combination
+            .mapIndexed(
+              (i, value) => ProductVariationPropertyValueEntity(
+                value: value,
+                propertyId: _productProperties[i].propertyId,
+                valueId: const Uuid().v4(),
+                variationId: variationId,
+              ),
+            )
+            .toList();
+
         return ProductVariationEntity(
-          sku: "",
+          sku: generateSku(
+            category: categoryName,
+            brand: _brandController.text,
+            name: _nameController.text,
+            properties: values.map((e) => e.value).toList(),
+          ),
           thumbnail: null,
           variationId: variationId,
           productId: _tempProductId,
           price: 0,
           stock: 0,
-          values: combination
-              .mapIndexed(
-                (i, value) => ProductVariationPropertyValueEntity(
-                  value: value,
-                  propertyId: _productProperties[i].propertyId,
-                  valueId: const Uuid().v4(),
-                  variationId: variationId,
-                ),
-              )
-              .toList(),
+          values: values,
         );
       },
     ).toList();
@@ -271,7 +284,7 @@ class CreateProductProvider extends ChangeNotifier {
   void editVariation(BuildContext context, ProductVariationEntity variation) async {
     var newVariation = await showBottomSheetHelper(
       context,
-      child: ProductVariationDialog(variation: variation),
+      child: ProductVariationDialog(variation: variation, unit: _unit),
     );
 
     if (newVariation is ProductVariationEntity) {
@@ -284,6 +297,12 @@ class CreateProductProvider extends ChangeNotifier {
   void createProduct(BuildContext context) async {
     try {
       const uuid = Uuid();
+      var standardVariationId = uuid.v4();
+
+      var categoryName = _availableProductGroups
+          .expand((element) => element.items)
+          .firstWhere((element) => element.key == _selectedCategory)
+          .label;
 
       // Add the entity
       var entity = ProductEntity(
@@ -307,12 +326,35 @@ class CreateProductProvider extends ChangeNotifier {
             ? _variations
             : [
                 ProductVariationEntity(
-                  sku: "",
-                  thumbnail: null,
+                  sku: generateSku(
+                    category: categoryName,
+                    brand: _brandController.text,
+                    name: _nameController.text,
+                    properties: [],
+                  ),
+                  thumbnail: _pictures.isNotEmpty ? _pictures.first.mediaId : null,
                   price: _currencyFormatter.getUnformattedValue().toDouble(),
                   productId: _tempProductId,
                   stock: double.tryParse(_stockController.text) ?? 0,
                   variationId: uuid.v4(),
+                  barcodes: _barcodes
+                      .map(
+                        (e) => ProductBarcodeEntity(
+                          productBarcodeId: uuid.v4(),
+                          productVariationId: standardVariationId,
+                          value: e.text,
+                        ),
+                      )
+                      .toList(),
+                  images: _pictures
+                      .map(
+                        (e) => ProductImageEntity(
+                          productImageId: uuid.v4(),
+                          imageId: e.mediaId,
+                          variationId: standardVariationId,
+                        ),
+                      )
+                      .toList(),
                 )
               ],
       );

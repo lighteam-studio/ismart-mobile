@@ -25,9 +25,14 @@ class ProductPicturesInput extends StatelessWidget {
 
     void selectPicture() async {
       var images = await Navigator.of(context).pushNamed(AppRouter.gallery);
+      if (images is List<MediaEntity>) {
+        onChange([...pictures, ...images]);
+      }
     }
 
-    void onRemovePicture(int index) {}
+    void onRemovePicture(int i) {
+      onChange(pictures.whereIndexed((index, element) => index != i).toList());
+    }
 
     Widget renderSelectImageButton() {
       return Material(

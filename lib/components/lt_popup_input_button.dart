@@ -1,30 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ismart/core/interfaces/lt_popup_option.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
-class LtPopupMenuButtonOption {
-  final String label;
-  final void Function() onTap;
-  final String? icon;
-  final Color? color;
-
-  LtPopupMenuButtonOption({
-    required this.label,
-    required this.onTap,
-    this.icon,
-    this.color,
-  });
-}
-
-class LtPopupMenuButton extends StatelessWidget {
+class LtPopupInputButton extends StatelessWidget {
   final String icon;
-  final List<LtPopupMenuButtonOption> options;
-  const LtPopupMenuButton({required this.icon, required this.options, super.key});
+  final List<LtPopupOption> options;
+  const LtPopupInputButton({required this.icon, required this.options, super.key});
 
   @override
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
 
-    PopupMenuItem popupMenuItem(LtPopupMenuButtonOption option) {
+    PopupMenuItem popupMenuItem(LtPopupOption option) {
       return PopupMenuItem(
         onTap: option.onTap,
         child: Row(

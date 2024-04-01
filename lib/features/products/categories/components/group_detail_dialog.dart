@@ -70,16 +70,17 @@ class _GroupDetailDialogState extends State<GroupDetailDialog> {
             // SM Select Header
             LtBottomSheetHeader(
               title: widget.group != null ? "Edit group" : "Create group",
-              action: widget.group != null
-                  ? LtIconButton(
-                      icon: AppIcons.trash,
-                      iconSize: AppSizes.s06,
-                      color: colorScheme.error,
-                      onPressed: () => Navigator.of(context).pop(
-                        DialogActionEnum.delete,
-                      ),
-                    )
-                  : null,
+              actions: [
+                if (widget.group != null)
+                  LtIconButton(
+                    icon: AppIcons.trash,
+                    iconSize: AppSizes.s06,
+                    color: colorScheme.error,
+                    onPressed: () => Navigator.of(context).pop(
+                      DialogActionEnum.delete,
+                    ),
+                  )
+              ],
             ),
 
             Expanded(

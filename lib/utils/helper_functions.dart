@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_alert_dialog.dart';
 import 'package:ismart/components/lt_future_dialog.dart';
 import 'package:ismart/resources/app_images.dart';
+import 'dart:math' as math;
 
 Future<T?> showLoadingDialog<T>(BuildContext context, Future<T> Function() callback) {
   return showGeneralDialog(
@@ -67,4 +68,19 @@ Future<T?> showAlertHelper<T>(
       );
     },
   );
+}
+
+String generateSku({
+  required String category,
+  required String brand,
+  required String name,
+  required List<String> properties,
+}) {
+  var categoryCode = category.substring(0, math.min(category.length, 3)).toUpperCase();
+
+  var brandCode = brand.split(' ')[0].toUpperCase();
+  var nameCode = name.toUpperCase().split(' ').map((e) => e.substring(0, math.min(e.length, 3))).join('');
+  var propertiesCodes = properties.map((e) => e.toUpperCase().substring(0, math.min(e.length, 5)));
+
+  return [categoryCode, brandCode, nameCode, ...propertiesCodes].join('-');
 }

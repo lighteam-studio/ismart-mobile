@@ -1,12 +1,17 @@
+import 'package:ismart/core/entities/media_entity.dart';
+
 class ProductImageEntity {
   String productImageId;
   String imageId;
   String variationId;
 
+  MediaEntity? image;
+
   ProductImageEntity({
     required this.productImageId,
     required this.imageId,
     required this.variationId,
+    this.image,
   });
 
   Map<String, dynamic> toEntityMap() {

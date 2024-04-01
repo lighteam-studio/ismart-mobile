@@ -12,8 +12,8 @@ class ProductBarcodeEntity {
   Map<String, String> toEntityMap() {
     return {
       "product_barcode_id": productBarcodeId,
-      "product_variation_id": productVariationId,
       "value": value,
+      "product_variation_id": productVariationId,
     };
   }
 

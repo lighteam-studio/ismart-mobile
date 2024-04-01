@@ -18,11 +18,13 @@ class StoreDetailFeature extends StatelessWidget {
 
     return LtPage(
       title: "My store informations",
-      action: LtIconButton(
-        icon: AppIcons.trash,
-        onPressed: () => provider.deleteStore(context),
-        color: colorScheme.error,
-      ),
+      actions: [
+        LtIconButton(
+          icon: AppIcons.trash,
+          onPressed: () => provider.deleteStore(context),
+          color: colorScheme.error,
+        )
+      ],
       child: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -4,7 +4,7 @@ import 'package:ismart/features/products/products_shell.dart';
 import 'package:ismart/features/shell/components/app_navigation_bar.dart';
 import 'package:ismart/features/shell/components/app_shell_animated_switcher.dart';
 import 'package:ismart/features/my_store/my_store_feature.dart';
-import 'package:ismart/features/transactions/transactions_feature.dart';
+import 'package:ismart/features/transactions/transactions_shell.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
 class AppShell extends StatefulWidget {
@@ -20,7 +20,7 @@ class _AppShellState extends State<AppShell> {
 
   Widget renderContent() {
     if (selectedPage == 0) {
-      return const TransactionsFeature();
+      return const TransactionsShell();
     }
 
     if (selectedPage == 1) {

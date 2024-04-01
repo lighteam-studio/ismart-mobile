@@ -7,7 +7,7 @@ import 'package:mime/mime.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
-class GalleryListProvider extends ChangeNotifier {
+class GalleryProvider extends ChangeNotifier {
   final IMediaRepository _repository = IMediaRepository.getInstance();
 
   final List<String> _selectedMedias = [];
@@ -16,7 +16,7 @@ class GalleryListProvider extends ChangeNotifier {
   late BehaviorSubject<List<MediaEntity>> _mediaStreamController;
   Stream<List<MediaEntity>> get mediaStream => _mediaStreamController.stream;
 
-  Future<List<MediaEntity>> _importFromGallery() async {
+  void importFromGallery() async {
     var picker = ImagePicker();
 
     var files = await picker.pickMultiImage(
@@ -24,6 +24,8 @@ class GalleryListProvider extends ChangeNotifier {
       maxHeight: 500,
       maxWidth: 500,
     );
+
+    if (files.isEmpty) return;
 
     var bytes = await Future.wait(files.map((e) => e.readAsBytes()));
 
@@ -39,11 +41,13 @@ class GalleryListProvider extends ChangeNotifier {
         .toList();
 
     await _repository.addMedias(entities);
-
-    return entities;
+    _mediaStreamController.sink.add([
+      ...entities,
+      ..._mediaStreamController.value,
+    ]);
   }
 
-  Future<List<MediaEntity>> _importFromCamera() async {
+  void importFromCamera() async {
     var picker = ImagePicker();
 
     var file = await picker.pickImage(
@@ -64,25 +68,37 @@ class GalleryListProvider extends ChangeNotifier {
       );
 
       await _repository.addMedias([entity]);
-      return [entity];
-    }
 
-    return [];
+      _mediaStreamController.sink.add([
+        entity,
+        ..._mediaStreamController.value,
+      ]);
+    }
   }
 
-  void _initialize() async {
+  void _refresh() async {
     var medias = await _repository.getMedias();
     _mediaStreamController.sink.add(medias);
   }
 
-  GalleryListProvider() {
+  GalleryProvider() {
     _mediaStreamController = BehaviorSubject();
-    _mediaStreamController.onListen = _initialize;
+    _mediaStreamController.onListen = _refresh;
   }
 
   void toogleSelection(String mediaId) {
     _selectedMedias.contains(mediaId) ? _selectedMedias.remove(mediaId) : _selectedMedias.add(mediaId);
     notifyListeners();
+  }
+
+  void confirmSelection(BuildContext context) {
+    var entities = _mediaStreamController.value
+        .where(
+          (element) => _selectedMedias.contains(element.mediaId),
+        )
+        .toList();
+
+    Navigator.of(context).pop(entities);
   }
 
   @override

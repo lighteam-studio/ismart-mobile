@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
       onSurface: AppColors.neutral.shade500,
       errorContainer: Colors.red.shade100,
       error: Colors.red.shade400,
+      tertiary: Colors.green,
     );
 
     var textTheme = TextTheme(

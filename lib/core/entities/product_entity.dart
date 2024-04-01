@@ -1,28 +1,30 @@
+import 'dart:typed_data';
+
 import 'package:ismart/core/entities/product_category_entity.dart';
 import 'package:ismart/core/entities/product_property_entity.dart';
 import 'package:ismart/core/entities/product_variation_entity.dart';
 import 'package:ismart/core/enums/product_unit.dart';
 
 class ProductEntity {
-  String categoryId;
   String brand;
-  ProductUnit unit;
+  String categoryId;
   String name;
   String productId;
+  ProductUnit unit;
 
   // Relationship fields
   List<ProductVariationEntity>? variations;
-
   List<ProductPropertyEntity>? properties;
   ProductCategoryEntity? category;
+  Uint8List? thumbnail;
 
   Map<String, dynamic> toEntityMap() {
     return {
-      "product_id": productId,
       "category_id": categoryId,
       "brand": brand,
       "unit": unit.name,
       "name": name,
+      "product_id": productId,
     };
   }
 
@@ -35,6 +37,7 @@ class ProductEntity {
     this.properties,
     this.category,
     this.variations,
+    this.thumbnail,
   });
 
   factory ProductEntity.fromMap(Map<String, dynamic> map) {
@@ -47,6 +50,7 @@ class ProductEntity {
         orElse: () => ProductUnit.un,
       ),
       name: map['name']?.toString() ?? '',
+      thumbnail: map['thumbnail'],
     );
   }
 }

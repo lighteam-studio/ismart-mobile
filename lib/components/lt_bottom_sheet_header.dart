@@ -5,9 +5,9 @@ import 'package:ismart/resources/app_sizes.dart';
 
 class LtBottomSheetHeader extends StatelessWidget {
   final String title;
-  final Widget? action;
+  final List<Widget>? actions;
 
-  const LtBottomSheetHeader({required this.title, this.action, super.key});
+  const LtBottomSheetHeader({required this.title, this.actions, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +43,14 @@ class LtBottomSheetHeader extends StatelessWidget {
           ),
 
           // Back button
-          Align(
-            alignment: Alignment.centerRight,
-            child: action,
-          ),
+          if (actions != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: actions!,
+              ),
+            ),
         ],
       ),
     );

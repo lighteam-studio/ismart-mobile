@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:ismart/core/entities/product_barcode_entity.dart';
 import 'package:ismart/core/entities/product_image_entity.dart';
 import 'package:ismart/core/entities/product_variation_property_value_entity.dart';
@@ -10,7 +8,7 @@ class ProductVariationEntity {
   final double stock;
   final String productId;
   final String sku;
-  final Uint8List? thumbnail;
+  final String? thumbnail;
 
   List<ProductVariationPropertyValueEntity>? values;
   List<ProductImageEntity>? images;
