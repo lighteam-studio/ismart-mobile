@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ismart/features/basket/basket_feature.dart';
 import 'package:ismart/features/gallery/gallery_feature.dart';
 import 'package:ismart/features/gallery/provider/gallery_provider.dart';
 import 'package:ismart/features/initialization/initialization_feature.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 
 class AppRouter {
   static const String welcomePage = "welcome_page";
+  static const String basket = "basket_feature";
   static const String onboardingFeature = "onboarding_feature";
   static const String onboardingFinishPage = "onboarding_finish_page";
   static const String initialization = "initialization_feature";
@@ -46,6 +48,9 @@ class AppRouter {
 
       case appShell:
         return MaterialPageRoute(builder: (contect) => const AppShell());
+
+      case basket:
+        return MaterialPageRoute(builder: (contect) => const BasketFeature());
 
       case productDetail:
         return MaterialPageRoute(

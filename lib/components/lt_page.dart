@@ -5,10 +5,12 @@ class LtPage extends StatelessWidget {
   final String title;
   final Widget child;
   final List<Widget>? actions;
+  final bool safeAreaBottom;
 
   const LtPage({
     required this.title,
     required this.child,
+    this.safeAreaBottom = true,
     super.key,
     this.actions,
   });
@@ -32,6 +34,7 @@ class LtPage extends StatelessWidget {
           ),
         ),
         child: SafeArea(
+          bottom: safeAreaBottom,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

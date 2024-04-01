@@ -6,7 +6,6 @@ import 'package:ismart/features/products/products_list/components/product_list_t
 import 'package:ismart/features/products/products_list/providers/product_list_provider.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
-import 'package:ismart/router/app_router.dart';
 import 'package:provider/provider.dart';
 
 class ProductsListFeature extends StatelessWidget {

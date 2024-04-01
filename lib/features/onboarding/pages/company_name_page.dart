@@ -64,7 +64,7 @@ class CompanyNamePage extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSizes.s06),
                 child: LtPrimaryButton(
                   label: "Continuar",
-                  onTap: () => onboardingProvider.setCompanyName(),
+                  onTap: () => onboardingProvider.setCompanyName(context),
                 ),
               )
             ],

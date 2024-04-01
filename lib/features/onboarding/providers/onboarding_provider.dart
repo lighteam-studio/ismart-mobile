@@ -21,7 +21,8 @@ class OnboardingProvider extends ChangeNotifier {
   ProductCategoryForm get productCategoryForm => _productCategoryForm;
 
   /// Set company name
-  void setCompanyName() async {
+  void setCompanyName(BuildContext context) async {
+    FocusScope.of(context).unfocus();
     var isValid = await _companyNameForm.updateCompanyName();
     if (!isValid) return;
 
@@ -33,6 +34,7 @@ class OnboardingProvider extends ChangeNotifier {
 
   /// Set selected groups
   void setSelectedGroups(BuildContext context) async {
+    FocusScope.of(context).unfocus();
     var persisted = await _productCategoryForm.persistSelectedGroups(context);
     if (!persisted) return;
 

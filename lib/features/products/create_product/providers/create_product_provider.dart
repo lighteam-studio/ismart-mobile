@@ -177,6 +177,8 @@ class CreateProductProvider extends ChangeNotifier {
 
   /// Add new property to product
   void addProperty(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+
     var response = await showBottomSheetHelper<ProductPropertyEntity>(
       context,
       child: const ProductPropertyDialog(),
@@ -190,6 +192,8 @@ class CreateProductProvider extends ChangeNotifier {
 
   /// Edit product property
   void editProperty(BuildContext context, ProductPropertyEntity property) async {
+    FocusScope.of(context).unfocus();
+
     var response = await showBottomSheetHelper(
       context,
       child: ProductPropertyDialog(
@@ -211,6 +215,7 @@ class CreateProductProvider extends ChangeNotifier {
   /// Submit form data
   void submitProductInfoForm(BuildContext context) {
     FocusScope.of(context).unfocus();
+
     _validateOnInput = true;
     notifyListeners();
 
@@ -276,12 +281,15 @@ class CreateProductProvider extends ChangeNotifier {
   }
 
   /// Back to product form page
-  void backToFormPage() {
+  void backToFormPage(BuildContext context) {
+    FocusScope.of(context).unfocus();
     pageController.previousPage(duration: const Duration(milliseconds: 150), curve: Curves.ease);
   }
 
   /// Edit variation
   void editVariation(BuildContext context, ProductVariationEntity variation) async {
+    FocusScope.of(context).unfocus();
+
     var newVariation = await showBottomSheetHelper(
       context,
       child: ProductVariationDialog(variation: variation, unit: _unit),
@@ -296,6 +304,8 @@ class CreateProductProvider extends ChangeNotifier {
   /// Submit product information form
   void createProduct(BuildContext context) async {
     try {
+      FocusScope.of(context).unfocus();
+
       const uuid = Uuid();
       var standardVariationId = uuid.v4();
 

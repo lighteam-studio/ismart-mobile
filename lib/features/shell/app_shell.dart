@@ -6,6 +6,7 @@ import 'package:ismart/features/shell/components/app_shell_animated_switcher.dar
 import 'package:ismart/features/my_store/my_store_feature.dart';
 import 'package:ismart/features/transactions/transactions_shell.dart';
 import 'package:ismart/resources/app_sizes.dart';
+import 'package:ismart/router/app_router.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -40,6 +41,7 @@ class _AppShellState extends State<AppShell> {
 
   void onNavigate(int index) {
     if (index == 2) {
+      Navigator.of(context).pushNamed(AppRouter.basket);
       return;
     }
 
