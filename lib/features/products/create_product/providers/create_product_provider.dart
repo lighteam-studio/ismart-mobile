@@ -11,6 +11,7 @@ import 'package:ismart/core/entities/product_variation_property_value_entity.dar
 import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/interfaces/option.dart';
+import 'package:ismart/core/query/query.dart';
 import 'package:ismart/features/products/create_product/components/product_property_dialog.dart';
 import 'package:ismart/features/products/create_product/components/product_variation_dialog.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
@@ -111,7 +112,7 @@ class CreateProductProvider extends ChangeNotifier {
 
   void _loadAvailableProductGroups(BuildContext context) async {
     try {
-      var groups = await _productGroupRepository.getGroups();
+      var groups = await _productGroupRepository.getGroups(Query());
 
       _availableProductGroups = groups.map<Group<Option<String>>>((e) {
         return Group(

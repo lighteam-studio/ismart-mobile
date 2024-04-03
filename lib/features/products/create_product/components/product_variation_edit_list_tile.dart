@@ -7,12 +7,12 @@ import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
 
-class ProductVariationListTile extends StatelessWidget {
+class ProductVariationEditListTile extends StatelessWidget {
   final ProductVariationEntity variation;
   final ProductUnit unit;
   final void Function(ProductVariationEntity variation) onChange;
 
-  const ProductVariationListTile({
+  const ProductVariationEditListTile({
     required this.variation,
     required this.onChange,
     required this.unit,

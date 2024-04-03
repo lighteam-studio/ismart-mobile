@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ismart/repository/abstractions/i_media_repository.dart';
 import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
 import 'package:ismart/repository/abstractions/i_product_category_repository.dart';
 import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
+import 'package:ismart/repository/abstractions/i_product_variation_repository.dart';
 import 'package:ismart/repository/abstractions/i_products_repository.dart';
 import 'package:ismart/repository/local/media_repository.dart';
 import 'package:ismart/repository/local/preferences_repository.dart';
 import 'package:ismart/repository/local/product_category_repository.dart';
 import 'package:ismart/repository/local/product_group_repository.dart';
+import 'package:ismart/repository/local/product_variation_repository.dart';
 import 'package:ismart/repository/local/products_repository.dart';
 import 'package:ismart/resources/app_colors.dart';
 import 'package:ismart/resources/app_sizes.dart';
@@ -22,6 +25,8 @@ void main() {
   GetIt.instance.registerLazySingleton<IProductsRepository>(() => ProductsRepository());
   GetIt.instance.registerLazySingleton<IProductCategoryRepository>(() => ProductCategoryRepository());
   GetIt.instance.registerLazySingleton<IMediaRepository>(() => MediaRepository());
+  GetIt.instance.registerLazySingleton<IProductVariationRepository>(() => ProductVariationRepository());
+
   sqfliteFfiInit();
   runApp(const MyApp());
 }
@@ -102,21 +107,28 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    return MaterialApp(
-      title: 'isMart',
-      theme: ThemeData(
-        fontFamily: 'Ubuntu',
-        colorScheme: colorScheme,
-        textTheme: textTheme,
-        useMaterial3: true,
-        dividerTheme: DividerThemeData(
-          color: colorScheme.surface,
-        ),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
       ),
-      supportedLocales: S.supportedLocales,
-      localizationsDelegates: S.localizationsDelegates,
-      initialRoute: AppRouter.initialization,
-      onGenerateRoute: AppRouter.controller,
+      child: MaterialApp(
+        title: 'isMart',
+        theme: ThemeData(
+          fontFamily: 'Ubuntu',
+          colorScheme: colorScheme,
+          textTheme: textTheme,
+          useMaterial3: true,
+          dividerTheme: DividerThemeData(
+            color: colorScheme.surface,
+          ),
+        ),
+        supportedLocales: S.supportedLocales,
+        localizationsDelegates: S.localizationsDelegates,
+        initialRoute: AppRouter.initialization,
+        onGenerateRoute: AppRouter.controller,
+      ),
     );
   }
 }

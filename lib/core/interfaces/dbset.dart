@@ -11,5 +11,5 @@ abstract class DbSet<T, Q extends Query> {
 
   Future<void> batchInsert(List<T> values);
 
-  Future<List<T>> search([Q? query]);
+  Future<List<T>> search(Q query);
 }

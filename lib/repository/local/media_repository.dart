@@ -1,4 +1,5 @@
 import 'package:ismart/core/entities/media_entity.dart';
+import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/ismart_db_context.dart';
 import 'package:ismart/repository/abstractions/i_media_repository.dart';
 
@@ -12,6 +13,6 @@ class MediaRepository implements IMediaRepository {
 
   @override
   Future<List<MediaEntity>> getMedias() async {
-    return await _context.image.search();
+    return await _context.image.search(Query());
   }
 }

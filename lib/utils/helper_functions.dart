@@ -29,6 +29,7 @@ Future<T?> showBottomSheetHelper<T>(BuildContext context, {required Widget child
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
+    useSafeArea: true,
     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
     builder: (context) => child,
   );

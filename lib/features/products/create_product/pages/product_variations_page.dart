@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_hollow_button.dart';
 import 'package:ismart/components/lt_primary_button.dart';
-import 'package:ismart/features/products/create_product/components/product_variation_list_tile.dart';
+import 'package:ismart/features/products/create_product/components/product_variation_edit_list_tile.dart';
 import 'package:ismart/features/products/create_product/providers/create_product_provider.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class ProductVariationsPage extends StatelessWidget {
         // Variations
         ...provider.variations
             .map(
-              (e) => ProductVariationListTile(
+              (e) => ProductVariationEditListTile(
                 variation: e,
                 unit: provider.unit,
                 onChange: (variation) => provider.editVariation(context, variation),

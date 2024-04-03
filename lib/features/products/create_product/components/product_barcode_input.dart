@@ -34,6 +34,7 @@ class ProductBarcodeInput extends StatelessWidget {
           Expanded(
             child: LtTextFormField(
               mask: FilteringTextInputFormatter.digitsOnly,
+              keyboardType: const TextInputType.numberWithOptions(decimal: false),
               label: showLabel ? s.barCode : null,
               placeholder: s.placeholderBarCode,
               controller: controller,

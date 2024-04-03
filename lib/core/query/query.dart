@@ -3,9 +3,13 @@ class Query {
   int itemsPerPage;
   String search;
 
+  get offset {
+    return (itemsPerPage * page) - itemsPerPage;
+  }
+
   Query({
     this.page = 1,
-    this.itemsPerPage = 10,
+    this.itemsPerPage = 20,
     this.search = "",
   });
 }

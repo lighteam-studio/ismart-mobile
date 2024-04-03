@@ -6,7 +6,7 @@ abstract class IProductGroupRepository {
   Future<ProductGroupEntity?> getGroup(String id);
   Future<void> createGroups(List<ProductGroupEntity> groups);
   Future<void> upsertGroup(ProductGroupEntity group);
-  Future<List<ProductGroupEntity>> getGroups([Query? query]);
+  Future<List<ProductGroupEntity>> getGroups(Query query);
 
   static IProductGroupRepository getInstance() {
     return GetIt.instance.get<IProductGroupRepository>();

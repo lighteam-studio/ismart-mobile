@@ -183,6 +183,7 @@ class _ProductVariationDialogState extends State<ProductVariationDialog> {
                       mask: _currencyFormatter,
                       placeholder: "Insert the product price",
                       controller: _priceController,
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       validators: [
                         Validators.of(context).required,
                       ],
@@ -195,7 +196,7 @@ class _ProductVariationDialogState extends State<ProductVariationDialog> {
                       mask: FilteringTextInputFormatter.digitsOnly,
                       placeholder: "Insert the initial stock",
                       controller: _stockController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: TextInputType.numberWithOptions(decimal: widget.unit == ProductUnit.kg),
                       validators: [
                         Validators.of(context).required,
                       ],

@@ -48,7 +48,7 @@ class ProductsListFeature extends StatelessWidget {
                     return ProductListTile(
                       brand: product.brand,
                       name: product.name,
-                      image: product.thumbnail != null ? MemoryImage(product.thumbnail!) : null,
+                      image: product.thumbnailData != null ? MemoryImage(product.thumbnailData!) : null,
                       onTap: () {},
                     );
                   },

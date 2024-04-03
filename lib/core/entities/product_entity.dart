@@ -16,7 +16,7 @@ class ProductEntity {
   List<ProductVariationEntity>? variations;
   List<ProductPropertyEntity>? properties;
   ProductCategoryEntity? category;
-  Uint8List? thumbnail;
+  Uint8List? thumbnailData;
 
   Map<String, dynamic> toEntityMap() {
     return {
@@ -37,7 +37,7 @@ class ProductEntity {
     this.properties,
     this.category,
     this.variations,
-    this.thumbnail,
+    this.thumbnailData,
   });
 
   factory ProductEntity.fromMap(Map<String, dynamic> map) {
@@ -50,7 +50,7 @@ class ProductEntity {
         orElse: () => ProductUnit.un,
       ),
       name: map['name']?.toString() ?? '',
-      thumbnail: map['thumbnail'],
+      thumbnailData: map['data'],
     );
   }
 }

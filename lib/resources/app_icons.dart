@@ -32,4 +32,5 @@ class AppIcons {
   static const String reposition = "lib/assets/icons/reposition.png";
   static const String withdrawal = "lib/assets/icons/withdrawal.png";
   static const String deposit = "lib/assets/icons/deposit.png";
+  static const String circleMinus = "lib/assets/icons/circle_minus.png";
 }

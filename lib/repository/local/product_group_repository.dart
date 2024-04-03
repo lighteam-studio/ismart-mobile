@@ -18,7 +18,7 @@ class ProductGroupRepository implements IProductGroupRepository {
   }
 
   @override
-  Future<List<ProductGroupEntity>> getGroups([Query? query]) async {
+  Future<List<ProductGroupEntity>> getGroups(Query query) async {
     return await _context.productGroup.search(query);
   }
 

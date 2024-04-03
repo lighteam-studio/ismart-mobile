@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/features/basket/basket_feature.dart';
+import 'package:ismart/features/basket/providers/basket_provider.dart';
 import 'package:ismart/features/gallery/gallery_feature.dart';
 import 'package:ismart/features/gallery/provider/gallery_provider.dart';
 import 'package:ismart/features/initialization/initialization_feature.dart';
@@ -50,7 +51,12 @@ class AppRouter {
         return MaterialPageRoute(builder: (contect) => const AppShell());
 
       case basket:
-        return MaterialPageRoute(builder: (contect) => const BasketFeature());
+        return MaterialPageRoute(
+          builder: (contect) => ChangeNotifierProvider(
+            create: (context) => BasketProvider(),
+            child: const BasketFeature(),
+          ),
+        );
 
       case productDetail:
         return MaterialPageRoute(
