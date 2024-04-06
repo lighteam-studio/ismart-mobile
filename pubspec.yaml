@@ -79,17 +79,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: WorkSans
-      fonts:
-        - asset: lib/assets/fonts/work-sans/WorkSans-Light.ttf
-          weight: 300
-        - asset: lib/assets/fonts/work-sans/WorkSans-Regular.ttf
-        - asset: lib/assets/fonts/work-sans/WorkSans-Medium.ttf
-          weight: 500
-        - asset: lib/assets/fonts/work-sans/WorkSans-SemiBold.ttf
-          weight: 600
-        - asset: lib/assets/fonts/work-sans/WorkSans-Bold.ttf
-          weight: 700
     - family: Ubuntu
       fonts:
         - asset: lib/assets/fonts/ubuntu/Ubuntu-Light.ttf

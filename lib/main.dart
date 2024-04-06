@@ -46,6 +46,8 @@ class MyApp extends StatelessWidget {
       primaryContainer: AppColors.primary.shade600,
       onBackground: AppColors.neutral.shade400,
       surface: AppColors.neutral.shade200,
+      surfaceVariant: Colors.white,
+      onSurfaceVariant: AppColors.neutral.shade500,
       onSurface: AppColors.neutral.shade500,
       errorContainer: Colors.red.shade100,
       error: Colors.red.shade400,

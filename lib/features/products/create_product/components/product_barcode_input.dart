@@ -12,10 +12,13 @@ class ProductBarcodeInput extends StatelessWidget {
   final bool showLabel;
   final bool canRemove;
   final void Function() onRemove;
+  final bool isRequired;
   final TextEditingController controller;
+
   const ProductBarcodeInput({
     required this.showLabel,
     required this.controller,
+    required this.isRequired,
     required this.canRemove,
     required this.onRemove,
     super.key,
@@ -38,9 +41,7 @@ class ProductBarcodeInput extends StatelessWidget {
               label: showLabel ? s.barCode : null,
               placeholder: s.placeholderBarCode,
               controller: controller,
-              validators: [
-                Validators.of(context).required,
-              ],
+              validators: isRequired ? [Validators.of(context).required] : null,
             ),
           ),
           const SizedBox(width: AppSizes.s02),

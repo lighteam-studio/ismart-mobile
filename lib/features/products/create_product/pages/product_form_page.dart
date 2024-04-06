@@ -160,6 +160,7 @@ class ProductFormPage extends StatelessWidget {
                   showLabel: i == 0,
                   controller: barcode,
                   canRemove: i > 0,
+                  isRequired: provider.barcodes.length > 1,
                   onRemove: () => provider.removeBarCode(i),
                 );
               },

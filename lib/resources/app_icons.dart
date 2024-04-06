@@ -1,5 +1,6 @@
 class AppIcons {
   static const String bag = "lib/assets/icons/bag.png";
+  static const String coin = "lib/assets/icons/coin.png";
   static const String basket = "lib/assets/icons/basket.png";
   static const String camera = "lib/assets/icons/camera.png";
   static const String categories = "lib/assets/icons/categories.png";

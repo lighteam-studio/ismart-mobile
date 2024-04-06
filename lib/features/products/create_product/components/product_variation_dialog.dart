@@ -164,6 +164,7 @@ class _ProductVariationDialogState extends State<ProductVariationDialog> {
                         return ProductBarcodeInput(
                           showLabel: i == 0,
                           controller: barcode,
+                          isRequired: _barcodes.length > 1,
                           canRemove: i > 0,
                           onRemove: () => setState(() => _barcodes.removeAt(i)),
                         );

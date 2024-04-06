@@ -46,7 +46,7 @@ class ProductEntity {
       categoryId: map['category_id']?.toString() ?? '',
       brand: map['brand']?.toString() ?? '',
       unit: ProductUnit.values.firstWhere(
-        (u) => u == map['unit'],
+        (u) => u.name == map['unit'],
         orElse: () => ProductUnit.un,
       ),
       name: map['name']?.toString() ?? '',

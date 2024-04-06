@@ -3,9 +3,15 @@ import 'package:ismart/resources/app_sizes.dart';
 
 class LtPrimaryButton extends StatelessWidget {
   final String label;
+  final bool disabled;
   final void Function() onTap;
 
-  const LtPrimaryButton({required this.label, required this.onTap, super.key});
+  const LtPrimaryButton({
+    required this.label,
+    required this.onTap,
+    this.disabled = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,15 @@ class LtPrimaryButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizes.s05),
         gradient: RadialGradient(
-          colors: [colorScheme.primary, colorScheme.primaryContainer],
+          colors: disabled
+              ? [
+                  colorScheme.surface,
+                  colorScheme.surface,
+                ]
+              : [
+                  colorScheme.primary,
+                  colorScheme.primaryContainer,
+                ],
           center: const Alignment(-1, -1),
           radius: 4,
         ),
@@ -30,7 +44,7 @@ class LtPrimaryButton extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: colorScheme.onPrimary,
+                color: disabled ? colorScheme.onSurface.withOpacity(.5) : colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
                 fontSize: AppSizes.s04,
               ),

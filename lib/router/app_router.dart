@@ -7,6 +7,8 @@ import 'package:ismart/features/initialization/initialization_feature.dart';
 import 'package:ismart/features/initialization/provider/initialization_provider.dart';
 import 'package:ismart/features/onboarding/onboarding_feature.dart';
 import 'package:ismart/features/onboarding/pages/onboarding_finish_page.dart';
+import 'package:ismart/features/payment/payment_feature.dart';
+import 'package:ismart/features/payment/provider/payment_provider.dart';
 import 'package:ismart/features/products/product_detail/product_detail_feature.dart';
 import 'package:ismart/features/products/product_detail/providers/product_detail_provider.dart';
 import 'package:ismart/features/store_detail/provider/store_detail_provider.dart';
@@ -25,6 +27,7 @@ class AppRouter {
   static const String productDetail = "product_detail";
   static const String storeDetail = "store_detail";
   static const String gallery = "gallery";
+  static const String payment = "payment";
 
   static Route<dynamic> controller(RouteSettings settings) {
     var args = settings.arguments;
@@ -71,6 +74,14 @@ class AppRouter {
           builder: (context) => ChangeNotifierProvider(
             create: (context) => GalleryProvider(),
             child: const GalleryFeature(),
+          ),
+        );
+
+      case payment:
+        return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+            create: (context) => PaymentProvider(),
+            child: const PaymentFeature(),
           ),
         );
 

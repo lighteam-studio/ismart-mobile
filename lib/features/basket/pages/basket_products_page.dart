@@ -15,18 +15,31 @@ class BasketProductsPage extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.separated(
-            itemCount: basketProvider.basketItems.length,
-            separatorBuilder: (context, index) => const SizedBox(height: AppSizes.s03),
-            itemBuilder: (context, index) {
-              var basketItem = basketProvider.basketItems[index];
+          child: basketProvider.basketItems.isNotEmpty
+              ? ListView.separated(
+                  itemCount: basketProvider.basketItems.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: AppSizes.s03),
+                  itemBuilder: (context, index) {
+                    var basketItem = basketProvider.basketItems[index];
 
-              return ChangeNotifierProvider.value(
-                value: basketItem,
-                child: const BasketListTile(),
-              );
-            },
-          ),
+                    return BasketListTile(
+                      onRemove: () {
+                        basketProvider.removeProductFrombasket(index);
+                      },
+                      amount: basketItem.amount,
+                      brand: basketItem.brand,
+                      name: basketItem.name,
+                      onChangeAmount: (value) => basketProvider.changeAmount(index, value),
+                      stock: basketItem.stock,
+                      unit: basketItem.unit,
+                      unitPrice: basketItem.price,
+                      thumbnail: basketItem.thumbnail != null ? MemoryImage(basketItem.thumbnail!) : null,
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text("You don't have products in basket"),
+                ),
         ),
         const BasketFooter(),
       ],
