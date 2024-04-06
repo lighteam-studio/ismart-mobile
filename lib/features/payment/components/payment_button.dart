@@ -37,7 +37,7 @@ class PaymentButton extends StatelessWidget {
                   width: AppSizes.s06,
                   color: colorScheme.onSurfaceVariant,
                 ),
-                SizedBox(width: AppSizes.s02),
+                const SizedBox(width: AppSizes.s02),
                 Text(
                   "Adicionar pagamento",
                   style: TextStyle(

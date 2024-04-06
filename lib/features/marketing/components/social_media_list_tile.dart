@@ -6,7 +6,7 @@ class SocialMediaListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
+    return const AspectRatio(
       aspectRatio: .8,
       child: LtSurface(),
     );
