@@ -8,6 +8,7 @@ class TransactionProductEntity {
   final String brand;
   final ProductUnit unit;
   final double unitPrice;
+  final double discount;
   final double amount;
 
   TransactionProductEntity({
@@ -15,6 +16,7 @@ class TransactionProductEntity {
     required this.thumbnail,
     required this.brand,
     required this.unit,
+    required this.discount,
     required this.unitPrice,
     required this.amount,
   });

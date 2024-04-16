@@ -14,16 +14,16 @@ import 'package:ismart/core/interfaces/option.dart';
 import 'package:ismart/core/query/query.dart';
 import 'package:ismart/features/products/create_product/components/product_property_dialog.dart';
 import 'package:ismart/features/products/create_product/components/product_variation_dialog.dart';
-import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
-import 'package:ismart/repository/abstractions/i_products_repository.dart';
+import 'package:ismart/repository/abstractions/product_group_repository.dart';
+import 'package:ismart/repository/abstractions/products_repository.dart';
 import 'package:ismart/resources/app_images.dart';
 import 'package:ismart/utils/helper_functions.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateProductProvider extends ChangeNotifier {
   /// Repositories
-  late final IProductsRepository _productsRepository = IProductsRepository.getInstance();
-  final IProductGroupRepository _productGroupRepository = IProductGroupRepository.getInstance();
+  late final ProductsRepository _productsRepository = ProductsRepository.getInstance();
+  final ProductGroupRepository _productGroupRepository = ProductGroupRepository.getInstance();
 
   /// Form keys
   final GlobalKey<FormState> _productInfoForm = GlobalKey();

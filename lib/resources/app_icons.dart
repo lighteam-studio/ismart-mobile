@@ -34,4 +34,10 @@ class AppIcons {
   static const String withdrawal = "lib/assets/icons/withdrawal.png";
   static const String deposit = "lib/assets/icons/deposit.png";
   static const String circleMinus = "lib/assets/icons/circle_minus.png";
+  static const String discount = "lib/assets/icons/discount.png";
+  static const String deliverOutline = "lib/assets/icons/deliver_outline.png";
+  static const String userCircle = "lib/assets/icons/user_circle.png";
+  static const String money = "lib/assets/icons/money.png";
+  static const String creditCard = "lib/assets/icons/credit_card.png";
+  static const String qrcode = "lib/assets/icons/qrcode.png";
 }

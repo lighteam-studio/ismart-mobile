@@ -1,9 +1,9 @@
 import 'package:ismart/core/entities/product_category_entity.dart';
 import 'package:ismart/core/query/query.dart';
 import 'package:ismart/database/ismart_db_context.dart';
-import 'package:ismart/repository/abstractions/i_product_category_repository.dart';
+import 'package:ismart/repository/abstractions/product_category_repository.dart';
 
-class ProductCategoryRepository implements IProductCategoryRepository {
+class ProductCategoryLocalRepository implements ProductCategoryRepository {
   final IsMartDatabaseContext _context = IsMartDatabaseContext();
 
   @override

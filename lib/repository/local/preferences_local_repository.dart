@@ -1,9 +1,9 @@
 import 'package:ismart/core/entities/preference_entity.dart';
 import 'package:ismart/core/enums/preferences.dart';
-import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
+import 'package:ismart/repository/abstractions/preferences_repository.dart';
 import 'package:ismart/database/ismart_db_context.dart';
 
-class PreferencesRepository implements IPreferencesRepository {
+class PreferencesLocalRepository implements PreferencesRepository {
   final IsMartDatabaseContext _context = IsMartDatabaseContext();
 
   @override

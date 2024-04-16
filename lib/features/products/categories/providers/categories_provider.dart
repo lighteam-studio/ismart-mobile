@@ -5,14 +5,14 @@ import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/query/query.dart';
 import 'package:ismart/features/products/categories/components/category_detail_dialog.dart';
 import 'package:ismart/features/products/categories/components/group_detail_dialog.dart';
-import 'package:ismart/repository/abstractions/i_product_category_repository.dart';
-import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
+import 'package:ismart/repository/abstractions/product_category_repository.dart';
+import 'package:ismart/repository/abstractions/product_group_repository.dart';
 import 'package:ismart/utils/helper_functions.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CategoriesProvider extends ChangeNotifier {
-  final IProductCategoryRepository _repository = IProductCategoryRepository.getInstance();
-  final IProductGroupRepository _groupRepository = IProductGroupRepository.getInstance();
+  final ProductCategoryRepository _repository = ProductCategoryRepository.getInstance();
+  final ProductGroupRepository _groupRepository = ProductGroupRepository.getInstance();
 
   /// Categories Stream
   late BehaviorSubject<List<Group<ProductCategoryEntity>>> _groupsController;

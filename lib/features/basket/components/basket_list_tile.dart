@@ -161,7 +161,11 @@ class _BasketListTileState extends State<BasketListTile> {
               ),
             ],
           ),
-          const Divider(),
+          const Divider(
+            height: AppSizes.s04,
+            indent: 0,
+            endIndent: 0,
+          ),
           Row(
             children: [
               Container(

@@ -16,11 +16,11 @@ class TransactionsListFeature extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Group<TransactionEntity>> data = [
       Group(title: "January 25", items: [
-        TransactionEntity(id: "1", type: TransactionType.sale, amount: 854.75, date: DateTime.now()),
-        TransactionEntity(id: "2", type: TransactionType.devolution, amount: -247.35, date: DateTime.now()),
-        TransactionEntity(id: "3", type: TransactionType.reposition, amount: -534.54, date: DateTime.now()),
-        TransactionEntity(id: "4", type: TransactionType.withdrawal, amount: -120.99, date: DateTime.now()),
-        TransactionEntity(id: "5", type: TransactionType.deposit, amount: 251.50, date: DateTime.now()),
+        TransactionEntity(transactionId: "1", type: TransactionType.sale, date: DateTime.now()),
+        TransactionEntity(transactionId: "2", type: TransactionType.devolution, date: DateTime.now()),
+        TransactionEntity(transactionId: "3", type: TransactionType.reposition, date: DateTime.now()),
+        TransactionEntity(transactionId: "4", type: TransactionType.withdrawal, date: DateTime.now()),
+        TransactionEntity(transactionId: "5", type: TransactionType.deposit, date: DateTime.now()),
       ])
     ];
 
@@ -55,7 +55,7 @@ class TransactionsListFeature extends StatelessWidget {
                     var transaction = group.items[i];
 
                     return TransactionListTile(
-                      amount: transaction.amount,
+                      amount: 0,
                       date: transaction.date,
                       type: transaction.type,
                       onTap: () {},

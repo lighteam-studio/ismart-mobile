@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/product_entity.dart';
 import 'package:ismart/core/interfaces/group.dart';
 import 'package:ismart/core/query/query.dart';
-import 'package:ismart/repository/abstractions/i_products_repository.dart';
+import 'package:ismart/repository/abstractions/products_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProductListProvider extends ChangeNotifier {
-  final IProductsRepository _repository = IProductsRepository.getInstance();
+  final ProductsRepository _repository = ProductsRepository.getInstance();
 
   /// Product list stream controller
   late final BehaviorSubject<List<Group<ProductEntity>>> _productsStreamController;

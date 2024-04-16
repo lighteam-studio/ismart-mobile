@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/core/enums/preferences.dart';
-import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
+import 'package:ismart/repository/abstractions/preferences_repository.dart';
 
 class CompanyNameForm extends ChangeNotifier {
-  final IPreferencesRepository _preferencesRepository = IPreferencesRepository.getInstance();
+  final PreferencesRepository _preferencesRepository = PreferencesRepository.getInstance();
 
   bool _loading = false;
 

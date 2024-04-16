@@ -1,15 +1,13 @@
 import 'package:ismart/core/enums/transaction_type.dart';
 
 class TransactionEntity {
-  String id;
+  String transactionId;
   TransactionType type;
-  double amount;
   DateTime date;
 
   TransactionEntity({
-    required this.id,
+    required this.transactionId,
     required this.type,
-    required this.amount,
     required this.date,
   });
 }

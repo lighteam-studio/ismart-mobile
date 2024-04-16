@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_alert_dialog.dart';
 import 'package:ismart/core/enums/preferences.dart';
 import 'package:ismart/database/ismart_db_context.dart';
-import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
+import 'package:ismart/repository/abstractions/preferences_repository.dart';
 import 'package:ismart/resources/app_images.dart';
 import 'package:ismart/router/app_router.dart';
 import 'package:ismart/utils/helper_functions.dart';
@@ -13,7 +13,7 @@ enum DeleteStoreAction {
 }
 
 class StoreDetailProvider extends ChangeNotifier {
-  final IPreferencesRepository _preferencesRepository = IPreferencesRepository.getInstance();
+  final PreferencesRepository _preferencesRepository = PreferencesRepository.getInstance();
 
   final TextEditingController _storeNameController = TextEditingController();
   TextEditingController get storeNameController => _storeNameController;

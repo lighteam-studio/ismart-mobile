@@ -2,13 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ismart/core/entities/media_entity.dart';
-import 'package:ismart/repository/abstractions/i_media_repository.dart';
+import 'package:ismart/repository/abstractions/media_repository.dart';
 import 'package:mime/mime.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 class GalleryProvider extends ChangeNotifier {
-  final IMediaRepository _repository = IMediaRepository.getInstance();
+  final MediaRepository _repository = MediaRepository.getInstance();
 
   final List<String> _selectedMedias = [];
   List<String> get selectedMedias => _selectedMedias;

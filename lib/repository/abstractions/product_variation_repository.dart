@@ -2,10 +2,10 @@ import 'package:get_it/get_it.dart';
 import 'package:ismart/core/models/product_variation_model.dart';
 import 'package:ismart/core/query/query.dart';
 
-abstract class IProductVariationRepository {
+abstract class ProductVariationRepository {
   Future<List<ProductVariationModel>> getProductVariations(Query query);
 
   static getInstance() {
-    return GetIt.I.get<IProductVariationRepository>();
+    return GetIt.I.get<ProductVariationRepository>();
   }
 }

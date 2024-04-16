@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ismart/core/enums/preferences.dart';
 import 'package:ismart/features/onboarding/providers/company_name_form.dart';
 import 'package:ismart/features/onboarding/providers/product_category_form.dart';
-import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
+import 'package:ismart/repository/abstractions/preferences_repository.dart';
 import 'package:ismart/router/app_router.dart';
 import 'package:ismart/utils/helper_functions.dart';
 
 class OnboardingProvider extends ChangeNotifier {
-  final IPreferencesRepository _preferencesRepository = IPreferencesRepository.getInstance();
+  final PreferencesRepository _preferencesRepository = PreferencesRepository.getInstance();
 
   ///
   /// Page controller

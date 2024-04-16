@@ -4,13 +4,13 @@ import 'package:ismart/core/enums/product_unit.dart';
 import 'package:ismart/core/models/basket_item_model.dart';
 import 'package:ismart/core/models/product_variation_model.dart';
 import 'package:ismart/core/query/query.dart';
-import 'package:ismart/repository/abstractions/i_product_variation_repository.dart';
+import 'package:ismart/repository/abstractions/product_variation_repository.dart';
 import 'package:ismart/router/app_router.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BasketProvider extends ChangeNotifier {
   /// Product variation repository
-  final IProductVariationRepository _repository = IProductVariationRepository.getInstance();
+  final ProductVariationRepository _repository = ProductVariationRepository.getInstance();
 
   /// Product search controller
   final TextEditingController _searchController = TextEditingController();

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/core/entities/product_group_entity.dart';
 import 'package:ismart/mock/models/product_group_model_mock.dart';
-import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
+import 'package:ismart/repository/abstractions/product_group_repository.dart';
 import 'package:ismart/utils/helper_functions.dart';
 
 class ProductCategoryForm extends ChangeNotifier {
-  final IProductGroupRepository _productGroupRepository = IProductGroupRepository.getInstance();
+  final ProductGroupRepository _productGroupRepository = ProductGroupRepository.getInstance();
 
   bool _loading = false;
 

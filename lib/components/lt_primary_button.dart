@@ -17,7 +17,8 @@ class LtPrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
       height: AppSizes.s14,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizes.s05),

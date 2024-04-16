@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:ismart/repository/abstractions/i_media_repository.dart';
-import 'package:ismart/repository/abstractions/i_preferences_repository.dart';
-import 'package:ismart/repository/abstractions/i_product_category_repository.dart';
-import 'package:ismart/repository/abstractions/i_product_group_repository.dart';
-import 'package:ismart/repository/abstractions/i_product_variation_repository.dart';
-import 'package:ismart/repository/abstractions/i_products_repository.dart';
-import 'package:ismart/repository/local/media_repository.dart';
-import 'package:ismart/repository/local/preferences_repository.dart';
-import 'package:ismart/repository/local/product_category_repository.dart';
-import 'package:ismart/repository/local/product_group_repository.dart';
-import 'package:ismart/repository/local/product_variation_repository.dart';
-import 'package:ismart/repository/local/products_repository.dart';
+import 'package:ismart/repository/abstractions/media_repository.dart';
+import 'package:ismart/repository/abstractions/preferences_repository.dart';
+import 'package:ismart/repository/abstractions/product_category_repository.dart';
+import 'package:ismart/repository/abstractions/product_group_repository.dart';
+import 'package:ismart/repository/abstractions/product_variation_repository.dart';
+import 'package:ismart/repository/abstractions/products_repository.dart';
+import 'package:ismart/repository/local/media_local_repository.dart';
+import 'package:ismart/repository/local/preferences_local_repository.dart';
+import 'package:ismart/repository/local/product_category_local_repository.dart';
+import 'package:ismart/repository/local/product_group_local_repository.dart';
+import 'package:ismart/repository/local/product_variation_local_repository.dart';
+import 'package:ismart/repository/local/products_local_repository.dart';
 import 'package:ismart/resources/app_colors.dart';
 import 'package:ismart/resources/app_sizes.dart';
 import 'package:ismart/router/app_router.dart';
@@ -20,12 +20,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
-  GetIt.instance.registerLazySingleton<IPreferencesRepository>(() => PreferencesRepository());
-  GetIt.instance.registerLazySingleton<IProductGroupRepository>(() => ProductGroupRepository());
-  GetIt.instance.registerLazySingleton<IProductsRepository>(() => ProductsRepository());
-  GetIt.instance.registerLazySingleton<IProductCategoryRepository>(() => ProductCategoryRepository());
-  GetIt.instance.registerLazySingleton<IMediaRepository>(() => MediaRepository());
-  GetIt.instance.registerLazySingleton<IProductVariationRepository>(() => ProductVariationRepository());
+  GetIt.instance.registerLazySingleton<PreferencesRepository>(() => PreferencesLocalRepository());
+  GetIt.instance.registerLazySingleton<ProductGroupRepository>(() => ProductGroupLocalRepository());
+  GetIt.instance.registerLazySingleton<ProductsRepository>(() => ProductsLocalRepository());
+  GetIt.instance.registerLazySingleton<ProductCategoryRepository>(() => ProductCategoryLocalRepository());
+  GetIt.instance.registerLazySingleton<MediaRepository>(() => MediaLocalRepository());
+  GetIt.instance.registerLazySingleton<ProductVariationRepository>(() => ProductVariationLocalRepository());
 
   sqfliteFfiInit();
   runApp(const MyApp());
@@ -123,7 +123,11 @@ class MyApp extends StatelessWidget {
           textTheme: textTheme,
           useMaterial3: true,
           dividerTheme: DividerThemeData(
-            color: colorScheme.surface,
+            thickness: 1,
+            space: 1,
+            indent: AppSizes.s05,
+            endIndent: AppSizes.s05,
+            color: colorScheme.surface.withOpacity(.7),
           ),
         ),
         supportedLocales: S.supportedLocales,

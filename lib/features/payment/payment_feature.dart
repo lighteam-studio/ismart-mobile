@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ismart/components/lt_page.dart';
+import 'package:ismart/components/lt_surface_variant_button.dart';
 import 'package:ismart/core/enums/payment_type.dart';
 import 'package:ismart/features/payment/components/payment_button.dart';
 import 'package:ismart/features/payment/components/payment_footer.dart';
 import 'package:ismart/features/payment/components/payment_list_tile.dart';
+import 'package:ismart/features/payment/provider/payment_provider.dart';
+import 'package:ismart/resources/app_icons.dart';
 import 'package:ismart/resources/app_sizes.dart';
+import 'package:provider/provider.dart';
 
 class PaymentFeature extends StatelessWidget {
   const PaymentFeature({super.key});
@@ -12,6 +16,7 @@ class PaymentFeature extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
+    PaymentProvider provider = Provider.of(context);
 
     return LtPage(
       safeAreaBottom: false,
@@ -25,8 +30,21 @@ class PaymentFeature extends StatelessWidget {
               right: AppSizes.s05,
               top: AppSizes.s03,
             ),
-            child: PaymentButton(onTap: () {}),
+            child: Row(
+              children: [
+                Expanded(
+                  child: PaymentButton(onTap: () => provider.addPayment(context)),
+                ),
+                const SizedBox(width: AppSizes.s02),
+                LtSurfaceVariantButton(icon: AppIcons.discount, onTap: () {}),
+                const SizedBox(width: AppSizes.s02),
+                LtSurfaceVariantButton(icon: AppIcons.deliverOutline, onTap: () {}),
+                const SizedBox(width: AppSizes.s02),
+                LtSurfaceVariantButton(icon: AppIcons.userCircle, onTap: () {}),
+              ],
+            ),
           ),
+          const SizedBox(height: AppSizes.s02),
 
           // Content
           Expanded(
